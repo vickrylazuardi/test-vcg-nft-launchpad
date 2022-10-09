@@ -5,8 +5,9 @@ module.exports = {
   ],
   theme: {
     container: {
+      center: true,
       padding: {
-        default: "20px",
+        DEFAULT: "1.3rem",
         sm: "1.5rem",
         md: "1.5rem",
         lg: "0",

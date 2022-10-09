@@ -1,7 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap");
-
-body {
-  font-family: "Rajdhani", sans-serif;
+:root {
+  --orange-light: #e28058;
 }
 
 // Hexagon
@@ -48,5 +46,92 @@ body {
   .small-semibold {
     font-size: 16px;
     font-weight: 600;
+  }
+}
+
+.btn {
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.btn-bordered {
+  border: 2px solid white;
+}
+.btn-orange-light {
+  background: var(--orange-light);
+}
+
+.item-gray {
+  padding: 10px;
+  background: #2a334b;
+  border-radius: 10px;
+}
+
+// Home
+#home {
+  #launchpad-header {
+    .action-container {
+      .btn-bordered {
+        transition: all 250ms ease-in-out;
+        &:hover {
+          background: var(--orange-light);
+          border-color: var(--orange-light);
+        }
+      }
+    }
+  }
+  #launchpad-tab {
+    button.active-tab {
+      background: #eaaa90;
+      color: #cd4e2b;
+    }
+    .social img {
+      cursor: pointer;
+    }
+  }
+  #launchpad-market {
+    .item-market-brand {
+      .brand-container {
+        padding: 8px;
+        background: #6f42c1;
+        .brand-wrap {
+          padding: 8px;
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
+  }
+  #launchpad-products {
+    .item-products-container {
+      min-height: 514px;
+      position: relative;
+      .item-products-wrap {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        .product {
+          width: 244px;
+          overflow: hidden;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 940px) {
+  .global-container {
+    padding-top: 5rem;
+  }
+  #home {
+    #launchpad-header {
+      h1 {
+        font-size: 18px;
+      }
+      .small-semibold {
+        font-size: 12px;
+      }
+    }
   }
 }
