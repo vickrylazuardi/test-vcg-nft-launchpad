@@ -85,8 +85,54 @@
       background: #eaaa90;
       color: #cd4e2b;
     }
+    .slick-list {
+      .slicl-slide {
+        padding-right: 10px;
+      }
+    }
+    .card-wrap {
+      max-width: 224px;
+    }
+    .content-container {
+      background: #1d2333;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      overflow: hidden;
+      .action-container {
+        .btn-bordered {
+          transition: all 250ms ease-in-out;
+          &:hover {
+            background: var(--orange-light);
+            border-color: var(--orange-light);
+          }
+        }
+      }
+    }
     .social img {
       cursor: pointer;
+    }
+
+    // btn carousel
+    .item-tab-container {
+      .slick-slider {
+        .slick-prev {
+          top: -56px;
+          right: 32px;
+          left: unset;
+        }
+        .slick-next {
+          transform: rotate(180deg);
+          top: -66px;
+          right: 0;
+          left: unset;
+        }
+        .slick-prev:before {
+          content: url("../public/images/svg/icon-arrow-left.svg");
+        }
+        .slick-next:before {
+          content: url("../public/images/svg/icon-arrow-left.svg");
+        }
+      }
     }
   }
   #launchpad-market {
@@ -104,16 +150,19 @@
   }
   #launchpad-products {
     .item-products-container {
-      min-height: 514px;
+      min-height: 355px;
       position: relative;
       .item-products-wrap {
         position: absolute;
-        bottom: 0;
+        bottom: -134px;
         width: 100%;
         .product {
-          width: 244px;
+          background: #2a334b;
           overflow: hidden;
           border-radius: 10px;
+          .img-wrap {
+            min-height: 224px;
+          }
         }
       }
     }
@@ -125,12 +174,58 @@
     padding-top: 5rem;
   }
   #home {
+    &.global-container {
+      padding-bottom: 0;
+    }
     #launchpad-header {
       h1 {
         font-size: 18px;
       }
       .small-semibold {
         font-size: 12px;
+      }
+    }
+    #launchpad-tab {
+      .tab-action-container {
+        button {
+          padding: 5px 10px;
+          border-radius: 5px;
+        }
+      }
+      .item-tab-container {
+        .slick-slider {
+          .slick-arrow {
+            display: none !important;
+          }
+        }
+      }
+    }
+    #launchpad-market {
+      .item-market-brand {
+        margin-right: 20px;
+        .brand-container {
+          padding: 4px;
+          .brand-wrap {
+            padding: 5px;
+            height: 50px;
+            width: 50px;
+          }
+        }
+      }
+    }
+    #launchpad-products {
+      background: #361b93;
+      .item-products-container {
+        min-height: 200px;
+        .item-products-wrap {
+          bottom: -70px;
+          .product {
+            flex: 0 0 40%;
+            .img-wrap {
+              min-height: unset;
+            }
+          }
+        }
       }
     }
   }
