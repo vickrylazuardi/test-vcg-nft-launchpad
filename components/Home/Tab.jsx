@@ -11,7 +11,7 @@ export default function Tab() {
     slidesToScroll: 5,
     responsive: [
       {
-        breakpoint: 426,
+        breakpoint: 620,
         settings: {
           slidesToShow: 2.5,
           slidesToScroll: 3,
