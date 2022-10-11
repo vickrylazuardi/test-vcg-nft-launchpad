@@ -53,8 +53,8 @@ export default function _slug() {
       {
         breakpoint: 620,
         settings: {
-          slidesToShow: 2.5,
-          slidesToScroll: 3,
+          slidesToShow: 2.2,
+          slidesToScroll: 2,
         },
       },
     ],
@@ -139,21 +139,35 @@ export default function _slug() {
             </div>
           </div>
           <div
-            className="right youtube-container overflow-hidden lg:w-full"
+            className="right youtube-container overflow-hidden lg:hidden"
             style={{ borderRadius: 10 }}
           >
-            {isDesktop && (
+            <iframe
+              width={590}
+              height={332}
+              src="https://www.youtube.com/embed/NvhyQkp0g8Y"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          {isMobile && (
+            <div
+              className="right youtube-container overflow-hidden w-full"
+              style={{ borderRadius: 10 }}
+            >
               <iframe
-                width={590}
-                height={332}
+                width="100%"
+                height={185}
                 src="https://www.youtube.com/embed/NvhyQkp0g8Y"
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
               ></iframe>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         {/* /HEADER */}
 
