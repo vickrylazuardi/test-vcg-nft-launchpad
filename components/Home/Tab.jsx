@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import CardItem from "../Common/CardItem";
 
-export default function Tab() {
+export default function Tab(props) {
   const settings = {
     dots: false,
     infinite: false,
@@ -59,54 +59,65 @@ export default function Tab() {
       </div>
       <div className="item-tab-container mt-5">
         <Slider {...settings}>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug1"}
-            />
-          </div>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug2"}
-            />
-          </div>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug3"}
-            />
-          </div>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug4"}
-            />
-          </div>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug5"}
-            />
-          </div>
-          <div className="card-wrap">
-            <CardItem
-              img={"/images/item1.png"}
-              title={"Metal Slug"}
-              desc={"Call of Duty adalah waralaba permainan video penembak"}
-              slug={"metal-slug6"}
-            />
-          </div>
+          {
+            activeTab == 0 ?
+            props?.trending?.map((item, idx) => (
+              <div key={idx} className="card-wrap">
+                <CardItem
+                  img={item.banner}
+                  title={item.name}
+                  desc={item.desc}
+                  slug={item._id}
+                  socmed={item.socialMedia}
+                />
+              </div>
+            )) : 
+            activeTab == 1 ?
+            props?.soon?.map((item, idx) => (
+              <div key={idx} className="card-wrap">
+                <CardItem
+                  img={item.banner}
+                  title={item.name}
+                  desc={item.desc}
+                  slug={item._id}
+                  socmed={item.socialMedia}
+                />
+              </div>
+            )) : 
+            activeTab == 2 ?
+            props?.ongoing?.map((item, idx) => (
+              <div key={idx} className="card-wrap">
+                <CardItem
+                  img={item.banner}
+                  title={item.name}
+                  desc={item.desc}
+                  slug={item._id}
+                  socmed={item.socialMedia}
+                />
+              </div>
+            )) : 
+            activeTab == 3 ?
+            (
+              props?.finish?.length ?
+              props.finish.map((item, idx) => (
+                <div key={idx} className="card-wrap">
+                  <CardItem
+                    img={item.banner}
+                    title={item.name}
+                    desc={item.desc}
+                    slug={item._id}
+                    socmed={item.socialMedia}
+                  />
+                </div>
+              )) : 
+              <div style={{height: "372px"}} className="text-center py-24" >
+                <img style={{width: "50%"}} src="/images/Sad_Emoji.gif" className="mx-auto" />
+                <h2 className="font-semibold pt-3 text-2xl">
+                  There are no {activeTab.name} Projects
+                </h2>
+              </div>
+            ) : ""
+          }
         </Slider>
       </div>
     </div>

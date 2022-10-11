@@ -1,0 +1,536 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_erc20",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "idData",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "walletAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "discordUsername",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subscription",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeEnd",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "txHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountStake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum VCGSignalSubscription.Status",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct VCGSignalSubscription.DataList",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "name": "acceptSubscribe",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "idData",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "walletAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "discordUsername",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subscription",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeEnd",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "txHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountStake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum VCGSignalSubscription.Status",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct VCGSignalSubscription.DataList",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "name": "newSubscribe",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "idData",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "walletAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "discordUsername",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subscription",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeEnd",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "txHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountStake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum VCGSignalSubscription.Status",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct VCGSignalSubscription.DataList",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "name": "rejectSubscribe",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "idData",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "walletAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "discordUsername",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subscription",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeEnd",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "txHash",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amountStake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum VCGSignalSubscription.Status",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct VCGSignalSubscription.DataList",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "name": "withdrawSubscribe",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "idData",
+        "type": "uint256"
+      }
+    ],
+    "name": "accept",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "emergencyBNBWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "emergencyTokenWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "listData",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "idData",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "walletAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "discordUsername",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "subscription",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeStart",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeEnd",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "txHash",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountStake",
+        "type": "uint256"
+      },
+      {
+        "internalType": "enum VCGSignalSubscription.Status",
+        "name": "status",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "idData",
+        "type": "uint256"
+      }
+    ],
+    "name": "reject",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_stakeToken",
+        "type": "address"
+      }
+    ],
+    "name": "setStakeToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_subscriptions",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "setSubsciption",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_vestAmountSubcriptions",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "setvestAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stakeToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_subscription",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_txHash",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "discordUsername",
+        "type": "string"
+      }
+    ],
+    "name": "subscribe",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "subscriptions",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "vestAmountSubcriptions",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "idData",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
