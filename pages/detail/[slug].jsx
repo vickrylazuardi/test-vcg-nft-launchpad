@@ -34,7 +34,7 @@ export default function _slug() {
     backgroundImage: `url('/images/bg.png')`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    paddingTop: "7rem",
+    paddingTop: "9rem",
   };
   const settings = {
     dots: false,

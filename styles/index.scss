@@ -70,6 +70,9 @@
   background: #3f485f;
   cursor: not-allowed;
 }
+.btn-gray {
+  background: var(--gray-primary);
+}
 
 .item-gray {
   padding: 10px;
@@ -406,8 +409,42 @@ footer {
 
 @media (max-width: 940px) {
   .global-container {
-    padding-top: 5rem;
+    padding-top: 8rem;
   }
+  // Navbar
+  #navbar-container {
+    nav {
+      #top-navbar,
+      .left-navbar-container,
+      .right-nav-container {
+        display: none;
+      }
+      .bottom-nav-container {
+        background: #161b28;
+      }
+      .mid-nav-container {
+        padding: 0;
+        .input-wrapper {
+          img {
+            width: 16px;
+          }
+          input {
+            padding: 5px;
+            padding-left: 40px;
+            font-size: 12px;
+          }
+        }
+      }
+      .bottom-nav-mobile {
+        background: #161b28;
+        padding: 10px 16px;
+        button.active {
+          background: var(--orange-light);
+        }
+      }
+    }
+  }
+
   #home {
     &.global-container {
       padding-bottom: 0;
