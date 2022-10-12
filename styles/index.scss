@@ -199,6 +199,23 @@
     }
   }
 }
+
+// Footer
+footer {
+  padding: 50px 0;
+  background: #1f273b;
+  hr.my-3 {
+    border-top: 1px solid #2a334b;
+  }
+  .footer-top {
+    .link-wrapper {
+      min-width: 154px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
 // Home
 #home {
   #launchpad-header {
@@ -300,6 +317,7 @@
     }
   }
 }
+
 // Detail Page
 #detailPage {
   .content-header {
@@ -336,6 +354,7 @@
     }
   }
 }
+
 // Item Launchpad
 #item-launchpad {
   max-width: 224px;
