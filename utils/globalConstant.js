@@ -117,8 +117,10 @@ export const API = {
     fromLaunchpad: "/metadata/fromLaunchpad"
   },
   launchpad: {
-    domain: 'https://api.vcgamers.io/launchpad',
-    local: "http://localhost:4300/launchpad",
+    // api-launchpad.vcg.asia
+    // http://localhost:4300/launchpad
+    domain: 'https://api-launchpad.vcg.asia/launchpad',
+    local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
