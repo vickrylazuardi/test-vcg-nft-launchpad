@@ -9,8 +9,8 @@ import DashboardOwnedBox from "../../../components/Dashboard/DashboardOwnedBox";
 
 export default function index() {
 	return (
-		<div id="profile-launchpad" className="global-container">
-			<div className="container mx-auto">
+		<div id="profile-launchpad">
+			<div className="container mx-auto bundle-pl">
 				<div className="navigation-container flex items-center">
 					<Link href="/">
 						<a className="flex items-center">
@@ -26,8 +26,34 @@ export default function index() {
 					<DashboardOwnedBox/>
 				</div>
 			</div>
-			{/*<DialogBoxes/>*/}
-			{/*<DialogDetailImage/>*/}
+			<div className="owned-boxed-list">
+				<div className="owned-boxed-item p-3 mt-2">
+					<p className="font-bold">Project Name</p>
+					<div className="obi-list mt-2 py-2">
+						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
+						<div className="obi-list-detailed">
+							<p className="font-bold">Box Name</p>
+						</div>
+					</div>
+					<div className="obi-list mt-2 py-2">
+						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
+						<div className="obi-list-detailed">
+							<p className="font-bold">Box Name</p>
+						</div>
+					</div>
+				</div>
+				<div className="owned-boxed-item p-3 mt-2">
+					<p className="font-bold">Project Indonesia</p>
+					<div className="obi-list mt-2 py-2">
+						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
+						<div className="obi-list-detailed">
+							<p className="font-bold">Box Name</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/*// <DialogBoxes/>*/}
+			{/*// <DialogDetailImage/>*/}
 		</div>
 	)
 }
