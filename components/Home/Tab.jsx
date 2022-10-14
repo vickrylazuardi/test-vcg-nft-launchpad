@@ -45,6 +45,7 @@ export default function Tab(props) {
       <div className="tab-action-container flex items-center overflow-x-auto pb-2">
         {tab.map((item) => (
           <button
+            key={item}
             className={
               item.tab == activeTab
                 ? "btn mr-10 lg:text-xs lg:mr-3 active-tab"

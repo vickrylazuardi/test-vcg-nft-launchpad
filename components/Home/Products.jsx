@@ -56,6 +56,7 @@ export default function Products() {
               {products.map((item, idx) => {
                 return (
                   <div
+                    key={idx}
                     className={
                       idx + 1 != products.length
                         ? "product basis-1/5 mr-5"

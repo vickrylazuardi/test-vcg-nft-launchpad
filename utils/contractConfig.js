@@ -3,8 +3,7 @@ import vcgMpJson from "./artifacts/vcgMpJson.json";
 import marketplace from './artifacts/marketplace.json'
 import vcgEnableTokenJson from "./artifacts/vcgEnableTokenJson.json";
 import vcgSubscibeJson from "./artifacts/vcgSubscribe.json";
-import { testnetTokenAddress ,tokenAddress, azukiAddress } from "./globalConstant";
-import azukiJson from "./artifacts/azukiJson.json";
+import { testnetTokenAddress ,tokenAddress } from "./globalConstant";
 
 // helper object to access contracts periphery
 export const vcgNFT = {
@@ -42,11 +41,6 @@ export const vcgMpTestnet = {
 export const vcgEnableTokenTestnet={
   abi: vcgEnableTokenJson.abi,
   address: testnetTokenAddress.TOKEN_CURRENCY,
-}
-
-export const azuki = {
-  abi: azukiJson,
-  address: azukiAddress,
 }
 
 export const vcgNftStat={

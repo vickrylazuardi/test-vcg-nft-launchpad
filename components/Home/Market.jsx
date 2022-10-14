@@ -15,7 +15,7 @@ export default function Market() {
         </div>
         <div className="item-container overflow-x-auto flex justify-between">
           {arr.map((res) => (
-            <div className="item-market-brand cursor-pointer">
+            <div key={res} className="item-market-brand cursor-pointer">
               <div className="mask mask-hexagon relative brand-container">
                 <div
                   className="mask mask-hexagon brand-wrap grid place-items-center"
