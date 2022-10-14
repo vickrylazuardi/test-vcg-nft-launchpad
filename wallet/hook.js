@@ -19,6 +19,7 @@ export const MetaMaskProvider = ({ children }) => {
   const [shouldDisable, setShouldDisable] = useState(false); // Should disable connect button while connecting to MetaMask
   const [isLoading, setIsLoading] = useState(false);
   const [signer, setSigner] = useState(null);
+  const [signature, setSignature] = useState(null);
 
   const cookies = new Cookies();
 
@@ -68,6 +69,7 @@ export const MetaMaskProvider = ({ children }) => {
           axios
             .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
             .then((resp) => {
+              setSignature(res);
               setCookie(walletId, res, 1);
               setCookie(walletId + "-msg", messageTemplate, 1);
               setCookie(walletId + "-profile", resp.data.data, 1);
@@ -222,6 +224,7 @@ export const MetaMaskProvider = ({ children }) => {
       cookies.remove(account + "-profile");
       setIsSigned(false);
       switchActive(false);
+      setSignature(null);
     } catch (error) {
       console.log("Error on disconnnect: ", error);
     }
@@ -248,6 +251,7 @@ export const MetaMaskProvider = ({ children }) => {
       shouldDisable,
       connectContract,
       signer,
+      signature
     }),
     [
       isActive,
@@ -259,6 +263,7 @@ export const MetaMaskProvider = ({ children }) => {
       walletModal,
       library,
       signer,
+      signature
     ]
   );
 

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function ItemLaunchpad(props) {
   return (
@@ -100,12 +101,15 @@ export default function ItemLaunchpad(props) {
                 Buy
               </button>
             ) :
-            <button
-              className={"btn btn-purple-primary w-full"}
-              onClick={() => props.connect("metaMask")}
-            >
-              Connect Wallet
-            </button>
+            <Link href="/connect-wallet">
+              <a>
+                <button
+                  className={"btn btn-purple-primary w-full"}
+                >
+                  Connect Wallet
+                </button>
+              </a>
+            </Link>
           }
         </div>
       </div>

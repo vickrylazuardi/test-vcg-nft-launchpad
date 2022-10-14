@@ -65,53 +65,10 @@ export default function _slug() {
   const [balance, setBalance] = useState(null);
   const [amount, setAmount] = useState({});
   const [ownedBox, setOwnedBox] = useState({});
-  const { account, signer, connect, disconnect, switchActive, connectContract } = useMetaMask();
+  const { account, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
   const data = router.query;
-
-  const connectWallet = async (providerType) => {
-    // console.log(providerType);
-    if (providerType === 'metaMask') {
-      // if (isMobile) {
-      //   toast.error('Please install metaMask', {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //   });
-      //   return;
-      // }
-      connect('metaMask', '0X4');
-    } else if (providerType === 'trustWallet') {
-      if (isBrowser) {
-        toast.error('not detect dapp browser', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-      connect('trustWallet', '0X4');
-    } else if (providerType === 'safePal') {
-      if (isBrowser) {
-        toast.error('not detect dapp browser', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-
-      connect('safePal', '0X4');
-    } else {
-      if (isMobile || !window.BinanceChain) {
-        toast.error('Please install Safepal wallet', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-      connect('walletConnect');
-    }
-  };
-
-  const handleDisconnect = () => {
-    switchActive(false);
-    disconnect();
-  };
 
   const getTokenBalance = async () => {
     try {
@@ -534,7 +491,6 @@ export default function _slug() {
                         claim={claimBox}
                         buy={checkAllowance}
                         finalize={finalizeBox}
-                        connect={connectWallet}
                       />
                     </div>
                   )

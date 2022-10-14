@@ -1,7 +1,4 @@
 import React from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { isMobile, isBrowser } from 'react-device-detect';
 import useMetaMask from "../wallet/hook";
 import LoadingVcg from "../components/Common/loadingVcg";
 import LeftNavbar from "./LeftNavbar";
@@ -11,46 +8,7 @@ import TopNavbar from "./TopNavbar";
 import BottomNavMobile from "./BottomNavMobile";
 
 export default function Navbar() {
-  const { account, connect, disconnect, switchActive } = useMetaMask();
-
-  const connectWallet = async (providerType) => {
-    // console.log(providerType);
-    if (providerType === 'metaMask') {
-      // if (isMobile) {
-      //   toast.error('Please install metaMask', {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //   });
-      //   return;
-      // }
-      if (window.ethereum) connect('metaMask', '0X4');
-      else alert("You don't have or Nonactivated Metamask Wallet Extension");
-    } else if (providerType === 'trustWallet') {
-      if (isBrowser) {
-        toast.error('not detect dapp browser', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-      connect('trustWallet', '0X4');
-    } else if (providerType === 'safePal') {
-      if (isBrowser) {
-        toast.error('not detect dapp browser', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-
-      connect('safePal', '0X4');
-    } else {
-      if (isMobile || !window.BinanceChain) {
-        toast.error('Please install Safepal wallet', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
-      connect('walletConnect');
-    }
-  };
+  const { account, disconnect, switchActive } = useMetaMask();
 
   const handleDisconnect = () => {
     switchActive(false);
@@ -67,7 +25,6 @@ export default function Navbar() {
             <MidNavbar />
             <RightNavbar 
               account={account}
-              connect={connectWallet}
               disconnect={handleDisconnect}
             />
           </div>

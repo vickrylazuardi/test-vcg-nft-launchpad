@@ -73,12 +73,16 @@ export default function RightNavbar(props) {
             </p>
             <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
           </div> :
-          <button 
-            className="btn-connect-wallet py-1 px-3 rounded-md"
-            onClick={() => props.connect("metaMask")}
-          >
-            Connect Wallet
-          </button>
+          <Link href="/connect-wallet">
+            <a>
+              <button 
+                className="btn-connect-wallet py-3.5 px-7 rounded-md ml-4"
+                // onClick={() => props.connect("metaMask")}
+              >
+                Connect Wallet
+              </button>
+            </a>
+          </Link>
         }
       </div>
     </div>
