@@ -5,7 +5,7 @@ export default function DashboardOwnedBoxItem() {
 	return (
 		<div id="owned-boxes-list" className="grid grid-cols-5 gap-4">
 			{value.map((item, index) => (
-				<div className="owned-boxes-item rounded-lg">
+				<div key={index} className="owned-boxes-item rounded-lg">
 					<div className="owned-boxes-item-head">
 						<img src="https://placeimg.com/160/160/arch" className="rounded-t-lg" alt=""/>
 					</div>

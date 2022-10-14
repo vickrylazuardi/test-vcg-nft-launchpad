@@ -5,7 +5,7 @@ export default function DashboardHistoryTransactionItem() {
 	return (
 		<div id="history-tr-list" className="p-3">
 			{value.map((item, index) => (
-				<div className="history-tr-item py-2">
+				<div key={index} className="history-tr-item py-2">
 					<div className="hti-count">{index + 1}</div>
 					<div className="hti-box">
 						<img src="https://placeimg.com/160/160/arch" alt=""/>

@@ -13,7 +13,7 @@ export default function DashboardProjectItem() {
 	return (
 		<tbody>
 		{items.map((item, index) => (
-			<tr>
+			<tr key={index}>
 				<td className="text-center">1</td>
 				<td className="project-name">
 					<img src="https://placeimg.com/160/160/arch" alt=""/>

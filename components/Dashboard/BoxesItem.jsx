@@ -14,7 +14,7 @@ export default function BoxesItem() {
 	return (
 		<tbody>
 		{items.map((item, index) => (
-			<tr>
+			<tr key={index}>
 				<td className="text-center">{index + 1}</td>
 				<td className="dialog-boxes-image">
 					<img src="https://placeimg.com/160/160/arch" alt=""/>
@@ -25,7 +25,7 @@ export default function BoxesItem() {
 				<td className="text-center">Price 300, Stock 10</td>
 				<td className="text-center">
 					{boxItem.map((value,i)=>(
-						<span className="boxes-item-list">{value + ", "}</span>
+						<span key={i} className="boxes-item-list">{value + ", "}</span>
 					))}
 				</td>
 			</tr>
