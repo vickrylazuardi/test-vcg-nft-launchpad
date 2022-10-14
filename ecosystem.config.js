@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'VCG-DEV-v3',
+      name: 'NFT Launchpad',
       exec_mode: 'cluster',
       instances: 1, // max Or a number of instances
       script: './node_modules/.bin/next',
