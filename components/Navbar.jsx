@@ -22,7 +22,8 @@ export default function Navbar() {
       //   });
       //   return;
       // }
-      connect('metaMask', '0X4');
+      if (window.ethereum) connect('metaMask', '0X4');
+      else alert("You don't have or Nonactivated Metamask Wallet Extension");
     } else if (providerType === 'trustWallet') {
       if (isBrowser) {
         toast.error('not detect dapp browser', {
@@ -64,7 +65,11 @@ export default function Navbar() {
           <div className="container-wrapper  flex items-center justify-between">
             <LeftNavbar />
             <MidNavbar />
-            <RightNavbar />
+            <RightNavbar 
+              account={account}
+              connect={connectWallet}
+              disconnect={handleDisconnect}
+            />
           </div>
         </div>
         <div className="bottom-action-container hidden lg:block">

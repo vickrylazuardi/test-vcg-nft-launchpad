@@ -607,62 +607,6 @@ export default function _slug() {
                       >
                         {value.position}
                       </p>
-                      <div className="social flex justify-center gap-5 mt-3">
-                        {
-                          value?.socialMedia?.linkedin ?
-                          <a 
-                            href={
-                              value?.socialMedia?.linkedin.substr(0,8) == "https://" ?
-                              value?.socialMedia?.linkedin :
-                              `https://${value?.socialMedia?.linkedin}`
-                            } 
-                            rel="nofollow" 
-                            target="_blank"
-                          >
-                            <img
-                              src="/images/svg/icon-linkedin.svg"
-                              alt="web vcgamers"
-                              className="cursor-pointer"
-                            />
-                          </a> : ""
-                        }
-                        {
-                          value?.socialMedia?.telegram ?
-                          <a 
-                            href={
-                              value?.socialMedia?.telegram.substr(0,8) == "https://" ?
-                              value?.socialMedia?.telegram :
-                              `https://${value?.socialMedia?.telegram}`
-                            } 
-                            rel="nofollow" 
-                            target="_blank"
-                          >
-                            <img
-                              src="/images/svg/icon-gray-tele.svg"
-                              alt="web vcgamers"
-                              className="cursor-pointer"
-                            />
-                          </a> : ""
-                        }
-                        {
-                          value?.socialMedia?.discord ?
-                          <a 
-                            href={
-                              value?.socialMedia?.discord.substr(0,8) == "https://" ?
-                              value?.socialMedia?.discord :
-                              `https://${value?.socialMedia?.discord}`
-                            } 
-                            rel="nofollow" 
-                            target="_blank"
-                          >
-                            <img
-                              src="/images/svg/icon-gray-discord.svg"
-                              alt="web vcgamers"
-                              className="cursor-pointer"
-                            />
-                          </a> : ""
-                        }
-                      </div>
                     </div>
                   )
                 }) : ""
