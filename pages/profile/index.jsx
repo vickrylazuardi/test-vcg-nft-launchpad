@@ -17,6 +17,7 @@ export default function _slug() {
 	const marginMobile = {
 		marginTop: "-90px",
 	};
+	
 	return (
 		<div id="profile-launchpad" className="global-container">
 			<div className="container mx-auto">
