@@ -64,9 +64,9 @@ export default function LeftNavbar() {
                 onMouseLeave={() => handleLeave("sub-sub-menu-1")}
               >
                 <div className="sub-sub-menu">
-                  <a href="/">Pancake Swap</a>
-                  <a href="/">Uniswap</a>
-                  <a href="/">Indodax</a>
+                  <a href="https://vcgamers.com/news/cara-membeli-vcg-token-di-pancakeswap/" target="_blank" rel="follow" title="tutorial pancake swap">Pancake Swap</a>
+                  <a href="https://vcgamers.com/news/cara-membeli-vcg-token-di-uniswap/" target="_blank" rel="follow" title="tutorial uniswap">Uniswap</a>
+                  <a href="https://vcgamers.com/news/cara-membeli-vcg-token-di-indodax/" target="_blank" rel="follow" title="tutorial indodax">Indodax</a>
                 </div>
               </div>
             </div>
@@ -81,9 +81,9 @@ export default function LeftNavbar() {
             <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
             <div className="absolute sub-menu-container sub-menu-2">
               <div className="sub-menu">
-                <a href="/">Staking</a>
-                <a href="/">Ransverse</a>
-                <a href="/">NFT Marketplace</a>
+                <a href="https://token.vcgamers.com/staking" target="_blank" rel="follow">Staking</a>
+                <a href="https://ransverse.vcgamers.com" target="_blank" rel="follow">Ransverse</a>
+                <a href="#">NFT Marketplace</a>
                 <a href="/">NFT Launchpad</a>
               </div>
             </div>
@@ -91,7 +91,7 @@ export default function LeftNavbar() {
         </li>
         <li>
           <div className="flex items-center">
-            <p className="text-link semibold">Chart</p>
+            <a className="https://www.dextools.io/app/bsc/pair-explorer/0xae3691adfec53fe142ae0595f91811b1113d886f" target="_blank" rel="nofolow"><p className="text-link semibold">Chart</p></a>
           </div>
         </li>
         <li
@@ -103,9 +103,9 @@ export default function LeftNavbar() {
             <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
             <div className="absolute sub-menu-container sub-menu-3">
               <div className="sub-menu">
-                <a href="/">Tokenomic</a>
-                <a href="/">Whitepaper</a>
-                <a href="/">Audit</a>
+                <a href="https://vcgamers.com/token#tokenomics" target="_blank" rel="follow">Tokenomic</a>
+                <a href="https://whitepaper.vcgamers.com/" target="_blank" rel="follow">Whitepaper</a>
+                <a href="https://vcgamers.com/token#token-investors" target="_blank" rel="follow">Audit</a>
               </div>
             </div>
           </div>
