@@ -16,24 +16,24 @@ export default function RightNavbar() {
       </div>
       <div className="profile-store flex items-center">
         <div className="store flex items-center cursor-pointer">
-          <div class="mask mask-hexagon relative avatar-container cursor-pointer">
-            <div class="mask mask-hexagon avatar-wrap grid place-items-center">
+          <div className="mask mask-hexagon relative avatar-container cursor-pointer">
+            <div className="mask mask-hexagon avatar-wrap grid place-items-center">
               <img
                 src="/images/item1.png"
                 alt="product market"
-                class="mask mask-hexagon"
+                className="mask mask-hexagon"
               />
             </div>
           </div>
           <p className="font-semibold text-sm ml-1">Toko</p>
         </div>
         <div className="profile flex items-center cursor-pointer ml-4">
-          <div class="mask mask-hexagon relative avatar-container cursor-pointer">
-            <div class="mask mask-hexagon avatar-wrap grid place-items-center">
+          <div className="mask mask-hexagon relative avatar-container cursor-pointer">
+            <div className="mask mask-hexagon avatar-wrap grid place-items-center">
               <img
                 src="/images/item1.png"
                 alt="product market"
-                class="mask mask-hexagon"
+                className="mask mask-hexagon"
               />
             </div>
           </div>
