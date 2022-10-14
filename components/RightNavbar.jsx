@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function RightNavbar() {
+  function redirectWallet(){
+    window.location.assign("/connect-wallet");
+  }
   return (
     <div className="right-nav-container flex items-center">
       <div className="market-container flex items-center pr-5">
@@ -15,29 +18,30 @@ export default function RightNavbar() {
         </div>
       </div>
       <div className="profile-store flex items-center">
-        <div className="store flex items-center cursor-pointer">
-          <div className="mask mask-hexagon relative avatar-container cursor-pointer">
-            <div className="mask mask-hexagon avatar-wrap grid place-items-center">
-              <img
-                src="/images/item1.png"
-                alt="product market"
-                className="mask mask-hexagon"
-              />
-            </div>
-          </div>
-          <p className="font-semibold text-sm ml-1">Toko</p>
-        </div>
+        {/*<div className="store flex items-center cursor-pointer">*/}
+        {/*  <div className="mask mask-hexagon relative avatar-container cursor-pointer">*/}
+        {/*    <div className="mask mask-hexagon avatar-wrap grid place-items-center">*/}
+        {/*      <img*/}
+        {/*        src="/images/item1.png"*/}
+        {/*        alt="product market"*/}
+        {/*        className="mask mask-hexagon"*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*  <p className="font-semibold text-sm ml-1">Toko</p>*/}
+        {/*</div>*/}
         <div className="profile flex items-center cursor-pointer ml-4">
-          <div className="mask mask-hexagon relative avatar-container cursor-pointer">
-            <div className="mask mask-hexagon avatar-wrap grid place-items-center">
-              <img
-                src="/images/item1.png"
-                alt="product market"
-                className="mask mask-hexagon"
-              />
-            </div>
-          </div>
-          <p className="font-semibold text-sm ml-1">John Doe</p>
+          <button onClick={redirectWallet} className="btn-connect-wallet py-1 px-3 rounded-md">Connect Wallet</button>
+          {/*<div className="mask mask-hexagon relative avatar-container cursor-pointer">*/}
+          {/*  <div className="mask mask-hexagon avatar-wrap grid place-items-center">*/}
+          {/*    <img*/}
+          {/*      src="/images/item1.png"*/}
+          {/*      alt="product market"*/}
+          {/*      className="mask mask-hexagon"*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+          {/*<p className="font-semibold text-sm ml-1">John Doe</p>*/}
         </div>
       </div>
     </div>

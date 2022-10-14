@@ -630,9 +630,56 @@ footer {
 }
 
 // Start Profile Launchpad
-#profile-launchpad {
-    padding-top: 9rem;
+@media screen and (min-width: 768px) {
+    #profile-launchpad {
+        padding-top: 9rem;
+        padding-bottom: 5rem;
 
+        .owned-boxed-list {
+            display: none !important;
+        }
+
+        .bundle-pl {
+            display: block !important;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #profile-launchpad {
+
+        .bundle-pl {
+            display: none !important;
+        }
+    }
+
+    .owned-boxed-list {
+        padding-top: 85px;
+        padding-bottom: 85px;
+        width: 100%;
+
+        .owned-boxed-item {
+            font-size: 12px;
+            width: 100%;
+            background-color: #1D2333;
+
+            .obi-list {
+                border-bottom: 1px solid #2A334B;
+                display: flex;
+                align-items: center;
+
+                img {
+                    height: 50px;
+                    width: 50px;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (min-width: 768px) {
     #profile-launchpad-header {
         height: 300px;
         background-color: #1D2333;
@@ -666,6 +713,51 @@ footer {
                 width: 70%;
                 align-items: center;
                 justify-content: right;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #profile-launchpad-header {
+        height: 230px;
+        background-color: #1D2333;
+
+        .profile-header-banner {
+            height: 40%;
+
+            img {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .profile-body-banner {
+            height: 60%;
+
+            .profile-body-banner-left {
+                width: 100%;
+                height: max-content;
+
+                .mask-hexagon-different {
+                    background-color: #1D2333;
+                    height: 70px;
+                    width: 70px;
+                }
+
+                @media screen and (min-width: 768px) {
+                    .mask-hexagon-different {
+                        background-color: #1D2333;
+                        height: 120px;
+                        width: 120px;
+                    }
+                }
+            }
+
+            .btn-grp {
+                .btn-edit-profile {
+                    background-color: #7655EE;
+                }
             }
         }
     }
@@ -748,7 +840,7 @@ footer {
                 color: #E28058;
             }
 
-            li.active{
+            li.active {
                 color: #E28058;
             }
         }
@@ -1142,12 +1234,12 @@ footer {
         width: 300px;
         background-color: #2A334B;
 
-        .pagination-content-item{
+        .pagination-content-item {
             display: flex;
             justify-content: center;
             align-items: center;
 
-            .pagination-content-number{
+            .pagination-content-number {
                 cursor: pointer;
                 height: 50px;
                 width: 50px;
@@ -1156,7 +1248,7 @@ footer {
                 align-items: center;
                 color: white;
 
-                span{
+                span {
                     font-weight: 700;
                     font-size: 15px;
                     width: 100%;
@@ -1167,15 +1259,196 @@ footer {
                 }
             }
 
-            .pagination-content-number:hover, .pagination-content-number.active{
+            .pagination-content-number:hover, .pagination-content-number.active {
                 border-bottom: 2px solid #4FF461;
             }
 
-            img{
+            img {
                 cursor: pointer;
             }
         }
     }
+}
+
+.sub-menu-mobile {
+    background-color: #1D2333;
+
+    ul {
+        li {
+            border-bottom: 1px solid #2A334B;
+            display: flex;
+            font-size: 14px;
+            font-weight: 600;
+
+            .soon {
+                background-color: #F46230;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+#project-section-launchpad {
+    padding-top: 0;
+    height: 100%;
+    margin-top: 100px;
+
+    .project-item {
+        width: 100%;
+        background-color: #1D2333;
+
+        .project-item-head {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #9AA4BF;
+
+            img {
+                height: 60px;
+                width: 60px;
+                object-fit: cover;
+            }
+
+            .pih-title {
+                font-size: 12px;
+                font-weight: 700;
+                color: white;
+            }
+
+            .pih-boxes {
+                font-size: 12px;
+                font-weight: 700;
+                color: #40D04F;
+            }
+
+            .pih-time {
+                font-size: 12px;
+                font-weight: 600;
+                color: #9AA4BF;
+            }
+        }
+
+        .project-item-body {
+
+            .pih-status {
+                text-align: center;
+                color: #9AA4BF;
+                font-size: 12px;
+                font-weight: 600;
+
+                .vcg-amount {
+                    color: #FFDE00;
+                }
+            }
+
+            .btn-project-item {
+                font-size: 12px;
+                font-weight: 700;
+
+                button.active {
+                    background-color: #E28058 !important;
+                    color: white;
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.bottom-nav-mobile-profile {
+    background-color: #161b28;
+
+    .bnm-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #9AA4BF;
+    }
+
+    .bnm-item.active {
+        color: #E28058;
+        border-bottom: 2px solid #F46230;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #connect-wallet-page {
+        height: 100%;
+        width: 100%;
+        background-color: #151B27;
+        padding-top: 60px;
+
+        .cwp-web {
+            display: none;
+        }
+
+        .connect-wallet-item {
+            height: 150px;
+            background-color: #2A334B;
+            font-size: 14px;
+
+            img {
+                height: 50px;
+                width: 50px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #connect-wallet-page {
+        position: absolute;
+        z-index: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #151B27;
+        //padding-top: 60px;
+
+        .cwp-mobile {
+            display: none;
+        }
+
+        .cwp-web {
+            display: flex;
+
+            .connect-wallet-background{
+                width: 300px;
+
+                img{
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .cwpi-title{
+                font-size: 30px;
+            }
+        }
+
+        .connect-wallet-item {
+            height: 150px;
+            font-size: 16px;
+            cursor: pointer;
+
+            img {
+                height: 62px;
+                width: 62px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.btn-connect-wallet{
+    background-color: white;
+    outline: none;
+    color: #7750F7;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .testingBorder {
