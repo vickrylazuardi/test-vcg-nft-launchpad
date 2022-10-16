@@ -990,11 +990,12 @@ footer {
     .dialog-boxes {
         background-color: #1D2333;
         height: 500px;
-        overflow-x: hidden;
-        overflow-y: scroll;
         width: 80%;
+        overflow: hidden;
+        //overflow-y: scroll;
 
         .dialog-boxes-head {
+            height: 50px;
             display: flex;
             align-items: center;
 
@@ -1012,9 +1013,12 @@ footer {
         }
 
         .dialog-boxes-body {
+            height: 450px;
             font-size: 14px;
             font-weight: 600;
             color: #858fa9;
+            overflow-x: hidden;
+            overflow-y: scroll;
 
             thead {
                 tr {
@@ -1049,14 +1053,14 @@ footer {
                 cursor: pointer;
             }
         }
-    }
 
-    .dialog-boxes::-webkit-scrollbar {
-        width: 3px;
-    }
+        .dialog-boxes-body::-webkit-scrollbar {
+            width: 3px;
+        }
 
-    .dialog-boxes::-webkit-scrollbar-thumb {
-        background-color: #7750f8;
+        .dialog-boxes-body::-webkit-scrollbar-thumb {
+            background-color: #7750f8;
+        }
     }
 }
 
@@ -1107,7 +1111,7 @@ footer {
                 color: white;
             }
 
-            img {
+            .dib-img {
                 height: 450px;
                 width: 500px;
             }
@@ -1119,6 +1123,79 @@ footer {
     }
 
     .dialog-boxes::-webkit-scrollbar-thumb {
+        background-color: #7750f8;
+    }
+
+}
+
+// Start Dialog Confirmation
+#dialog-confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dialog-confirmation {
+        background-color: #1D2333;
+        padding: 15px;
+
+        .dialog-confirmation-head {
+            display: flex;
+            align-items: center;
+
+            .dbh-left {
+                width: 50%;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .dbh-right {
+                display: flex;
+                justify-content: right;
+                width: 50%;
+            }
+        }
+
+        .dialog-confirmation-body {
+            font-size: 14px;
+            font-weight: 600;
+            color: #858fa9;
+
+            .dib-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+            }
+
+            .dib-success-word {
+                font-size: 18px;
+                font-weight: 700;
+                color: white;
+            }
+
+            .dc-img {
+                object-fit: contain;
+                height: 120px;
+                width: 400px;
+            }
+
+            button{
+                color: white;
+            }
+        }
+    }
+
+    .dialog-confirmation::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .dialog-confirmation::-webkit-scrollbar-thumb {
         background-color: #7750f8;
     }
 
@@ -1414,17 +1491,17 @@ footer {
         .cwp-web {
             display: flex;
 
-            .connect-wallet-background{
+            .connect-wallet-background {
                 width: 300px;
 
-                img{
+                img {
                     height: 100%;
                     width: 100%;
                     object-fit: cover;
                 }
             }
 
-            .cwpi-title{
+            .cwpi-title {
                 font-size: 30px;
             }
         }
@@ -1443,7 +1520,7 @@ footer {
     }
 }
 
-.btn-connect-wallet{
+.btn-connect-wallet {
     background-color: white;
     outline: none;
     color: #7750F7;
