@@ -40,6 +40,7 @@ import DashboardSideMenu from "../../../components/Dashboard/DashboardSideMenu";
 import DashboardProjects from "../../../components/Dashboard/DashboardProjects";
 import DialogDetailImage from "../../../components/Common/DialogDetailImage";
 import DashboardOwnedBox from "../../../components/Dashboard/DashboardOwnedBox";
+import DashboardHistoryTransaction from "../../../components/Dashboard/DashboardHistoryTransaction";
 
 export default function index() {
 	return (
@@ -57,7 +58,7 @@ export default function index() {
 				<NavigationDashboard/>
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
-					<DashboardOwnedBox/>
+					<DashboardHistoryTransaction/>
 				</div>
 			</div>
 			<div className="owned-boxed-list">

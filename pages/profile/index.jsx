@@ -8,7 +8,7 @@ import DashboardProjects from "../../components/Dashboard/DashboardProjects";
 import DialogDetailImage from "../../components/Common/DialogDetailImage";
 import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile";
 
-export default function _slug() {
+export default function index() {
 	const marginMobile = {
 		marginTop: "-90px",
 	};
