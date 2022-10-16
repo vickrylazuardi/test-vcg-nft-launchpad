@@ -1,8 +1,14 @@
-import React, {useState} from "react";
 import DashboardProjectItem from "./DashboardProjectItem";
 import Pagination from "../Common/Pagination";
+import DialogBoxes from "../Common/DialogBoxes";
+import DialogDetailImage from "../Common/DialogDetailImage";
+import DialogConfirmation from "../Common/DialogConfirmation";
+import {useSelector} from "react-redux";
 
 export default function DashboardSideMenu() {
+	//functional
+	const modal = useSelector((state) => state.modal);
+	//styling
 	const textStyling = {
 		fontSize: "14px",
 		color: "#9AA4BF"
@@ -46,6 +52,9 @@ export default function DashboardSideMenu() {
 				</table>
 			</div>
 			<Pagination/>
+			{modal.modalBoxes.isOpen && <DialogBoxes/>}
+			{modal.modalImages.isOpen && <DialogDetailImage/>}
+			{modal.modalConfirmation.isOpen && <DialogConfirmation/>}
 		</div>
 	);
 }

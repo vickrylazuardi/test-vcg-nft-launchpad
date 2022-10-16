@@ -8,16 +8,11 @@ import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 import DashboardProjects from "../../components/Dashboard/DashboardProjects";
 import DialogDetailImage from "../../components/Common/DialogDetailImage";
 import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile";
-import DashboardOwnedBox from "../../components/Dashboard/DashboardOwnedBox";
 
-export default function _slug() {
-	const router = useRouter();
-	const tab = router.query.tab;
-
+export default function index() {
 	const marginMobile = {
 		marginTop: "-90px",
 	};
-	
 	return (
 		<div id="profile-launchpad" className="global-container">
 			<div className="container mx-auto">
@@ -31,20 +26,12 @@ export default function _slug() {
 						<p className="ml-3 text-sm font-bold">My Profile</p>
 					</div>
 				)}
-				{/* {isDesktop && (<ProfileHeader/>)}
-				{isDesktop && (<NavigationDashboard/>)} */}
+				{isDesktop && (<ProfileHeader/>)}
+				{isDesktop && (<NavigationDashboard/>)}
 				{isDesktop && (
 					<div className="container-wrapper grid grid-cols-5 gap-4">
-						<DashboardSideMenu tab={tab} />
-						{
-							tab == "project" ?
-							<DashboardProjects/> :
-							tab == "boxes" ?
-							<DashboardOwnedBox/> :
-							tab == "history" ?
-							<DashboardOwnedBox/> :
-							<DashboardProjects/>
-						}
+						<DashboardSideMenu/>
+						<DashboardProjects/>
 					</div>
 				)}
 			</div>
