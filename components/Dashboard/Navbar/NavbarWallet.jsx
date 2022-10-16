@@ -1,8 +1,6 @@
 import Link from "next/link";
-import {useRouter} from "next/router";
 
 export default function NavbarWallet() {
-	const router = useRouter();
 	const bgColor = {
 		backgroundColor: "#1D2333",
 	};

@@ -33,7 +33,7 @@ export default function LeftNavbarDashboard() {
 			</div>
 			<ul className="flex items-center ml-7">
 				<li>
-					<Link href="/" className="text-link semibold flex">
+					<Link href="/pages" className="text-link semibold flex">
 						Home
 					</Link>
 				</li>
@@ -64,9 +64,9 @@ export default function LeftNavbarDashboard() {
 								onMouseLeave={() => handleLeave("sub-sub-menu-1")}
 							>
 								<div className="sub-sub-menu">
-									<Link href="/">Pancake Swap</Link>
-									<Link href="/">Uniswap</Link>
-									<Link href="/">Indodax</Link>
+									<Link href="/pages">Pancake Swap</Link>
+									<Link href="/pages">Uniswap</Link>
+									<Link href="/pages">Indodax</Link>
 								</div>
 							</div>
 						</div>
@@ -81,10 +81,10 @@ export default function LeftNavbarDashboard() {
 						<img src="/images/svg/arrow-down.svg" alt="" className="ml-1"/>
 						<div className="absolute sub-menu-container sub-menu-2">
 							<div className="sub-menu">
-								<Link href="/">Staking</Link>
-								<Link href="/">Ransverse</Link>
-								<Link href="/">NFT Marketplace</Link>
-								<Link href="/">NFT Launchpad</Link>
+								<Link href="/pages">Staking</Link>
+								<Link href="/pages">Ransverse</Link>
+								<Link href="/pages">NFT Marketplace</Link>
+								<Link href="/pages">NFT Launchpad</Link>
 							</div>
 						</div>
 					</div>
@@ -103,9 +103,9 @@ export default function LeftNavbarDashboard() {
 						<img src="/images/svg/arrow-down.svg" alt="" className="ml-1"/>
 						<div className="absolute sub-menu-container sub-menu-3">
 							<div className="sub-menu">
-								<Link href="/">Tokenomic</Link>
-								<Link href="/">Whitepaper</Link>
-								<Link href="/">Audit</Link>
+								<Link href="/pages">Tokenomic</Link>
+								<Link href="/pages">Whitepaper</Link>
+								<Link href="/pages">Audit</Link>
 							</div>
 						</div>
 					</div>

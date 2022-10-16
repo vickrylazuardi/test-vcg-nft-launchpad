@@ -3,7 +3,7 @@ import Pagination from "../Common/Pagination";
 import DialogBoxes from "../Common/DialogBoxes";
 import DialogDetailImage from "../Common/DialogDetailImage";
 import DialogConfirmation from "../Common/DialogConfirmation";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 export default function DashboardSideMenu() {
 	//functional

@@ -683,6 +683,10 @@ footer {
                 display: flex;
                 align-items: center;
 
+                .obi-list-detailed {
+                    width: 40%;
+                }
+
                 img {
                     height: 50px;
                     width: 50px;
@@ -714,7 +718,6 @@ footer {
 
             .profile-body-banner-left {
                 width: 30%;
-                //width: max-content;
 
                 .mask-hexagon-different {
                     background-color: #1D2333;
@@ -841,12 +844,10 @@ footer {
 
 // Start Dashboard Project Launchpad
 #dashboard-projects {
-    //height: 200px;
     background-color: #1D2333;
 
     .dashboard-projects-header {
         border-bottom: 2px solid #2A334B;
-        //height: 60px;
 
         .dph-left {
             display: flex;
@@ -981,7 +982,6 @@ footer {
         height: 500px;
         width: 80%;
         overflow: hidden;
-        //overflow-y: scroll;
 
         .dialog-boxes-head {
             height: 50px;
@@ -1069,8 +1069,6 @@ footer {
     .dialog-images {
         background-color: #1D2333;
         padding: 15px;
-        //height: 550px;
-        //width: 550px;
 
         .dialog-images-head {
             display: flex;
@@ -1168,7 +1166,7 @@ footer {
                 width: 150px;
             }
 
-            .dih-detailed-transaction{
+            .dih-detailed-transaction {
                 font-weight: 600;
                 font-size: 14px;
                 border-bottom: 1px solid #2a334b;
@@ -1227,14 +1225,13 @@ footer {
             color: #858fa9;
 
 
-
-            .container-motion-ul{
+            .container-motion-ul {
                 width: 100%;
                 overflow-y: scroll;
                 overflow-x: hidden;
                 height: 500px;
 
-                .dcb-item{
+                .dcb-item {
                     height: max-content;
                     width: max-content;
                 }
@@ -1486,6 +1483,87 @@ footer {
     height: 100%;
     margin-top: 100px;
 
+    .psl-detail-page-mobile {
+        background-color: #1D2333;
+        display: flex;
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .psl-detailed {
+            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    }
+
+    .htr-detail-page-mobile {
+        background-color: #1D2333;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #9AA4BF;
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .htr-box-name{
+            font-size: 14px;
+        }
+
+    }
+
+    .obi-detail-page-refund {
+        background-color: #1D2333;
+        display: flex;
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .psl-detailed {
+            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    }
+
+    .obi-detail-page-claim {
+        background-color: #1D2333;
+        display: flex;
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .psl-detailed {
+            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+    }
+
+    .psl-page-mobile {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 100%;
+        }
+    }
+
     .project-item {
         width: 100%;
         background-color: #1D2333;
@@ -1598,7 +1676,6 @@ footer {
         height: 100%;
         width: 100%;
         background-color: #151B27;
-        //padding-top: 60px;
 
         .cwp-mobile {
             display: none;
@@ -1636,10 +1713,229 @@ footer {
     }
 }
 
+.dashboard-navbar-mobile {
+    position: sticky;
+    background-color: #1D2333;
+    top: 0;
+    left: 0;
+    z-index: 51;
+    height: 40px;
+}
+
+.dashboard-navbar-mobile-launchpad {
+    position: sticky;
+    background-color: #1D2333;
+    top: 0;
+    left: 0;
+    z-index: 51;
+    height: max-content;
+    border-bottom: 1px solid #2A334B;
+
+    .dnml-top {
+        height: 40px;
+    }
+
+    .dnml-bottom {
+        width: 100%;
+        height: 40px;
+        display: flex;
+
+        .dnml-bottom-tab {
+            width: 33.33333333333333%;
+            height: 100%;
+            color: #9AA4BF;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &.active {
+                color: #E28058;
+                border-bottom: 1px solid #E28058;
+            }
+        }
+    }
+}
+
+#dialog-slider-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    @media screen and (max-height: 1500px) {
+        .dialog-slider-mobile {
+            height: 30vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-height: 950px) {
+        .dialog-slider-mobile {
+            height: 40vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-height: 800px) {
+        .dialog-slider-mobile {
+            height: 40vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-height: 700px) {
+        .dialog-slider-mobile {
+            height: 45vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-height: 610px) {
+        .dialog-slider-mobile {
+            height: 50vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+    @media screen and (max-height: 550px) {
+        .dialog-slider-mobile {
+            height: 55vh;
+            width: 100%;
+            background-color: #1D2333;
+            position: absolute;
+            bottom: 0;
+
+            .dialog-slider-mobile-header {
+                font-size: 16px;
+                font-weight: 700;
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+
+            .dialog-slider-mobile-body {
+                font-size: 14px;
+                font-weight: 600;
+                color: #9AA4BF;
+                text-align: center;
+            }
+        }
+    }
+
+}
+
 .btn-connect-wallet {
     background-color: white;
     outline: none;
     color: #7750F7;
     font-size: 12px;
     font-weight: 700;
+}
+
+.btn-floating-mobile {
+    position: fixed;
+    z-index: 99;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1D2333;
+}
+
+.testingBorder {
+    border: 1px solid yellow;
 }

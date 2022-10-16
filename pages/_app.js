@@ -11,7 +11,7 @@ import "../styles/globals.scss";
 import "../styles/index.scss";
 
 function MyApp({Component, pageProps, router}) {
-	if (router.pathname.startsWith("/profile/")) {
+	if (router.pathname.startsWith("/profile")) {
 		return (
 			<Provider store={store}>
 				<LayoutDashboard>

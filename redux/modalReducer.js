@@ -6,6 +6,7 @@ const initialState = {
 		isOpen: false,
 		isPlain: false,
 		isSuccess: false,
+		claimableMobile: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -70,6 +71,9 @@ const modalSlice = createSlice({
 		},
 		toggleModalConfirmation: (state, val) => {
 			if (val.payload) {
+				if (val.payload.claimableMobile) {
+					state.modalConfirmation.claimableMobile = val.payload.claimableMobile;
+				}
 				state.modalConfirmation.loading = val.payload.loading;
 				state.modalConfirmation.isOpen = val.payload.isOpen;
 				state.modalConfirmation.isPlain = val.payload.isPlain;
@@ -102,6 +106,6 @@ export const {
 	toggleModalImages,
 	toggleModalConfirmation,
 	toggleModalTransaction,
-	toggleModalClaimable
+	toggleModalClaimable,
 } = modalSlice.actions;
 export default modalSlice.reducer;
