@@ -1,4 +1,4 @@
-import NavbarWallet from "../NavbarWallet";
+import NavbarWallet from "../Dashboard/Navbar/NavbarWallet";
 import {isMobile} from "react-device-detect";
 import FooterWallet from "../FooterWallet";
 

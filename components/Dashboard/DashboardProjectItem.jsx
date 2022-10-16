@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalBoxes, toggleModalImages, toggleModalConfirmation} from "../../redux/modalReducer";
 
 export default function DashboardProjectItem() {
 	//functional
-	const [items, setItems] = useState([1, 2, 3, 4, 5]);
+	const [items] = useState([1, 2, 3, 4, 5]);
 	const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
 

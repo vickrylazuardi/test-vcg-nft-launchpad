@@ -1,4 +1,3 @@
-import {useRouter} from "next/router";
 import Link from "next/link";
 import useMetaMask from "../../wallet/hook";
 import { ToastContainer, toast } from 'react-toastify';

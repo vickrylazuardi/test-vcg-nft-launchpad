@@ -1,15 +1,12 @@
-import React, {useState} from "react";
 import DashboardOwnedBoxItem from "./DashboadOwnedBoxItem";
+import DialogConfirmation from "../Common/DialogConfirmation";
+import DialogClaimable from "../Common/DialogClaimable";
 import Pagination from "../Common/Pagination";
+import {useSelector} from "react-redux";
 
 export default function DashboardOwnedBox() {
-	const textStyling = {
-		fontSize: "14px",
-		color: "#9AA4BF"
-	}
-	const theadStyling = {
-		borderBottom: "1px solid #9AA4BF",
-	}
+	//functional
+	const modal = useSelector((state) => state.modal);
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
@@ -33,6 +30,8 @@ export default function DashboardOwnedBox() {
 				<DashboardOwnedBoxItem />
 			</div>
 			<Pagination/>
+			{modal.modalConfirmation.isOpen && <DialogConfirmation status="refund"/>}
+			{modal.modalClaimable.isOpen && <DialogClaimable/>}
 		</div>
 	);
 }

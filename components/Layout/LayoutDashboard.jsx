@@ -1,12 +1,12 @@
-import NavbarDashboard from "../NavbarDashboard";
+import NavbarDashboard from "../Dashboard/Navbar/NavbarDashboard";
 import Footer from "../Footer";
 
-export default function LayoutDashboard({ children }) {
-  return (
-    <>
-      <NavbarDashboard />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
+export default function LayoutDashboard({children}) {
+	return (
+		<>
+			<NavbarDashboard/>
+			<main>{children}</main>
+			<Footer/>
+		</>
+	);
 }

@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalImages} from "../../redux/modalReducer";
+const {motion} = require("framer-motion");
 
 export default function DialogDetailImage() {
 	const modal = useSelector(state => state.modal.modalImages);
@@ -12,9 +13,24 @@ export default function DialogDetailImage() {
 			en: "Photo Box",
 		}
 	};
+	const backdrop = {
+		visible: {opacity: 1},
+		hidden: {opacity: 0}
+	};
+	const animateModal = {
+		hidden: {
+			y: "-100vh",
+			opacity: 0
+		},
+		visible: {
+			y: "40px",
+			opacity: 1,
+			transition: {delay: 0.5}
+		}
+	};
 	return (
-		<div id="dialog-images-overlay">
-			<div className="dialog-images rounded-xl">
+		<motion.div id="dialog-images-overlay" variants={backdrop} initial="hidden" animate="visible" exit="hidden">
+			<motion.div className="dialog-images rounded-xl" variants={animateModal}>
 				<div className="dialog-images-head px-4 py-3">
 					<div className="dbh-left">
 						Photo Box
@@ -35,7 +51,7 @@ export default function DialogDetailImage() {
 						</div>
 					)}
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

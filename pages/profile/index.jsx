@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {isDesktop, isMobile} from "react-device-detect";
@@ -6,7 +6,6 @@ import ProfileHeader from "../../components/Dashboard/ProfileHeader";
 import NavigationDashboard from "../../components/Dashboard/NavigationDashboard";
 import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 import DashboardProjects from "../../components/Dashboard/DashboardProjects";
-import DialogDetailImage from "../../components/Common/DialogDetailImage";
 import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile";
 
 export default function index() {
@@ -63,8 +62,6 @@ export default function index() {
 					</div>
 				</div>
 			)}
-			{/*<DialogBoxes/>*/}
-			{/*<DialogDetailImage/>*/}
 		</div>
 	)
 }

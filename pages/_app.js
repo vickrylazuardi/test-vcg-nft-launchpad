@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, router }) {
     return new Web3(provider);
   };
 
-	if (router.pathname.startsWith("/profile/")) {
+	if (router.pathname.startsWith("/profile")) {
 		return (
 			<React.StrictMode>
 				<Web3ReactProvider getLibrary={getLibrary}>

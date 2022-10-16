@@ -6,7 +6,7 @@ const initialState = {
 		isOpen: false,
 		isPlain: false,
 		isSuccess: false,
-		isFailed: false,
+		claimableMobile: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -24,6 +24,21 @@ const initialState = {
 		isText: false,
 		title: {
 			en: "Photo Box",
+		}
+	},
+	modalDetailTransaction: {
+		loading: false,
+		isOpen: false,
+		title: {
+			en: "Detail Transaction",
+		}
+	},
+	modalClaimable: {
+		loading: false,
+		showItem: false,
+		isOpen: false,
+		title: {
+			en: "Claim Box",
 		}
 	},
 };
@@ -56,6 +71,9 @@ const modalSlice = createSlice({
 		},
 		toggleModalConfirmation: (state, val) => {
 			if (val.payload) {
+				if (val.payload.claimableMobile) {
+					state.modalConfirmation.claimableMobile = val.payload.claimableMobile;
+				}
 				state.modalConfirmation.loading = val.payload.loading;
 				state.modalConfirmation.isOpen = val.payload.isOpen;
 				state.modalConfirmation.isPlain = val.payload.isPlain;
@@ -64,8 +82,31 @@ const modalSlice = createSlice({
 				state.modalConfirmation.title = val.payload.title;
 			}
 		},
+		toggleModalTransaction: (state, val) => {
+			if (val.payload) {
+				state.modalDetailTransaction.loading = val.payload.loading;
+				state.modalDetailTransaction.isOpen = val.payload.isOpen;
+				state.modalDetailTransaction.isPlain = val.payload.isPlain;
+				state.modalDetailTransaction.isSuccess = val.payload.isSuccess;
+				state.modalDetailTransaction.title = val.payload.title;
+			}
+		},
+		toggleModalClaimable: (state, val) => {
+			if (val.payload) {
+				state.modalClaimable.loading = val.payload.loading;
+				state.modalClaimable.showItem = val.payload.showItem;
+				state.modalClaimable.isOpen = val.payload.isOpen;
+				state.modalClaimable.title = val.payload.title;
+			}
+		},
 	},
 });
 
-export const {toggleModalBoxes, toggleModalImages, toggleModalConfirmation} = modalSlice.actions;
+export const {
+	toggleModalBoxes,
+	toggleModalImages,
+	toggleModalConfirmation,
+	toggleModalTransaction,
+	toggleModalClaimable,
+} = modalSlice.actions;
 export default modalSlice.reducer;

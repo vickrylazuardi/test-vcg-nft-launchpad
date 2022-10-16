@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
 import {useEffect} from "react";
+const {motion} = require("framer-motion");
 
 export default function DialogConfirmation(props) {
 	//functional
@@ -36,6 +37,21 @@ export default function DialogConfirmation(props) {
 			en: "Confirmation",
 		}
 	};
+	const backdrop = {
+		visible: {opacity: 1},
+		hidden: {opacity: 0}
+	};
+	const animateModal = {
+		hidden: {
+			y: "-100vh",
+			opacity: 0
+		},
+		visible: {
+			y: "40px",
+			opacity: 1,
+			transition: {delay: 0.5}
+		}
+	};
 	// useEffect(() => {
 	// 	if (modal.loading) {
 	// 		setTimeout(() => {
@@ -50,8 +66,8 @@ export default function DialogConfirmation(props) {
 		objectFit: "cover"
 	}
 	return (
-		<div id="dialog-confirmation-overlay">
-			<div className="dialog-confirmation rounded-xl">
+		<motion.div id="dialog-confirmation-overlay" variants={backdrop} initial="hidden" animate="visible" exit="hidden">
+			<motion.div className="dialog-confirmation rounded-xl" variants={animateModal}>
 				{!modal.loading && !modal.isSuccess && (
 					<div className="dialog-confirmation-head px-4 py-3">
 						<div className="dbh-left">
@@ -107,7 +123,7 @@ export default function DialogConfirmation(props) {
 						</button>
 					</div>
 				)}
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

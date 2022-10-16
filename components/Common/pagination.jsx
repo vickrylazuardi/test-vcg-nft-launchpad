@@ -1,6 +1,4 @@
-import Link from "next/link";
 import React from "react";
-import {isDesktop, isMobile} from "react-device-detect";
 
 export default class Pagination extends React.Component {
 	render() {
