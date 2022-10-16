@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import {useState} from "react";
 
 export default function index() {
-	const [items, setItems] = useState([1, 2, 3, 4, 5]);
+	const [items] = useState([1, 2, 3, 4, 5]);
 	const bgChipsRequest = {
 		backgroundColor: "#FFD4C2",
 		color: "#E28058"

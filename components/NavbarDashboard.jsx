@@ -1,4 +1,3 @@
-// import LeftNavbar from "./LeftNavbar";
 import MidNavbar from "./MidNavbar";
 import RightNavbar from "./RightNavbar";
 import TopNavbar from "./TopNavbar";

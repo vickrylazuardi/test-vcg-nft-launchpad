@@ -1,8 +1,6 @@
-import {useRouter} from "next/router";
 import Link from "next/link";
 
 export default function index() {
-	const router = useRouter();
 	return (
 		<div id="connect-wallet-page" className="">
 			<div className="container py-3 cwp-mobile">

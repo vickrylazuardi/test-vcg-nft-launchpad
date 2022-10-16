@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+const {motion} = require("framer-motion");
 import BoxesItem from "../Dashboard/BoxesItem";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalBoxes} from "../../redux/modalReducer";
 
 export default function DialogBoxes() {
 	//functional
-	const {loading, isOpen} = useSelector(state => state.modal.modalBoxes);
+	const {loading} = useSelector(state => state.modal.modalBoxes);
 	const dispatch = useDispatch();
 	const modalBoxes = {
 		loading: false,
@@ -13,20 +13,35 @@ export default function DialogBoxes() {
 		title: {
 			en: "Projects",
 		}
-	}
+	};
 	//styling
 	const textStyling = {
 		fontSize: "14px",
 		color: "#9AA4BF"
-	}
+	};
 	const imgLoader = {
 		width: "150px",
 		height: "150px",
 		objectFit: "cover"
-	}
+	};
+	const backdrop = {
+		visible: {opacity: 1},
+		hidden: {opacity: 0}
+	};
+	const animateModal = {
+		hidden: {
+			y: "-100vh",
+			opacity: 0
+		},
+		visible: {
+			y: "40px",
+			opacity: 1,
+			transition: {delay: 0.5}
+		}
+	};
 	return (
-		<div id="dialog-boxes-overlay">
-			<div className="dialog-boxes rounded-xl">
+		<motion.div id="dialog-boxes-overlay" variants={backdrop} initial="hidden" animate="visible" exit="hidden">
+			<motion.div className="dialog-boxes rounded-xl" variants={animateModal}>
 				<div className="dialog-boxes-head px-4 py-3">
 					<div className="dbh-left">
 						Boxes
@@ -58,7 +73,7 @@ export default function DialogBoxes() {
 						</table>
 					</div>
 				)}
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

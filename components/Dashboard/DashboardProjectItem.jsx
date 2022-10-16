@@ -4,7 +4,7 @@ import {toggleModalBoxes, toggleModalImages, toggleModalConfirmation} from "../.
 
 export default function DashboardProjectItem() {
 	//functional
-	const [items, setItems] = useState([1, 2, 3, 4, 5]);
+	const [items] = useState([1, 2, 3, 4, 5]);
 	const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
 

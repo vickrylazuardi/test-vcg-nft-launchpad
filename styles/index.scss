@@ -82,6 +82,21 @@
     cursor: not-allowed;
 }
 
+button.buy {
+    background-color: #AFFFB8;
+    color: #40D04F;
+}
+
+button.refund {
+    background-color: #FFBDBD;
+    color: #FF3333;
+}
+
+button.claim {
+    background-color: #FFD4C2;
+    color: #E28058;
+}
+
 .btn-gray {
     background: var(--gray-primary);
 }
@@ -763,7 +778,6 @@ footer {
     }
 }
 
-// End Profile Launchpad
 // Start Navigation Launchpad
 #navigation-launchpad {
     height: 60px;
@@ -791,31 +805,9 @@ footer {
                 border-left: 2px solid #2A334B;
             }
         }
-
-        //.navigation-launchpad-item:hover {
-        //    width: 100px;
-        //    height: 100%;
-        //    text-align: center;
-        //    cursor: pointer;
-        //    display: flex;
-        //    align-items: center;
-        //    justify-content: center;
-        //    border-bottom: 2px solid #E28058;
-        //    color: #E28058;
-        //
-        //    .navigation-launchpad-item-bundling{
-        //        //border: 1px solid red;
-        //        width: 100%;
-        //        display: flex;
-        //        justify-content: center;
-        //        border-right: 2px solid #2A334B;
-        //        border-left: 2px solid #2A334B;
-        //    }
-        //}
     }
 }
 
-// End Navigation Launchpad
 // Start Menu Dashboard Launchpad
 #dashboard-menu {
     height: 200px;
@@ -847,7 +839,6 @@ footer {
     }
 }
 
-// End Dashboard Menu Launchpad
 // Start Dashboard Project Launchpad
 #dashboard-projects {
     //height: 200px;
@@ -971,8 +962,6 @@ footer {
         }
     }
 }
-
-// End Dashboard Project Launchpad
 
 // Start Dashboard Dialog Launchpad
 #dialog-boxes-overlay {
@@ -1128,6 +1117,146 @@ footer {
 
 }
 
+// Start Dialog Detail Transaction
+#dialog-detail-transaction-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dialog-detail-transaction {
+        background-color: #1D2333;
+        width: 350px;
+
+        .dialog-detail-transaction-head {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2a334b;
+
+            .dih-left {
+                width: 50%;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .dih-right {
+                display: flex;
+                justify-content: right;
+                width: 50%;
+            }
+        }
+
+        .dialog-detail-transaction-body {
+            font-size: 14px;
+            font-weight: 600;
+            color: #858fa9;
+
+            .dih-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: white;
+            }
+
+            .dih-img {
+                height: 150px;
+                width: 150px;
+            }
+
+            .dih-detailed-transaction{
+                font-weight: 600;
+                font-size: 14px;
+                border-bottom: 1px solid #2a334b;
+            }
+        }
+    }
+
+    .dialog-boxes::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .dialog-boxes::-webkit-scrollbar-thumb {
+        background-color: #7750f8;
+    }
+
+}
+
+// Start Dialog Claimable
+#dialog-claimable-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dialog-claimable {
+        background-color: #1D2333;
+        width: 760px;
+
+        .dialog-claimable-head {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2a334b;
+
+            .dih-left {
+                width: 50%;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .dih-right {
+                display: flex;
+                justify-content: right;
+                width: 50%;
+            }
+        }
+
+        .dialog-claimable-body {
+            font-size: 14px;
+            font-weight: 600;
+            color: #858fa9;
+
+
+
+            .container-motion-ul{
+                width: 100%;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                height: 500px;
+
+                .dcb-item{
+                    height: max-content;
+                    width: max-content;
+                }
+            }
+
+            .container-motion-ul::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .container-motion-ul::-webkit-scrollbar-thumb {
+                background-color: #7750f8;
+            }
+
+            .dc-img {
+                height: 150px !important;
+                width: 150px !important;
+            }
+        }
+    }
+
+}
+
 // Start Dialog Confirmation
 #dialog-confirmation-overlay {
     position: fixed;
@@ -1185,7 +1314,7 @@ footer {
                 width: 400px;
             }
 
-            button{
+            button {
                 color: white;
             }
         }
@@ -1237,6 +1366,7 @@ footer {
 #history-tr-list {
 
     .history-tr-item {
+        cursor: pointer;
         display: flex;
         border-bottom: 2px solid #2A334B;
 
@@ -1270,6 +1400,7 @@ footer {
 
                 .hti-detailed-boxes {
                     cursor: pointer;
+                    width: max-content;
                     color: #40D04F;
                 }
             }
@@ -1280,21 +1411,6 @@ footer {
             display: flex;
             align-items: center;
             justify-content: center;
-
-            button.buy {
-                background-color: #AFFFB8;
-                color: #40D04F;
-            }
-
-            button.refund {
-                background-color: #FFBDBD;
-                color: #FF3333;
-            }
-
-            button.claim {
-                background-color: #FFD4C2;
-                color: #E28058;
-            }
         }
     }
 }
@@ -1526,8 +1642,4 @@ footer {
     color: #7750F7;
     font-size: 12px;
     font-weight: 700;
-}
-
-.testingBorder {
-    border: 1px solid yellow;
 }

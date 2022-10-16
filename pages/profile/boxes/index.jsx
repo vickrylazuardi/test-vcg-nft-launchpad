@@ -1,10 +1,7 @@
-import React, {useState} from "react";
 import Link from "next/link";
 import ProfileHeader from "../../../components/Dashboard/ProfileHeader";
 import NavigationDashboard from "../../../components/Dashboard/NavigationDashboard";
 import DashboardSideMenu from "../../../components/Dashboard/DashboardSideMenu";
-import DashboardProjects from "../../../components/Dashboard/DashboardProjects";
-import DialogDetailImage from "../../../components/Common/DialogDetailImage";
 import DashboardOwnedBox from "../../../components/Dashboard/DashboardOwnedBox";
 
 export default function index() {
@@ -52,8 +49,6 @@ export default function index() {
 					</div>
 				</div>
 			</div>
-			{/*// <DialogBoxes/>*/}
-			{/*// <DialogDetailImage/>*/}
 		</div>
 	)
 }
