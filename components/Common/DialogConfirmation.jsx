@@ -1,8 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
 import {useEffect} from "react";
+const {motion} = require("framer-motion");
 
-export default function DialogConfirmation() {
+export default function DialogConfirmation({status}) {
 	//functional
 	const modal = useSelector(state => state.modal.modalConfirmation);
 	const dispatch = useDispatch();
@@ -33,6 +34,21 @@ export default function DialogConfirmation() {
 			en: "Confirmation",
 		}
 	};
+	const backdrop = {
+		visible: {opacity: 1},
+		hidden: {opacity: 0}
+	};
+	const animateModal = {
+		hidden: {
+			y: "-100vh",
+			opacity: 0
+		},
+		visible: {
+			y: "40px",
+			opacity: 1,
+			transition: {delay: 0.5}
+		}
+	};
 	useEffect(() => {
 		if (modal.loading) {
 			setTimeout(() => {
@@ -47,8 +63,8 @@ export default function DialogConfirmation() {
 		objectFit: "cover"
 	}
 	return (
-		<div id="dialog-confirmation-overlay">
-			<div className="dialog-confirmation rounded-xl">
+		<motion.div id="dialog-confirmation-overlay" variants={backdrop} initial="hidden" animate="visible" exit="hidden">
+			<motion.div className="dialog-confirmation rounded-xl" variants={animateModal}>
 				{!modal.loading && !modal.isSuccess && (
 					<div className="dialog-confirmation-head px-4 py-3">
 						<div className="dbh-left">
@@ -64,15 +80,24 @@ export default function DialogConfirmation() {
 				)}
 				{modal.loading && (
 					<div className="dialog-confirmation-body text-center">
-						<img className="dc-img" src="/loaders/loaders.gif" className="mt-5" style={imgLoader} alt=""/>
+						<img className="dc-img mt-5" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
 					</div>
 				)}
 				{modal.isPlain && (
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/coin-big.png" alt=""/>
-						<p className="font-bold dib-title mt-2 mb-2">Are you sure to withdraw this project?</p>
+						{status === "refund" ? (
+							<p className="font-bold dib-title mt-2 mb-2">Are you sure to refund this project?</p>
+						) : (
+							<p className="font-bold dib-title mt-2 mb-2">Are you sure to withdraw this project?</p>
+						)}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmationSuccess))}
-										className="btn-orange-light w-full py-2 rounded-lg">Withdraw
+										className="btn-orange-light w-full py-2 rounded-lg">
+							{status === "refund" ? (
+								<span>Refund</span>
+							) : (
+								<span>Withdraw</span>
+							)}
 						</button>
 					</div>
 				)}
@@ -80,14 +105,17 @@ export default function DialogConfirmation() {
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/success-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Success !</p>
-						<p className="dib-title mt-2 mb-2">You have bought this box</p>
-						{/*<p className="font-semibold">You have bought this box</p>*/}
+						{status === "refund" ? (
+							<p className="dib-title mt-2 mb-2">You have refund this box</p>
+						) : (
+							<p className="dib-title mt-2 mb-2">You have bought this box</p>
+						)}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 										className="btn-orange-light w-full py-2 rounded-lg">Back
 						</button>
 					</div>
 				)}
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

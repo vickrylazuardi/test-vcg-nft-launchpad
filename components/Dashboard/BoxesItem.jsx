@@ -4,8 +4,8 @@ import {toggleModalImages} from "../../redux/modalReducer";
 
 export default function BoxesItem() {
 	const dispatch = useDispatch();
-	const [items, setItems] = useState([1, 2, 3, 4, 5]);
-	const [boxItem, setBoxItem] = useState(['CrossOut(1)', 'Deadly Weapon(1)', 'City Black(1)']);
+	const [items] = useState([1, 2, 3, 4, 5]);
+	const [boxItem] = useState(['CrossOut(1)', 'Deadly Weapon(1)', 'City Black(1)']);
 	const modalImages = {
 		loading: false,
 		isOpen: true,
