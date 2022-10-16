@@ -121,7 +121,7 @@ export default function Header(props) {
                   </p>
                 </a>
               </button>
-              <button className="btn btn-orange-light w-1/2 lg:text-xs">
+              <button className="btn btn-disabled w-1/2 lg:text-xs" disabled>
                 Launch Your Project Now
               </button>
             </div>

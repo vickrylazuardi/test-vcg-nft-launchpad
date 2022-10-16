@@ -22,23 +22,13 @@
                 "type": "address"
             },
             {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "_startDate",
+                "type": "uint256"
             },
             {
                 "internalType": "uint256[]",
                 "name": "_ids",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "string[]",
-                "name": "_uri",
-                "type": "string[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_amounts",
                 "type": "uint256[]"
             },
             {
@@ -47,13 +37,88 @@
                 "type": "uint256[]"
             },
             {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "stock",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "uri",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "itemCategory",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "itemAmount",
+                        "type": "uint32[]"
+                    }
+                ],
+                "internalType": "struct Launchpad.boxDetail[]",
+                "name": "_boxes",
+                "type": "tuple[]"
+            },
+            {
                 "internalType": "address",
                 "name": "projectOwner",
                 "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "keyHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "coordinator",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "callbackGasLimit",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "requestConfirm",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "subscriptionId",
+                        "type": "uint64"
+                    }
+                ],
+                "internalType": "struct Launchpad.vrfArgument",
+                "name": "_vrf",
+                "type": "tuple"
             }
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "have",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "want",
+                "type": "address"
+            }
+        ],
+        "name": "OnlyCoordinatorCanFulfill",
+        "type": "error"
     },
     {
         "anonymous": false,
@@ -97,6 +162,44 @@
             }
         ],
         "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "requestId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "randomWords",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "RequestFulfilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "requestId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "numWords",
+                "type": "uint32"
+            }
+        ],
+        "name": "RequestSent",
         "type": "event"
     },
     {
@@ -216,9 +319,9 @@
         "inputs": [
             {
                 "indexed": false,
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
+                "internalType": "bool",
+                "name": "status",
+                "type": "bool"
             }
         ],
         "name": "finalized",
@@ -244,17 +347,27 @@
         "type": "event"
     },
     {
-        "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
+                "internalType": "uint256[]",
+                "name": "_itemId",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_itemCategory",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_itemStock",
+                "type": "uint256[]"
             }
         ],
-        "name": "unfinalized",
-        "type": "event"
+        "name": "addItem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
         "inputs": [
@@ -329,6 +442,30 @@
                 "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "name": "boxId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "stock",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "uri",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             },
             {
                 "internalType": "address",
@@ -337,6 +474,30 @@
             }
         ],
         "name": "boxPrize",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "boxRequestId",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -378,14 +539,49 @@
                 "type": "uint256"
             },
             {
-                "internalType": "uint256",
+                "internalType": "uint32",
                 "name": "_amount",
-                "type": "uint256"
+                "type": "uint32"
             }
         ],
         "name": "claimBox",
-        "outputs": [],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimData",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "boxId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint32",
+                "name": "boxAmount",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -449,16 +645,29 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
+        "inputs": [],
         "name": "finalizeBox",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_categoryId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCategoryItem",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -486,6 +695,43 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "isFinalized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "itemCategoryId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -493,12 +739,12 @@
                 "type": "uint256"
             }
         ],
-        "name": "isFinalized",
+        "name": "itemStock",
         "outputs": [
             {
-                "internalType": "bool",
+                "internalType": "uint256",
                 "name": "",
-                "type": "bool"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -522,7 +768,7 @@
         "name": "nftAddress",
         "outputs": [
             {
-                "internalType": "contract INFTContract",
+                "internalType": "contract NFTContract",
                 "name": "",
                 "type": "address"
             }
@@ -541,6 +787,24 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "requestId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "randomWords",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "rawFulfillRandomWords",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -635,14 +899,8 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "soldBox",
+        "inputs": [],
+        "name": "startDate",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -689,25 +947,6 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "totalBox",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
                 "name": "id",
                 "type": "uint256"
             }
@@ -732,19 +971,6 @@
             }
         ],
         "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
-        "name": "unfinalizeBox",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

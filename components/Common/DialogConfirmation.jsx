@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
 import {useEffect} from "react";
 
-export default function DialogConfirmation() {
+export default function DialogConfirmation(props) {
 	//functional
 	const modal = useSelector(state => state.modal.modalConfirmation);
 	const dispatch = useDispatch();
@@ -11,6 +11,7 @@ export default function DialogConfirmation() {
 		isOpen: false,
 		isPlain: false,
 		isSuccess: false,
+		isFailed: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -20,6 +21,7 @@ export default function DialogConfirmation() {
 		isOpen: true,
 		isPlain: false,
 		isSuccess: false,
+		isFailed: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -29,17 +31,18 @@ export default function DialogConfirmation() {
 		isOpen: true,
 		isPlain: false,
 		isSuccess: true,
+		isFailed: false,
 		title: {
 			en: "Confirmation",
 		}
 	};
-	useEffect(() => {
-		if (modal.loading) {
-			setTimeout(() => {
-				dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess))
-			}, 1000)
-		}
-	})
+	// useEffect(() => {
+	// 	if (modal.loading) {
+	// 		setTimeout(() => {
+	// 			dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess))
+	// 		}, 1000)
+	// 	}
+	// })
 	//styling
 	const imgLoader = {
 		width: "150px",
@@ -64,15 +67,21 @@ export default function DialogConfirmation() {
 				)}
 				{modal.loading && (
 					<div className="dialog-confirmation-body text-center">
-						<img className="dc-img" src="/loaders/loaders.gif" className="mt-5" style={imgLoader} alt=""/>
+						<img className="dc-img m-10" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
 					</div>
 				)}
 				{modal.isPlain && (
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/coin-big.png" alt=""/>
-						<p className="font-bold dib-title mt-2 mb-2">Are you sure to withdraw this project?</p>
-						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmationSuccess))}
-										className="btn-orange-light w-full py-2 rounded-lg">Withdraw
+						<p className="font-bold dib-title mt-2 mb-2">Are you sure to {props.message}</p>
+						<button 
+							onClick={() => {
+								dispatch(toggleModalConfirmation(modalConfirmationSuccess))
+								props.action();
+							}}
+							className="btn-orange-light w-full py-2 rounded-lg"
+						>
+							{props.type}
 						</button>
 					</div>
 				)}
@@ -80,7 +89,18 @@ export default function DialogConfirmation() {
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/success-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Success !</p>
-						<p className="dib-title mt-2 mb-2">You have bought this box</p>
+						<p className="dib-title mt-2 mb-2">{props.successMessage}</p>
+						{/*<p className="font-semibold">You have bought this box</p>*/}
+						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
+										className="btn-orange-light w-full py-2 rounded-lg">Back
+						</button>
+					</div>
+				)}
+				{modal.isFailed && (
+					<div className="dialog-confirmation-body text-center">
+						<img className="dc-img" src="/images/failed-img.png" alt=""/>
+						<p className="font-bold dib-success-word mt-2 mb-2">Failed !</p>
+						<p className="dib-title mt-2 mb-2">{props.failedMessage}</p>
 						{/*<p className="font-semibold">You have bought this box</p>*/}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 										className="btn-orange-light w-full py-2 rounded-lg">Back

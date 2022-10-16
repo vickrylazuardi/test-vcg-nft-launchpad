@@ -4,17 +4,45 @@ import { ethers } from "ethers";
 import Slider from "react-slick";
 import Link from "next/link";
 import { useRouter } from 'next/router'
+import { useSelector, useDispatch } from "react-redux";
+import { toggleModalConfirmation } from "../../redux/modalReducer";
 import { API } from "../../utils/globalConstant";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
 import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
+import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
 import LoadingVcg from "../../components/Common/loadingVcg";
 
 export default function _slug() {
+  const modal = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
+
+  const modalConfirmationWhenSuccess = {
+		loading: false,
+		isOpen: true,
+		isPlain: false,
+		isSuccess: true,
+		isFailed: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
+  const modalConfirmationWhenFailed = {
+		loading: false,
+		isOpen: true,
+		isPlain: false,
+		isSuccess: false,
+		isFailed: true,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
   const bgPage = {
     backgroundImage: `url('/images/bg.png')`,
     backgroundSize: "cover",
@@ -65,6 +93,8 @@ export default function _slug() {
   const [balance, setBalance] = useState(null);
   const [amount, setAmount] = useState({});
   const [ownedBox, setOwnedBox] = useState({});
+  const [dataModal, setDataModal] = useState({});
+  const [modalMessage, setModalMessage] = useState({});
   const { account, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -160,10 +190,11 @@ export default function _slug() {
       });
     } catch (error) {
       console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
       // document.getElementById("loading-vcg").classList.remove("show");
-      toast.error("Enable Token - Request was rejected", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      // toast.error("Enable Token - Request was rejected", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
     }
   };
 
@@ -202,17 +233,20 @@ export default function _slug() {
             projectDetail: project._id
           });
         }
+        reload();
+        dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
         // document.getElementById("loading-vcg").classList.remove("show");
-        toast.success("Buy Box successfull!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        // toast.success("Buy Box successfull!", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
       });
     } catch (error) {
       console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
       // document.getElementById("loading-vcg").classList.remove("show");
-      toast.error("Buy Box - Request was rejected", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      // toast.error("Buy Box - Request was rejected", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
     }
   };
 
@@ -229,7 +263,7 @@ export default function _slug() {
 
       const finalize = await launchpadContract
         .connect(signer)
-        .finalizeBox(boxId);
+        .finalizeBox();
 
       finalize.hash;
       finalize.wait().then((res) => {
@@ -241,19 +275,22 @@ export default function _slug() {
           .then(res => {
             if (res.status === 204) return;
             setProject(res.data.data);
+            reload();
+            dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
             // document.getElementById("loading-vcg").classList.remove("show");
-            toast.success("Finalize Box successfull!", {
-              position: toast.POSITION.TOP_RIGHT,
-            });
+            // toast.success("Finalize Box successfull!", {
+            //   position: toast.POSITION.TOP_RIGHT,
+            // });
           })
         }
       })
     } catch (error) {
       console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
       // document.getElementById("loading-vcg").classList.remove("show");
-      toast.error("Finalize Box - Request was rejected", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      // toast.error("Finalize Box - Request was rejected", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
     }
   };
 
@@ -317,20 +354,78 @@ export default function _slug() {
           //   }
           // })
           reload();
+          dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
           // document.getElementById("loading-vcg").classList.remove("show");
-          toast.success("Claim Box successfull!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
+          // toast.success("Claim Box successfull!", {
+          //   position: toast.POSITION.TOP_RIGHT,
+          // });
         }
       });
     } catch (error) {
       console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
       // document.getElementById("loading-vcg").classList.remove("show");
-      toast.error("Claim Box - Request was rejected", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      // toast.error("Claim Box - Request was rejected", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
     }
   };
+
+  const setModal = (data) => {
+    try {
+      switch (data.type) {
+        case "buy":
+          modalMessage.type = "Buy";
+          modalMessage.message = "buy this box?";
+          modalMessage.successMessage = "You have successfully bought this box";
+          modalMessage.failedMessage = "Failed to buy this box";
+          setModalMessage({...modalMessage});
+          break;
+        case "claim":
+          modalMessage.type = "Claim";
+          modalMessage.message = "claim this box?";
+          modalMessage.successMessage = "You have successfully claimed this box";
+          modalMessage.failedMessage = "Failed to claim this box";
+          setModalMessage({...modalMessage});
+          break;
+        case "finalize":
+          modalMessage.type = "Finalize";
+          modalMessage.message = "finalize this project?";
+          modalMessage.successMessage = "You have successfully finalized this box";
+          modalMessage.failedMessage = "Failed to finalize this box";
+          setModalMessage({...modalMessage});
+          break;
+        default:
+          break;
+      };
+      for (const key in data) {
+        dataModal[key] = data[key];
+      };
+      setDataModal({...dataModal});
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const actionModal = () => {
+    try {
+      switch (dataModal.type) {
+        case "buy":
+          checkAllowance(dataModal.name, dataModal.amount, dataModal.price);
+          break;
+        case "claim":
+          claimBox(dataModal.name);
+          break;
+        case "finalize":
+          finalizeBox(dataModal.name);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const reload = () => {
     try {
@@ -391,12 +486,12 @@ export default function _slug() {
               <p style={{ maxWidth: 492 }} className="font-semibold my-3">
                 {project?.desc}
               </p>
-              <p className="font-bold">Start at {new Date(project?.startedAt).toUTCString()}</p>
+              <p className="font-bold">Start at {new Date(project?.startedAt).toLocaleString()}</p>
               <div className="social-container mt-3 flex items-center lg:my-3">
                 <p className="font-semibold lg:text-sm">
                   Find out more about this project
                 </p>
-                <div className="social flex items-center ml-5">
+                <div className="social flex items-center gap-4 ml-5">
                   {
                     project?.socialMedia?.website ?
                     <a href={project?.socialMedia?.website} rel="nofollow" target="_blank">
@@ -413,7 +508,7 @@ export default function _slug() {
                       <img
                         src="/images/svg/icon-gray-discord.svg"
                         alt="web vcgamers"
-                        className="mx-4 cursor-pointer"
+                        className="cursor-pointer"
                       />
                     </a> : ""
                   }
@@ -427,6 +522,26 @@ export default function _slug() {
                       />
                     </a> : ""
                   }
+                  {
+                    project?.socialMedia?.youtube ?
+                    <a href={project?.socialMedia?.youtube} rel="nofollow" target="_blank">
+                      <img
+                        src="/images/svg/youtube-fill.svg"
+                        alt="web vcgamers"
+                        className="cursor-pointer"
+                      />
+                    </a> : ""
+                  }
+                  {/* {
+                    project?.socialMedia?.medium ?
+                    <a href={project?.socialMedia?.medium} rel="nofollow" target="_blank">
+                      <img
+                        src="/images/svg/icon-gray-tele.svg"
+                        alt="web vcgamers"
+                        className="cursor-pointer"
+                      />
+                    </a> : ""
+                  } */}
                 </div>
               </div>
             </div>
@@ -440,7 +555,7 @@ export default function _slug() {
               <iframe
                 width={590}
                 height={332}
-                src={`https://www.youtube.com/embed/${project.socialMedia.youtube.split("/").at(-1)}`}
+                src={`https://www.youtube.com/embed/${project.video.split("/").at(-1)}`}
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -458,7 +573,7 @@ export default function _slug() {
                 <iframe
                   width="100%"
                   height={185}
-                  src={`https://www.youtube.com/embed/${project.socialMedia.youtube.split("/").at(-1)}`}
+                  src={`https://www.youtube.com/embed/${project.video.split("/").at(-1)}`}
                   title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -488,9 +603,7 @@ export default function _slug() {
                         owned={owned}
                         project={project}
                         account={account}
-                        claim={claimBox}
-                        buy={checkAllowance}
-                        finalize={finalizeBox}
+                        action={setModal}
                       />
                     </div>
                   )
@@ -506,24 +619,23 @@ export default function _slug() {
           <Slider {...settings}>
             {
               project.additionalInfo ?
-              Object.keys(project.additionalInfo).map((item, idx) => {
-                const value = project?.additionalInfo[item];
+              project.additionalInfo.map((item, idx) => {
                 return (
                   <div key={idx} className="item-feature">
                     <div className="inner-feature flex items-start justify-between gap-14 lg:flex-col">
                       <div className="img-wrap w-1/2 lg:w-full">
                         <img
-                          src={value.image}
+                          src={item.image}
                           alt="feature"
                           className="lg:w-10/12 lg:mx-auto mr-10 rounded-xl"
                         />
                       </div>
                       <div className="features-desc w-1/2 lg:w-full">
                         <h3 className="text-2xl font-bold lg:text-base lg:my-3">
-                          {item}
+                          {item.title}
                         </h3>
                         <p className="mt-5 font-semibold lg:text-sm lg:mt-0">
-                          {value.text}
+                          {item.text}
                         </p>
                       </div>
                     </div>
@@ -536,42 +648,54 @@ export default function _slug() {
         {/* /FEATURES SLIDER */}
 
         {/* TEAMS */}
-        <div className="teams-section">
-          <h2 className="font-bold text-2xl mb-3 lg:text-base">Teams</h2>
-          <div className="item-wrapper">
-            <Slider {...settingsTeams}>
-              {
-                project.team ?
-                Object.keys(project.team).map((item, idx) => {
-                  const value = project?.team[item];
-                  return (
-                    <div key={idx} className="item-team" style={{ maxWidth: 150 }}>
-                      <div className="img-wrap overflow-hidden">
-                        <img
-                          src={value.image}
-                          alt="home"
-                          style={{width: "150px", height: "150px"}}
-                          className="object-cover mx-auto rounded-full"
-                        />
+        {
+          project.team ?
+          <div className="teams-section">
+            <h2 className="font-bold text-2xl mb-3 lg:text-base">Teams</h2>
+            <div className="item-wrapper">
+              <Slider {...settingsTeams}>
+                {
+                  Object.keys(project.team).map((item, idx) => {
+                    const value = project?.team[item];
+                    return (
+                      <div key={idx} className="item-team" style={{ maxWidth: 150 }}>
+                        <div className="img-wrap overflow-hidden">
+                          <img
+                            src={value.image}
+                            alt="home"
+                            style={{width: "150px", height: "150px"}}
+                            className="object-cover mx-auto rounded-full"
+                          />
+                        </div>
+                        <h4 className="font-bold text-center mt-5 mb-1 lg:text-sm">
+                          {item}
+                        </h4>
+                        <p
+                          className="text-sm font-semibold text-center uppercase"
+                          style={{ color: " #9aa4bf" }}
+                        >
+                          {value.position}
+                        </p>
                       </div>
-                      <h4 className="font-bold text-center mt-5 mb-1 lg:text-sm">
-                        {item}
-                      </h4>
-                      <p
-                        className="text-sm font-semibold text-center uppercase"
-                        style={{ color: " #9aa4bf" }}
-                      >
-                        {value.position}
-                      </p>
-                    </div>
-                  )
-                }) : ""
-              }
-            </Slider>
-          </div>
-        </div>
+                    )
+                  })
+                }
+              </Slider>
+            </div>
+          </div> : ""
+        }
         {/* /TEAMS */}
       </div>
+      {
+        modal.modalConfirmation.isOpen && 
+        <DialogConfirmation
+          type={modalMessage.type}
+          message={modalMessage.message}
+          successMessage={modalMessage.successMessage}
+          failedMessage={modalMessage.failedMessage}
+          action={actionModal}
+        />
+      }
     </div>
   );
 }

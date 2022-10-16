@@ -6,6 +6,7 @@ const initialState = {
 		isOpen: false,
 		isPlain: false,
 		isSuccess: false,
+		isFailed: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -59,6 +60,7 @@ const modalSlice = createSlice({
 				state.modalConfirmation.isOpen = val.payload.isOpen;
 				state.modalConfirmation.isPlain = val.payload.isPlain;
 				state.modalConfirmation.isSuccess = val.payload.isSuccess;
+				state.modalConfirmation.isFailed = val.payload.isFailed;
 				state.modalConfirmation.title = val.payload.title;
 			}
 		},
