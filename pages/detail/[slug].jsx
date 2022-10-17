@@ -15,7 +15,6 @@ import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
-import LoadingVcg from "../../components/Common/loadingVcg";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 
 export default function _slug() {
