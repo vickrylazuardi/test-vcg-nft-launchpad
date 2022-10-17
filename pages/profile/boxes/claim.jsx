@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import DialogSliderMobile from "../../../Components/Common/DialogSliderMobile";
+import DialogSliderMobile from "../../../components/Common/DialogSliderMobile";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 
 const {motion} = require("framer-motion");
