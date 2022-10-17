@@ -172,7 +172,6 @@ export const MetaMaskProvider = ({ children }) => {
 
   // Connect to MetaMask wallet
   const connect = async (providerType, id) => {
-    console.log("masuk nih")
     setShouldDisable(true);
     try {
       if (providerType === "metaMask") {

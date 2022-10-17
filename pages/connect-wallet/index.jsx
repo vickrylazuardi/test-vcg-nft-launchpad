@@ -1,5 +1,6 @@
 import Link from "next/link";
 import useMetaMask from "../../wallet/hook";
+import { useRouter } from 'next/router'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { isMobile, isBrowser } from 'react-device-detect';

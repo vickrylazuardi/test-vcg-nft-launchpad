@@ -299,16 +299,16 @@
         "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
+                "indexed": true,
                 "internalType": "uint256",
-                "name": "id",
+                "name": "requestId",
                 "type": "uint256"
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
+                "indexed": true,
+                "internalType": "uint256[]",
+                "name": "reward",
+                "type": "uint256[]"
             }
         ],
         "name": "claimed",
@@ -344,6 +344,19 @@
             }
         ],
         "name": "sold",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "status",
+                "type": "bool"
+            }
+        ],
+        "name": "unfinalized",
         "type": "event"
     },
     {
@@ -545,13 +558,7 @@
             }
         ],
         "name": "claimBox",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -971,6 +978,13 @@
             }
         ],
         "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unfinalizeBox",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

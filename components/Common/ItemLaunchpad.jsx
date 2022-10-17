@@ -95,13 +95,13 @@ export default function ItemLaunchpad(props) {
                 className={
                   new Date() < new Date(props.project.startedAt)
                     ? "btn btn-disabled w-full"
-                    : props?.data?.finalize
+                    : props?.project?.finalize
                       ? "btn btn-disabled w-full"
                       : "btn btn-purple-primary w-full"
                 }
                 disabled={
                   new Date() < new Date(props.project.startedAt) ? true :
-                  props?.data?.finalize ? true : false
+                  props?.project?.finalize ? true : false
                 }
                 onClick={() => {
                   dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
@@ -113,14 +113,14 @@ export default function ItemLaunchpad(props) {
               >
                 Finalize
               </button> :
-              props?.data?.finalize ?
+              props?.project?.finalize ?
               <button
                 className={
                   props?.owned < 1
                     ? "btn btn-disabled w-full"
                     : "btn btn-purple-primary w-full"
                 }
-                disabled={props?.owned ? true : false}
+                disabled={props?.owned < 1 ? true : false}
                 onClick={() => {
                   dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
                   props.action({

@@ -62,9 +62,15 @@ export default function RightNavbar(props) {
             </div> */}
             <div className="relative sub-menu-container sub-menu-4">
               <div className="sub-menu">
-                <Link href="/profile">
-                  <a>Profile</a>
-                </Link>
+                {
+                  props.router?.startsWith("/profile") ?
+                  <Link href="/">
+                    <a>Home</a>
+                  </Link> :
+                  <Link href="/profile">
+                    <a>Profile</a>
+                  </Link>
+                }
                 <p className="not-enter" onClick={() => props.disconnect()}>Disconnect</p>
               </div>
             </div>
@@ -77,7 +83,6 @@ export default function RightNavbar(props) {
             <a>
               <button 
                 className="btn-connect-wallet py-3.5 px-7 rounded-md ml-4"
-                // onClick={() => props.connect("metaMask")}
               >
                 Connect Wallet
               </button>

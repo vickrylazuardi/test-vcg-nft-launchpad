@@ -1,6 +1,5 @@
 import React from "react";
 import useMetaMask from "../wallet/hook";
-import LoadingVcg from "../components/Common/loadingVcg";
 import LeftNavbar from "./LeftNavbar";
 import MidNavbar from "./MidNavbar";
 import RightNavbar from "./RightNavbar";
@@ -22,7 +21,10 @@ export default function Navbar() {
         <div className="bottom-nav-container">
           <div className="container-wrapper  flex items-center justify-between">
             <LeftNavbar />
-            <MidNavbar />
+            <MidNavbar 
+              account={account}
+              disconnect={handleDisconnect}
+            />
             <RightNavbar 
               account={account}
               disconnect={handleDisconnect}

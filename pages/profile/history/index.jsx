@@ -31,8 +31,8 @@ export default function index() {
 					</Link>
 					<p className="ml-3 text-sm font-bold">My Profile</p>
 				</div>
-				<ProfileHeader/>
-				<NavigationDashboard/>
+				{/* <ProfileHeader/>
+				<NavigationDashboard/> */}
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
 					<DashboardHistoryTransaction/>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import Slider from "react-slick";
 import Link from "next/link";
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from "react-redux";
-import { toggleModalConfirmation } from "../../redux/modalReducer";
+import { toggleModalConfirmation, toggleModalClaimable } from "../../redux/modalReducer";
 import { API } from "../../utils/globalConstant";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +16,7 @@ import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
 import LoadingVcg from "../../components/Common/loadingVcg";
+import DialogClaimable from "../../components/Common/DialogClaimable";
 
 export default function _slug() {
   const modal = useSelector((state) => state.modal);
@@ -38,6 +39,26 @@ export default function _slug() {
 		isPlain: false,
 		isSuccess: false,
 		isFailed: true,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
+  const modalConfirmation = {
+		loading: false,
+		isOpen: false,
+		isPlain: false,
+		isSuccess: false,
+		isFailed: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
+  
+	const modalClaimableItem = {
+		loading: true,
+		isOpen: true,
+		showItem: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -310,7 +331,16 @@ export default function _slug() {
         .claimBox(boxId, ownedBox[box]);
 
       claim.hash;
-      claim.wait().then((res) => {
+      claim.wait().then(async (res) => {
+        console.log(res);
+        const reqId = res.events[1].args.requestId;
+        const listen = await launchpadContract.connect(signer);
+        const request = listen.filters.claimed(BigNumber.from(reqId));
+        listen.once(request, (requestId, reward, event) => {
+          console.log("reqId -> ", requestId);
+          console.log("reward -> ", reward);
+          console.log("event -> ", event);
+        });
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
@@ -354,7 +384,8 @@ export default function _slug() {
           //   }
           // })
           reload();
-          dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
+          dispatch(toggleModalConfirmation(modalConfirmation));
+          dispatch(toggleModalClaimable(modalClaimableItem));
           // document.getElementById("loading-vcg").classList.remove("show");
           // toast.success("Claim Box successfull!", {
           //   position: toast.POSITION.TOP_RIGHT,
@@ -696,6 +727,7 @@ export default function _slug() {
           action={actionModal}
         />
       }
+      {modal.modalClaimable.isOpen && <DialogClaimable/>}
     </div>
   );
 }
