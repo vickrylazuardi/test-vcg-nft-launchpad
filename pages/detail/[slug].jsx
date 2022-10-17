@@ -15,6 +15,7 @@ import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
+import abiNFT from '../../abi/nft.json';
 import DialogClaimable from "../../components/Common/DialogClaimable";
 
 export default function _slug() {
@@ -115,6 +116,8 @@ export default function _slug() {
   const [ownedBox, setOwnedBox] = useState({});
   const [dataModal, setDataModal] = useState({});
   const [modalMessage, setModalMessage] = useState({});
+  const [claimReward, setClaimReward] = useState([]);
+  const [itemURI, setItemURI] = useState({});
   const { account, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -319,6 +322,12 @@ export default function _slug() {
       // document.getElementById("loading-vcg").classList.add("show");
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
+      const randomList = [];
+
+      for (let i = 0; i < 1; i++) {
+        const random = Math.floor((Math.random() * 100000000000) + 1);
+        randomList.push(random);
+      }
       
       const launchpadContract = connectContract(
         project.address,
@@ -327,7 +336,7 @@ export default function _slug() {
 
       const claim = await launchpadContract
         .connect(signer)
-        .claimBox(boxId, ownedBox[box]);
+        .claimBox(boxId, 1, randomList);
 
       // const listen = await launchpadContract.connect(signer);
       // const request = listen.filters.claimed(reqId);
@@ -352,12 +361,26 @@ export default function _slug() {
 
       claim.hash;
       claim.wait().then(async (res) => {
-        const reqId = res.events[1].args.requestId;
+        const nftAddress = await launchpadContract.connect(signer).nftAddress();
+        const nftContract = connectContract(nftAddress, abiNFT);
+
+        const reward = res.events.at(-1).args.reward;
+        reward.forEach(async e => {
+          const id = BigNumber.from(e).toNumber();
+          claimReward.push(id);
+          if (itemURI[id] == undefined) {
+            const uri = await nftContract.connect(signer).uri(id);
+            console.log(uri);
+            itemURI[id] = uri;
+          }
+        });
+        setClaimReward([...claimReward]);
+        setItemURI({...itemURI});
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
             itemName: box,
-            amount: ownedBox[box],
+            amount: 1,
             projectName: project.name,
             projectDetail: project._id
           });
@@ -598,7 +621,7 @@ export default function _slug() {
               <iframe
                 width={590}
                 height={332}
-                src={`https://www.youtube.com/embed/${project.video.split("/").at(-1)}`}
+                src={`https://www.youtube.com/embed/${project?.video?.split("/").at(-1)}`}
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -739,7 +762,13 @@ export default function _slug() {
           action={actionModal}
         />
       }
-      {modal.modalClaimable.isOpen && <DialogClaimable/>}
+      {
+        modal.modalClaimable.isOpen && 
+        <DialogClaimable
+          reward={claimReward}
+          uri={itemURI}
+        />
+      }
     </div>
   );
 }

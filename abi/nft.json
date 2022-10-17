@@ -18,50 +18,13 @@
             },
             {
                 "internalType": "address",
-                "name": "_currency",
+                "name": "_launchpad",
                 "type": "address"
             },
             {
-                "internalType": "uint256",
-                "name": "_startDate",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_ids",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_prices",
-                "type": "uint256[]"
-            },
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "stock",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "uri",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "uint32[]",
-                        "name": "itemCategory",
-                        "type": "uint32[]"
-                    },
-                    {
-                        "internalType": "uint32[]",
-                        "name": "itemAmount",
-                        "type": "uint32[]"
-                    }
-                ],
-                "internalType": "struct Launchpad.boxDetail[]",
-                "name": "_boxes",
-                "type": "tuple[]"
+                "internalType": "address",
+                "name": "projectOwner",
+                "type": "address"
             },
             {
                 "internalType": "uint256[]",
@@ -72,11 +35,6 @@
                 "internalType": "string[]",
                 "name": "_itemUri",
                 "type": "string[]"
-            },
-            {
-                "internalType": "address",
-                "name": "projectOwner",
-                "type": "address"
             }
         ],
         "stateMutability": "nonpayable",
@@ -220,106 +178,6 @@
         "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "reward",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "claimed",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "status",
-                "type": "bool"
-            }
-        ],
-        "name": "finalized",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "sold",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "status",
-                "type": "bool"
-            }
-        ],
-        "name": "unfinalized",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "_itemId",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_itemCategory",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_itemStock",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "addItem",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "allowedCurrency",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
@@ -371,165 +229,6 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "boxId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "stock",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "uri",
-                "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "boxPrize",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "name": "boxRequestId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_currency",
-                "type": "address"
-            }
-        ],
-        "name": "buyBox",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint32",
-                "name": "_amount",
-                "type": "uint32"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_random",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "claimBox",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_price",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_currency",
-                "type": "address"
-            }
-        ],
-        "name": "editBoxPrice",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "editBoxSupply",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
                 "name": "id",
                 "type": "uint256"
             }
@@ -540,32 +239,6 @@
                 "internalType": "bool",
                 "name": "",
                 "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "finalizeBox",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_categoryId",
-                "type": "uint256"
-            }
-        ],
-        "name": "getCategoryItem",
-        "outputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
             }
         ],
         "stateMutability": "view",
@@ -597,12 +270,12 @@
     },
     {
         "inputs": [],
-        "name": "isFinalized",
+        "name": "launcpadAddress",
         "outputs": [
             {
-                "internalType": "bool",
+                "internalType": "address",
                 "name": "",
-                "type": "bool"
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -611,44 +284,24 @@
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
                 "internalType": "uint256",
-                "name": "",
+                "name": "_itemId",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "_itemAmount",
                 "type": "uint256"
             }
         ],
-        "name": "itemCategoryId",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "itemStock",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -659,19 +312,6 @@
                 "internalType": "string",
                 "name": "",
                 "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "nftAddress",
-        "outputs": [
-            {
-                "internalType": "contract NFTContract",
-                "name": "",
-                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -782,16 +422,21 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "startDate",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "internalType": "uint256[]",
+                "name": "_itemId",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_itemUri",
+                "type": "string[]"
             }
         ],
-        "stateMutability": "view",
+        "name": "setURI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -859,13 +504,6 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "unfinalizeBox",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -882,19 +520,6 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_currency",
-                "type": "address"
-            }
-        ],
-        "name": "withdrawToken",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

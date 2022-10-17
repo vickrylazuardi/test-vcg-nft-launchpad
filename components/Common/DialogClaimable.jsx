@@ -3,7 +3,9 @@ import {useEffect, useState} from "react";
 import {toggleModalClaimable} from "../../redux/modalReducer";
 const {motion} = require("framer-motion");
 
-export default function DialogClaimable() {
+export default function DialogClaimable(props) {
+	console.log(props.reward);
+	console.log(props.uri);
 	const [items] = useState([1, 2, 3, 4, 5, 6 , 7, 8, 9, 10, 11, 12, 13]);
 	const modal = useSelector(state => state.modal.modalClaimable);
 	const dispatch = useDispatch();
