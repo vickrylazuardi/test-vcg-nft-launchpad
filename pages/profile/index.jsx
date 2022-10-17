@@ -11,7 +11,7 @@ import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 import DashboardProjects from "../../components/Dashboard/DashboardProjects";
 import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile";
 
-export default function index() {
+export default function Index() {
 	const marginMobile = {
 		marginTop: "-90px",
 	};
