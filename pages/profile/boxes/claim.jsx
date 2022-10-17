@@ -5,7 +5,7 @@ import {toggleModalConfirmation} from "../../../redux/modalReducer";
 
 const {motion} = require("framer-motion");
 
-export default function box() {
+export default function Box() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [pslItem] = useState([0, 1, 2]);
 	const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { isMobile, isBrowser } from 'react-device-detect';
 import React, { useEffect } from "react";
 
-export default function index() {
+export default function Index() {
 	const { connect, signature } = useMetaMask();
 	const router = useRouter();
 

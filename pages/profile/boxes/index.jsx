@@ -8,7 +8,7 @@ import {toggleModalConfirmation} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
 
-export default function index() {
+export default function Index() {
 	const modal = useSelector((state) => state.modal);
 	const dispatch = useDispatch();
 	const router = useRouter();

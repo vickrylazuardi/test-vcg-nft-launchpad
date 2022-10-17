@@ -8,7 +8,9 @@ export default function index() {
 	return (
 		<div id="project-section-launchpad" className="global-container">
 			{[1, 2, 3, 4, 5].map((item, index) => (
-				<ProjectItemMobile/>
+				<div key={index}>
+					<ProjectItemMobile/>
+				</div>
 			))}
 			{modal.modalConfirmation.isOpen && <DialogSliderMobile/>}
 		</div>

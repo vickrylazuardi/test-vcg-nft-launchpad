@@ -7,7 +7,7 @@ import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
 import {useDispatch} from "react-redux";
 
-export default function index() {
+export default function Index() {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const navbarHistory = {

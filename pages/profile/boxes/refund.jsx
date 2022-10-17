@@ -4,7 +4,7 @@ import DialogSliderMobile from "../../../Components/Common/DialogSliderMobile";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
 
-export default function box() {
+export default function Box() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [pslItem] = useState([0, 1, 2]);
 	const dispatch = useDispatch();
