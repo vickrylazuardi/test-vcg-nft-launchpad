@@ -117,7 +117,7 @@ export const API = {
     fromLaunchpad: "/metadata/fromLaunchpad"
   },
   launchpad: {
-    // api-launchpad.vcg.asia
+    // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:4300/launchpad
     domain: 'https://api-launchpad.vcg.asia/launchpad',
     local: "https://api-launchpad.vcg.asia/launchpad",

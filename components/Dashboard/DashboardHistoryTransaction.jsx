@@ -1,20 +1,19 @@
-import React, {useState} from "react";
+import React from "react";
+import {useSelector} from "react-redux";
 import DashboardHistoryTransactionItem from "./DashboardHistoryTransactionItem";
+import DialogBoxes from "../Common/DialogBoxes";
+import DialogDetailImage from "../Common/DialogDetailImage";
 import Pagination from "../Common/Pagination";
+import DialogDetailTransaction from "../Common/DialogDetailTransaction";
 
 export default function DashboardHistoryTransaction() {
-	const textStyling = {
-		fontSize: "14px",
-		color: "#9AA4BF"
-	}
-	const paginationStyling = {
-		borderBottom: "1px solid #9AA4BF",
-	}
+	//functional
+	const modal = useSelector((state) => state.modal);
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
 				<div className="dph-left pl-3">
-					<p className="font-bold dph-title">Projects</p>
+					<p className="font-bold dph-title">Transaction History</p>
 				</div>
 				<div className="dph-right pr-3">
 					<div className="input-wrapper w-full md:w-2/3 relative">
@@ -33,6 +32,9 @@ export default function DashboardHistoryTransaction() {
 				<DashboardHistoryTransactionItem/>
 			</div>
 			<Pagination/>
+			{modal.modalBoxes.isOpen && <DialogBoxes/>}
+			{modal.modalImages.isOpen && <DialogDetailImage/>}
+			{modal.modalDetailTransaction.isOpen && <DialogDetailTransaction/>}
 		</div>
 	);
 }

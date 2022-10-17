@@ -150,10 +150,10 @@ export default function Home() {
         soon={soon}
         finish={finish}
       />
-      <Market />
+      {/* <Market /> */}
       <div id="home-htb" className="container mt-14 lg:mt-6 lg:px-0">
         <h2 className="font-bold text-2xl lg:text-sm mb-4 lg:px-5">
-          Marketplace
+          How To Buy
         </h2>
         <div className="relative w-full" style={{ minHeight: 150 }}>
           {isDesktop && (
@@ -174,7 +174,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <Products />
+      {/* <Products /> */}
     </div>
   );
 }
