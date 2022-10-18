@@ -72,22 +72,42 @@ export default function ItemLaunchpad(props) {
           <div className="price-bar">
             <div
               className={"price-inner-bar"}
-              style={{
-                width: `${props?.data?.sold / props?.data?.stock * 100}%`
-              }}
+              style={
+                props?.name == "Mystery Box" ?
+                {width: `${props?.data?.sold / props?.data?.stock * 100}%`} :
+                {width: 0}
+              }
             />
           </div>
         </div>
-        <div className="percentage-wrap mt-3 flex items-center justify-between">
-          <p className="font-bold text-sm">
-            {(props?.data?.sold / props?.data?.stock * 100).toFixed(0)}%
-          </p>
-          <p className="font-bold text-sm">
-            {props?.data?.sold}/{props?.data?.stock} Boxes
-          </p>
-        </div>
+        {
+          props?.name == "Mystery Box" ?
+          <div className="percentage-wrap mt-3 flex items-center justify-between">
+            <p className="font-bold text-sm">
+              {(props?.data?.sold / props?.data?.stock * 100).toFixed(0)}%
+            </p>
+            <p className="font-bold text-sm">
+              {props?.data?.sold}/{props?.data?.stock} Boxes
+            </p>
+          </div> : 
+          <div className="percentage-wrap mt-3 flex items-center justify-between">
+            <p className="font-bold text-sm">
+              0%
+            </p>
+            <p className="font-bold text-sm">
+              {props?.data?.sold}/{props?.data?.stock} Boxes
+            </p>
+          </div>
+        }
         <div className="btn-wrap mt-3">
           {
+            props?.name != "Mystery Box" ?
+            <button
+              className={"btn btn-disabled w-full"}
+              disabled
+            >
+              Coming Soon
+            </button> :
             props?.account ?
             (
               props?.account == props?.project?.owner ?
@@ -97,7 +117,7 @@ export default function ItemLaunchpad(props) {
                     ? "btn btn-disabled w-full"
                     : props?.project?.finalize
                       ? "btn btn-disabled w-full"
-                      : "btn btn-purple-primary w-full"
+                      : "btn btn-orange-light w-full"
                 }
                 disabled={
                   new Date() < new Date(props.project.startedAt) ? true :
@@ -118,7 +138,7 @@ export default function ItemLaunchpad(props) {
                 className={
                   props?.owned < 1
                     ? "btn btn-disabled w-full"
-                    : "btn btn-purple-primary w-full"
+                    : "btn btn-orange-light w-full"
                 }
                 disabled={props?.owned < 1 ? true : false}
                 onClick={() => {
@@ -137,7 +157,7 @@ export default function ItemLaunchpad(props) {
                     ? "btn btn-disabled w-full"
                     : props?.data?.sold == props?.data?.stock
                       ? "btn btn-disabled w-full"
-                      : "btn btn-purple-primary w-full"
+                      : "btn btn-orange-light w-full"
                 }
                 disabled={
                   new Date() < new Date(props.project.startedAt) ? true :
@@ -159,7 +179,7 @@ export default function ItemLaunchpad(props) {
             <Link href="/connect-wallet">
               <a>
                 <button
-                  className={"btn btn-purple-primary w-full"}
+                  className={"btn btn-orange-light w-full"}
                 >
                   Connect Wallet
                 </button>

@@ -68,8 +68,8 @@ export default function Header(props) {
               isBrowser ? "action-container mt-10" : "action-container mt-3"
             }
           >
-            <div className="info-container flex items-center justify-between">
-              <div className="item-gray text-center" style={{ width: "32%" }}>
+            <div className="info-container flex items-center justify-between gap-5">
+              <div className="item-gray text-center" style={{ width: "50%" }}>
                 {
                   props.totalProject ?
                   <p className="font-bold text-lg">
@@ -84,7 +84,7 @@ export default function Header(props) {
                   Projects Funded
                 </p>
               </div>
-              <div className="item-gray text-center" style={{ width: "32%" }}>
+              <div className="item-gray text-center" style={{ width: "50%" }}>
                 {
                   props.totalFunded ?
                   <p className="font-bold text-lg">
@@ -99,7 +99,7 @@ export default function Header(props) {
                   Creative Work
                 </p>
               </div>
-              <div className="item-gray" style={{ width: "32%" }}>
+              {/* <div className="item-gray" style={{ width: "32%" }}>
                 <p className="font-bold text-lg text-center">$77.75M</p>
                 <p
                   className="small-semibold text-center"
@@ -107,7 +107,7 @@ export default function Header(props) {
                 >
                   Creative Work
                 </p>
-              </div>
+              </div> */}
             </div>
             <div className="flex items-center my-5 gap-2">
               <button
@@ -125,8 +125,7 @@ export default function Header(props) {
                 </a>
               </button>
               <button
-                className="btn btn-disabled w-1/2 lg:text-xs" disabled
-                // className="btn btn-orange-light w-1/2 lg:text-xs"
+                className="btn btn-orange-light w-1/2 lg:text-xs"disabled
                 onClick={() => router.push("/forms/new-project")}
               >
                 Launch Your Project Now

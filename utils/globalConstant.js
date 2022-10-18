@@ -119,11 +119,19 @@ export const API = {
   launchpad: {
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:4300/launchpad
-    domain: 'http://localhost:4300/launchpad',
-    local: "http://localhost:4300/launchpad",
+    domain: 'https://api-launchpad.vcg.asia/launchpad',
+    local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
+    },
+    nft: {
+      detail: "/nft/info",
+      filter: "/nft/filter",
+      add: "/nft/add",
+      update: "/nft/update",
+      buy: "/nft/buy",
+      finalize: "/nft/finalize",
     },
     project: {
       detail: "/project/info",

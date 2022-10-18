@@ -15,7 +15,7 @@ import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
-import abiNFT from '../../abi/nft.json';
+import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 
 export default function _slug() {
@@ -109,6 +109,13 @@ export default function _slug() {
       },
     ],
   };
+
+  const StyledSlider = styled(Slider)`
+    .slick-track {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  `;
 
   const [project, setProject] = useState({});
   const [balance, setBalance] = useState(null);
@@ -334,6 +341,8 @@ export default function _slug() {
         abiLaunchpad
       );
 
+      console.log(boxId, ownedBox[box], randomList)
+
       const claim = await launchpadContract
         .connect(signer)
         .claimBox(boxId, 1, randomList);
@@ -361,21 +370,21 @@ export default function _slug() {
 
       claim.hash;
       claim.wait().then(async (res) => {
-        const nftAddress = await launchpadContract.connect(signer).nftAddress();
-        const nftContract = connectContract(nftAddress, abiNFT);
-
         const reward = res.events.at(-1).args.reward;
         reward.forEach(async e => {
           const id = BigNumber.from(e).toNumber();
           claimReward.push(id);
           if (itemURI[id] == undefined) {
-            const uri = await nftContract.connect(signer).uri(id);
-            console.log(uri);
-            itemURI[id] = uri;
+            await axios.post(API.launchpad.local + API.launchpad.nft.detail, {
+              nftAddress: project.address,
+              tokenId: id
+            }).then((response) => {
+              itemURI[id] = response.data.data;
+              setItemURI({...itemURI});
+            })
           }
         });
         setClaimReward([...claimReward]);
-        setItemURI({...itemURI});
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
@@ -655,7 +664,7 @@ export default function _slug() {
         <div className="item-launchpad">
           <h2 className="font-bold text-2xl mb-3 lg:text-base">Items</h2>
           <div className="item-wrapper">
-            <Slider {...settingsItems}>
+            <StyledSlider {...settingsItems}>
               {
                 project.boxes ?
                 Object.keys(project.boxes).map((item, idx) => {
@@ -675,7 +684,7 @@ export default function _slug() {
                   )
                 }) : ""
               }
-            </Slider>
+            </StyledSlider>
           </div>
         </div>
         {/* /ITEMS */}

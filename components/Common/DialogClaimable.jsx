@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {toggleModalClaimable} from "../../redux/modalReducer";
+import Link from "next/link";
 const {motion} = require("framer-motion");
 
 export default function DialogClaimable(props) {
@@ -40,17 +41,39 @@ export default function DialogClaimable(props) {
 			transition: {delay: 0.5}
 		}
 	};
-	const container = {
-		hidden: {opacity: 1, scale: 0},
+
+	const containerFull = {
+		hidden: {opacity: 1, scale: 0, marginBottom: "2.5rem"},
 		visible: {
 			opacity: 1,
 			scale: 1,
+			marginBottom: "2.5rem",
 			transition: {
 				delayChildren: 0.5,
 				staggerChildren: 0.25
 			}
 		}
 	};
+
+	const containerSmall = {
+		hidden: {
+			opacity: 1, 
+			scale: 0, 
+			height: "auto",
+			marginBottom: "2.5rem"
+		},
+		visible: {
+			opacity: 1,
+			scale: 1,
+			height: "auto",
+			marginBottom: "2.5rem",
+			transition: {
+				delayChildren: 0.5,
+				staggerChildren: 0.25
+			}
+		}
+	};
+
 	const itemList = {
 		hidden: {y: "100vh", opacity: 0},
 		visible: {
@@ -86,16 +109,60 @@ export default function DialogClaimable(props) {
 				)}
 				{modal.showItem && (
 					<div className="dialog-claimable-body text-center px-4 py-4">
-						<motion.ul className="container-motion-ul grid grid-cols-4 gap-1" variants={container} initial="hidden"
-											 animate="visible">
-							{items.map((index) => (
-								// eslint-disable-next-line react/jsx-key
+						<motion.ul 
+							className={"container-motion-ul grid grid-cols-4 gap-1"}
+							variants={
+								props?.reward?.length < 8 ?
+								containerSmall :
+								containerFull
+							} 
+							initial="hidden"
+							animate="visible"
+						>
+							{props?.reward?.map((item, index) => (
 								<motion.li key={index} className="dcb-item text-center mt-3" variants={itemList}>
-									<img src="https://placeimg.com/160/160/arch" className="dcb-item-img" alt=""/>
-									<p className="font-semibold text-white dcb-item-name mt-2">Item Name</p>
+									{
+										props?.uri[item] ?
+										<>
+											<img 
+												src={props?.uri[item].image} 
+												className="dcb-item-img" 
+												style={{
+													width: "160px",
+													height: "160px",
+													objectFit: "contain",
+													aspectRatio: "1/1"
+												}}
+												alt=""
+											/>
+											<p className="font-semibold text-white dcb-item-name mt-2">{props?.uri[item].name}</p>
+										</> :
+										<>
+											<div
+												className="flex justify-center items-center"
+												style={{
+													width: "160px",
+													height: "160px"
+												}}
+											>
+												<div class="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full"/>
+											</div>
+											<p className="font-semibold text-white dcb-item-name mt-2">Loading</p>
+										</>
+									}
 								</motion.li>
 							))}
 						</motion.ul>
+						<Link href="/profile/nft">
+							<a>
+								<button
+									className="btn btn-orange-light w-full text-white"
+									onClick={() => dispatch(toggleModalClaimable(modalClaimable))}
+								>
+									See Owned NFT
+								</button>
+							</a>
+						</Link>
 					</div>
 				)}
 			</motion.div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import CardItem from "../Common/CardItem";
+import styled from "styled-components";
 
 export default function Tab(props) {
   const settings = {
@@ -19,7 +20,14 @@ export default function Tab(props) {
       },
     ],
   };
-  const [item] = useState([1, 2, 3, 4, 5, 6]);
+
+  const StyledSlider = styled(Slider)`
+    .slick-track {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  `;
+
   const [tab] = useState([
     {
       tab: 0,
@@ -59,7 +67,7 @@ export default function Tab(props) {
         ))}
       </div>
       <div className="item-tab-container mt-5">
-        <Slider {...settings}>
+        <StyledSlider {...settings}>
           {
             activeTab == 0 ?
             props?.trending?.map((item, idx) => (
@@ -119,7 +127,7 @@ export default function Tab(props) {
               </div>
             ) : ""
           }
-        </Slider>
+        </StyledSlider>
       </div>
     </div>
   );

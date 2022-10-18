@@ -35,14 +35,14 @@ export const MetaMaskProvider = ({ children }) => {
   }, [account]);
 
   useEffect(() => {
-    if (sessionStorage.getItem("isConnected")) {
-      connect(sessionStorage.getItem("providerType"));
+    if (cookies.get("isConnected")) {
+      connect(cookies.get("providerType"));
     }
   }, []);
-
+  
   useEffect(() => {
-    if (sessionStorage.getItem("isConnected") && isActive) {
-      connect(sessionStorage.getItem("providerType"));
+    if (cookies.get("isConnected")) {
+      connect(cookies.get("providerType"));
     }
   }, [isActive]);
 
@@ -178,30 +178,30 @@ export const MetaMaskProvider = ({ children }) => {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          sessionStorage.setItem("providerType", "metaMask");
-          sessionStorage.setItem("isConnected", true);
+          setCookie("providerType", "metaMask", 1);
+          setCookie("isConnected", true, 1);
         });
       } else if (providerType === "safePal") {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          sessionStorage.setItem("providerType", "safePal");
-          sessionStorage.setItem("isConnected", true);
+          setCookie("providerType", "safePal", 1);
+          setCookie("isConnected", true, 1);
         });
       }
       if (providerType === "trustWallet") {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          sessionStorage.setItem("providerType", "trustWallet");
-          sessionStorage.setItem("isConnected", true);
+          setCookie("providerType", "trustWallet", 1);
+          setCookie("isConnected", true, 1);
         });
       } else if (providerType === "walletConnect") {
         await activate(walletConnect).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          sessionStorage.setItem("providerType", "walletConnect");
-          sessionStorage.setItem("isConnected", true);
+          setCookie("providerType", "walletConnect", 1);
+          setCookie("isConnected", true, 1);
         });
       } else {
       }
@@ -217,8 +217,8 @@ export const MetaMaskProvider = ({ children }) => {
   const disconnect = async () => {
     try {
       await deactivate();
-      sessionStorage.removeItem("isConnected");
-      sessionStorage.removeItem("providerType");
+      cookies.remove("isConnected");
+      cookies.remove("providerType");
       cookies.remove(account);
       cookies.remove(account + "-msg");
       cookies.remove(account + "-profile");

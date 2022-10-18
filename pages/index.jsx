@@ -50,7 +50,7 @@ export default function Home() {
   const getTrending = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 6,
+        limit: 10,
         status: 1,
         sort: {trending: -1}
       })
@@ -66,7 +66,7 @@ export default function Home() {
   const getOngoing = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        limit: 10,
         status: 1,
         approved: true,
       })
@@ -82,7 +82,7 @@ export default function Home() {
   const getSoon = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        limit: 10,
         status: 0,
         approved: true,
       })
@@ -98,7 +98,7 @@ export default function Home() {
   const getFinish = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        limit: 10,
         status: 2,
         approved: true,
       })
