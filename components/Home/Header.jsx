@@ -1,8 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { isBrowser, isMobile } from "react-device-detect";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const router = useRouter();
+
   return (
     <div id="launchpad-header">
       <div className="container flex items-start justify-between">
@@ -87,7 +90,10 @@ export default function Header() {
               >
                 Get $VCG Now
               </button>
-              <button className="btn btn-orange-light w-1/2 lg:text-xs">
+              <button
+                className="btn btn-orange-light w-1/2 lg:text-xs"
+                onClick={() => router.push("/forms/new-project")}
+              >
                 Launch Your Project Now
               </button>
             </div>
