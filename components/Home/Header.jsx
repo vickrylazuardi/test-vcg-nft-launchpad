@@ -1,10 +1,13 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { isBrowser, isMobile } from "react-device-detect";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Header(props) {
+  const router = useRouter();
+  
   const copyToClipboard = () => {
     try {
       navigator.clipboard.writeText("0xi93294829488141939204823948");
@@ -121,7 +124,11 @@ export default function Header(props) {
                   </p>
                 </a>
               </button>
-              <button className="btn btn-disabled w-1/2 lg:text-xs" disabled>
+              <button
+                className="btn btn-disabled w-1/2 lg:text-xs" disabled
+                // className="btn btn-orange-light w-1/2 lg:text-xs"
+                onClick={() => router.push("/forms/new-project")}
+              >
                 Launch Your Project Now
               </button>
             </div>
