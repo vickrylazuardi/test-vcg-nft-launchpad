@@ -72,42 +72,20 @@ export default function ItemLaunchpad(props) {
           <div className="price-bar">
             <div
               className={"price-inner-bar"}
-              style={
-                props?.name == "Mystery Box" ?
-                {width: `${props?.data?.sold / props?.data?.stock * 100}%`} :
-                {width: 0}
-              }
+              style={{width: `${props?.data?.sold / props?.data?.stock * 100}%`}}
             />
           </div>
         </div>
-        {
-          props?.name == "Mystery Box" ?
-          <div className="percentage-wrap mt-3 flex items-center justify-between">
-            <p className="font-bold text-sm">
-              {(props?.data?.sold / props?.data?.stock * 100).toFixed(0)}%
-            </p>
-            <p className="font-bold text-sm">
-              {props?.data?.sold}/{props?.data?.stock} Boxes
-            </p>
-          </div> : 
-          <div className="percentage-wrap mt-3 flex items-center justify-between">
-            <p className="font-bold text-sm">
-              0%
-            </p>
-            <p className="font-bold text-sm">
-              {props?.data?.sold}/{props?.data?.stock} Boxes
-            </p>
-          </div>
-        }
+        <div className="percentage-wrap mt-3 flex items-center justify-between">
+          <p className="font-bold text-sm">
+            {(props?.data?.sold / props?.data?.stock * 100).toFixed(0)}%
+          </p>
+          <p className="font-bold text-sm">
+            {props?.data?.sold}/{props?.data?.stock} Boxes
+          </p>
+        </div>
         <div className="btn-wrap mt-3">
           {
-            props?.name != "Mystery Box" ?
-            <button
-              className={"btn btn-disabled w-full"}
-              disabled
-            >
-              Coming Soon
-            </button> :
             props?.account ?
             (
               props?.account == props?.project?.owner ?

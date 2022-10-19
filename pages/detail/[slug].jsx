@@ -326,12 +326,11 @@ export default function _slug() {
 
   const claimBox = async (box) => {
     try {
-      // document.getElementById("loading-vcg").classList.add("show");
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
       const randomList = [];
 
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < ownedBox[box]; i++) {
         const random = Math.floor((Math.random() * 100000000000) + 1);
         randomList.push(random);
       }
@@ -341,32 +340,9 @@ export default function _slug() {
         abiLaunchpad
       );
 
-      console.log(boxId, ownedBox[box], randomList)
-
       const claim = await launchpadContract
         .connect(signer)
-        .claimBox(boxId, 1, randomList);
-
-      // const listen = await launchpadContract.connect(signer);
-      // const request = listen.filters.claimed(reqId);
-      // listen.on("RequestSent", (requestId, numWords, event) => {
-      //   console.log("reqId -> ", requestId);
-      //   console.log("numWords -> ", numWords);
-      //   console.log("event -> ", event);3
-      //   const reqId = BigNumber.from(requestId).toString();
-      //   const request = listen.filters.claimed(reqId);
-      //   listen.on(request, (requestId, reward, event) => {
-      //     console.log("reqId -> ", requestId);
-      //     console.log("reward -> ", reward);
-      //     console.log("event -> ", event);
-      //   });
-      // });
-
-      // listen.on("claimed", (requestId, reward, event) => {
-      //   console.log("reqId -> ", requestId);
-      //   console.log("reward -> ", reward);
-      //   console.log("event -> ", event);
-      // });
+        .claimBox(boxId, ownedBox[box], randomList);
 
       claim.hash;
       claim.wait().then(async (res) => {
@@ -376,7 +352,7 @@ export default function _slug() {
           claimReward.push(id);
           if (itemURI[id] == undefined) {
             await axios.post(API.launchpad.local + API.launchpad.nft.detail, {
-              nftAddress: project.address,
+              projectDetail: project._id,
               tokenId: id
             }).then((response) => {
               itemURI[id] = response.data.data;
@@ -389,7 +365,7 @@ export default function _slug() {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
             itemName: box,
-            amount: 1,
+            amount: ownedBox[box],
             projectName: project.name,
             projectDetail: project._id
           });
@@ -430,19 +406,11 @@ export default function _slug() {
           reload();
           dispatch(toggleModalConfirmation(modalConfirmation));
           dispatch(toggleModalClaimable(modalClaimableItem));
-          // document.getElementById("loading-vcg").classList.remove("show");
-          // toast.success("Claim Box successfull!", {
-          //   position: toast.POSITION.TOP_RIGHT,
-          // });
         }
       });
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      // document.getElementById("loading-vcg").classList.remove("show");
-      // toast.error("Claim Box - Request was rejected", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
     }
   };
 
@@ -504,9 +472,11 @@ export default function _slug() {
 
   const reload = () => {
     try {
-      getDetailProject(data.slug);
-      getTokenBalance();
-      getOwnedBox();
+      setTimeout(() => {
+        getDetailProject(data.slug);
+        getTokenBalance();
+        getOwnedBox();
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
