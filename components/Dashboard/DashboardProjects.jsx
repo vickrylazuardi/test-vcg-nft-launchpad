@@ -5,7 +5,7 @@ import DialogDetailImage from "../Common/DialogDetailImage";
 import DialogConfirmation from "../Common/DialogConfirmation";
 import {useSelector} from "react-redux";
 
-export default function DashboardSideMenu() {
+export default function DashboardSideMenu(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
 	//styling
@@ -48,10 +48,15 @@ export default function DashboardSideMenu() {
 						<th className="font-semibold">Withdraw</th>
 					</tr>
 					</thead>
-					<DashboardProjectItem/>
+					<DashboardProjectItem
+						project={props.project}
+					/>
 				</table>
 			</div>
-			<Pagination/>
+			{
+				props?.project?.length ?
+				<Pagination/> : ""
+			}
 			{modal.modalBoxes.isOpen && <DialogBoxes/>}
 			{modal.modalImages.isOpen && <DialogDetailImage/>}
 			{modal.modalConfirmation.isOpen && <DialogConfirmation/>}

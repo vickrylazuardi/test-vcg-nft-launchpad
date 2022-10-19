@@ -90,6 +90,11 @@ export default function DialogConfirmation(props) {
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/coin-big.png" alt=""/>
 						<p className="font-bold dib-title mt-2 mb-2">Are you sure to {props.message}</p>
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
 						<button 
 							onClick={() => {
 								dispatch(toggleModalConfirmation(modalConfirmationSuccess))
@@ -106,7 +111,11 @@ export default function DialogConfirmation(props) {
 						<img className="dc-img" src="/images/success-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Success !</p>
 						<p className="dib-title mt-2 mb-2">{props.successMessage}</p>
-						{/*<p className="font-semibold">You have bought this box</p>*/}
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 										className="btn-orange-light w-full py-2 rounded-lg">Back
 						</button>
@@ -117,7 +126,11 @@ export default function DialogConfirmation(props) {
 						<img className="dc-img" src="/images/failed-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Failed !</p>
 						<p className="dib-title mt-2 mb-2">{props.failedMessage}</p>
-						{/*<p className="font-semibold">You have bought this box</p>*/}
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 										className="btn-orange-light w-full py-2 rounded-lg">Back
 						</button>

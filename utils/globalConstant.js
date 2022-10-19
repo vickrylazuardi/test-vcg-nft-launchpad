@@ -133,6 +133,10 @@ export const API = {
       buy: "/nft/buy",
       finalize: "/nft/finalize",
     },
+    ownedNft: {
+      filter: "/ownedNft/filter",
+      claim: "/ownedNft/claim",
+    },
     project: {
       detail: "/project/info",
       filter: "/project/filter",
@@ -151,6 +155,10 @@ export const API = {
       buy: "/ownedItem/buy",
       claim: "/ownedItem/claim",
       claimed: "/ownedItem/claimed"
+    },
+    history: {
+      filter: "/history/filter",
+      add: "/history/add"
     },
     faq: {
       list: "/faq/list",

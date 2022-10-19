@@ -110,7 +110,9 @@ export default function Index() {
 				{isDesktop && (
 					<div className="container-wrapper grid grid-cols-5 gap-4">
 						<DashboardSideMenu/>
-						<DashboardProjects/>
+						<DashboardProjects
+							project={project}
+						/>
 					</div>
 				)}
 			</div>
