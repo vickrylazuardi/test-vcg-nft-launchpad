@@ -5,7 +5,7 @@ import {
 	toggleModalTransaction
 } from "../../redux/modalReducer";
 
-export default function DashboardHistoryTransactionItem() {
+export default function DashboardHistoryTransactionItem(props) {
 	const [value] = useState([1, 2, 3, 4, 5]);
 	const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
@@ -62,24 +62,52 @@ export default function DashboardHistoryTransactionItem() {
 	};
 	return (
 		<div id="history-tr-list" className="p-3">
-			{value.map((item, index) => (
-				<div onClick={() => dispatch(toggleModalTransaction(dataModal.modalDetailTransaction))}
-						 className="history-tr-item py-2" key={index}>
-					<div className="hti-count">{index + 1}</div>
-					<div className="hti-box">
-						<img src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="hti-detailed ml-2">
-							<p className="font-bold hti-detailed-title">Box Name</p>
-							<p className="font-bold hti-detailed-boxes" onClick={onClickBoxes}>4 Boxes</p>
-							<p className="font-semibold hti-detailed-projecct">Project Name</p>
-							<p className="font-semibold hti-detailed-time">8/13/2022, 11:30 AM - 10/20/2022, 11:30 AM</p>
+			{
+				props?.history?.length ?
+				props?.history?.map((item, index) => (
+					<div onClick={() => dispatch(toggleModalTransaction(dataModal.modalDetailTransaction))}
+							className="history-tr-item py-2" key={index}>
+						<div className="hti-count">{index + 1}</div>
+						<div className="hti-box">
+							<img 
+								src={item.image} 
+								className="rounded-t-lg" 
+								alt=""
+								style={{
+									width: "75px",
+									height: "75px",
+									aspectRatio: "1/1",
+									objectFit: "contain"
+								}}/>
+							<div className="hti-detailed ml-2">
+								<p className="font-bold hti-detailed-title">{item.name}</p>
+								<p className="font-bold hti-detailed-boxes" onClick={onClickBoxes}>
+									{item.amount > 1 ? `${item.amount} Boxes` : "1 Box"}
+								</p>
+								<p className="font-semibold hti-detailed-projecct">{item.projectName}</p>
+								<p className="font-semibold hti-detailed-time">{(new Date(item.date)).toLocaleString()}</p>
+							</div>
+						</div>
+						<div className="hti-btn">
+							{
+								item.action == 0 ?
+								<button className="buy px-3 py-1 rounded-md">Buy</button> :
+								item.action == 1 ?
+								<button className="claim px-3 py-1 rounded-md">Claim</button> :
+								<button className="refund px-3 py-1 rounded-md">Refund</button>
+							}
 						</div>
 					</div>
-					<div className="hti-btn">
-						<button className="refund px-3 py-1 rounded-md">Refund</button>
+				)) :
+				<div className="history-tr-item py-2">
+					<div className="hti-count">1</div>
+					<div className="hti-box">
+						<div className="hti-detailed ml-2">
+							<p className="font-bold hti-detailed-title">No Data</p>
+						</div>
 					</div>
 				</div>
-			))}
+			}
 		</div>
 	);
 }

@@ -7,6 +7,10 @@ import {useSelector, useDispatch} from "react-redux";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../../utils/globalConstant";
+import useMetaMask from "../../../wallet/hook";
 
 export default function Index() {
 	const modal = useSelector((state) => state.modal);
@@ -46,6 +50,83 @@ export default function Index() {
 			dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
 		}
 	}
+
+	const [nft, setNft] = useState([]);
+	const [nftPage, setNftPage] = useState({});
+	const [nftFilter, setNftFilter] = useState({
+		limit: 5,
+		page: 1
+	})
+  const { account, signer, connectContract } = useMetaMask();
+
+	const getNftList = () => {
+		try {
+			axios.post(API.launchpad.local + API.launchpad.ownedNft.filter, nftFilter)
+      .then(res => {
+        if (res.status === 204) {
+					setNft([]);
+					setNftPage({});
+					return;
+				}
+        setNft(res.data.data.items);
+				paginate(res, nftPage, setNftPage);
+      })
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const changePage = (page) => {
+		try {
+			nftFilter.page = page;
+			setNftFilter({...nftFilter});
+			getNftList();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const paginate = async (res, getter, setter) => {
+    try {
+      let page = {};
+      page.currentPage = res.data.data.page;
+      page.maxPage = res.data.data.totalPage;
+      if (page.currentPage < 4 && page.maxPage > 5) {
+        page.listPage = [1, 2, 3, 4, 5]
+      } else if (page.currentPage >= 4 && page.currentPage + 2 <= page.maxPage) {
+        let list = [];
+        for (let i = page.currentPage - 2; i <= page.currentPage + 2; i++) {
+          list.push(i);
+        };
+        page.listPage = list;
+      } else if (page.maxPage > 5) {
+        let list = [];
+        for (let i = page.maxPage - 4; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      } else {
+        let list = [];
+        for (let i = 1; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      }
+      getter = page;
+      setter({...getter});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+	useEffect(() => {
+		if (account) {
+			nftFilter.owner = account;
+			setNftFilter({...nftFilter});
+			getNftList();
+		}
+	}, [account]);
+
 	return (
 		<div id="profile-launchpad">
 			<div className="container mx-auto bundle-pl">
@@ -61,7 +142,11 @@ export default function Index() {
 				<NavigationDashboard/> */}
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
-					<DashboardOwnedBox/>
+					<DashboardOwnedBox
+						boxes={nft}
+						page={nftPage}
+						pageAction={changePage}
+					/>
 				</div>
 			</div>
 			<div className="owned-boxed-list">

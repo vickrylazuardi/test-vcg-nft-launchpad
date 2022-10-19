@@ -253,6 +253,7 @@ export default function _slug() {
             owner: account,
             itemName: box,
             amount: Number(amount),
+            image: project.boxes[box].image,
             projectName: project.name,
             projectDetail: project._id
           });

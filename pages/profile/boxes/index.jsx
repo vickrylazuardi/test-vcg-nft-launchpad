@@ -7,6 +7,10 @@ import {useSelector, useDispatch} from "react-redux";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
+import React, { useEffect, useState } from "react";
+import useMetaMask from "../../../wallet/hook";
+import axios from "axios";
+import { API } from "../../../utils/globalConstant";
 
 export default function Index() {
 	const modal = useSelector((state) => state.modal);
@@ -46,6 +50,84 @@ export default function Index() {
 			dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
 		}
 	}
+
+	const [boxes, setBoxes] = useState([]);
+	const [boxesPage, setBoxesPage] = useState({});
+	const [boxesFilter, setBoxesFilter] = useState({
+		amount: {$ne: 0},
+		limit: 5,
+		page: 1
+	})
+  const { account, signer, connectContract } = useMetaMask();
+
+	const getBoxesList = () => {
+		try {
+			axios.post(API.launchpad.local + API.launchpad.item.filter, boxesFilter)
+      .then(res => {
+        if (res.status === 204) {
+					setBoxes([]);
+					setBoxesPage({});
+					return;
+				}
+        setBoxes(res.data.data.items);
+				paginate(res, boxesPage, setBoxesPage);
+      })
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const changePage = (page) => {
+		try {
+			boxesFilter.page = page;
+			setBoxesFilter({...boxesFilter});
+			getBoxesList();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const paginate = async (res, getter, setter) => {
+    try {
+      let page = {};
+      page.currentPage = res.data.data.page;
+      page.maxPage = res.data.data.totalPage;
+      if (page.currentPage < 4 && page.maxPage > 5) {
+        page.listPage = [1, 2, 3, 4, 5]
+      } else if (page.currentPage >= 4 && page.currentPage + 2 <= page.maxPage) {
+        let list = [];
+        for (let i = page.currentPage - 2; i <= page.currentPage + 2; i++) {
+          list.push(i);
+        };
+        page.listPage = list;
+      } else if (page.maxPage > 5) {
+        let list = [];
+        for (let i = page.maxPage - 4; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      } else {
+        let list = [];
+        for (let i = 1; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      }
+      getter = page;
+      setter({...getter});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+	useEffect(() => {
+		if (account) {
+			boxesFilter.owner = account;
+			setBoxesFilter({...boxesFilter});
+			getBoxesList();
+		}
+	}, [account]);
+
 	return (
 		<div id="profile-launchpad">
 			<div className="container mx-auto bundle-pl">
@@ -61,7 +143,11 @@ export default function Index() {
 				<NavigationDashboard/> */}
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
-					<DashboardOwnedBox/>
+					<DashboardOwnedBox
+						boxes={boxes}
+						page={boxesPage}
+						pageAction={changePage}
+					/>
 				</div>
 			</div>
 			<div className="owned-boxed-list">

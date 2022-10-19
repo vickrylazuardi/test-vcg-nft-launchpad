@@ -6,7 +6,7 @@ import DialogDetailImage from "../Common/DialogDetailImage";
 import Pagination from "../Common/Pagination";
 import DialogDetailTransaction from "../Common/DialogDetailTransaction";
 
-export default function DashboardHistoryTransaction() {
+export default function DashboardHistoryTransaction(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
 	return (
@@ -29,9 +29,17 @@ export default function DashboardHistoryTransaction() {
 				</div>
 			</div>
 			<div className="dashboard-projects-body mt-2">
-				<DashboardHistoryTransactionItem/>
+				<DashboardHistoryTransactionItem
+					history={props.history}
+				/>
 			</div>
-			<Pagination/>
+			{
+				props?.page?.currentPage ?
+				<Pagination
+					page={props.page}
+					pageAction={props.pageAction}
+				/> : ""
+			}
 			{modal.modalBoxes.isOpen && <DialogBoxes/>}
 			{modal.modalImages.isOpen && <DialogDetailImage/>}
 			{modal.modalDetailTransaction.isOpen && <DialogDetailTransaction/>}

@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalClaimable, toggleModalConfirmation} from "../../redux/modalReducer";
 
-export default function DashboardOwnedBoxItem() {
+export default function DashboardOwnedBoxItem(props) {
 	const [value] = useState([1, 2, 3, 4, 5]);
 	const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
@@ -34,23 +34,41 @@ export default function DashboardOwnedBoxItem() {
 	})
 	return (
 		<div id="owned-boxes-list" className="grid grid-cols-5 gap-4">
-			{value.map((item, index) => (
-				<div key={index} className="owned-boxes-item rounded-lg">
-					<div className="owned-boxes-item-head">
-						<img src="https://placeimg.com/160/160/arch" className="rounded-t-lg" alt=""/>
-					</div>
-					<div className="owned-boxes-item-body p-3">
-						<p className="font-bold obi-name">Box Name [{index + 1}]</p>
-						<p className="font-semibold obi-project mt-3">Project Name</p>
-						{index === 0 ? (
-							<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
-											className="btn-orange-light rounded-md px-3 py-1 mt-3">Refund</button>
-						) : (
+			{
+				props?.boxes?.length ?
+				props?.boxes?.map((item, index) => (
+					<div key={index} className="owned-boxes-item rounded-lg">
+						<div className="owned-boxes-item-head">
+							<img 
+								src={item.image} 
+								className="rounded-t-lg" 
+								alt=""
+								style={{
+									width: "165px",
+									height: "165px",
+									aspectRatio: "1/1",
+									objectFit: "contain"
+								}}
+							/>
+						</div>
+						<div className="owned-boxes-item-body p-3">
+							<p className="font-bold obi-name">{item.itemName} {item.amount > 1 ? `[${item.amount}]` : ""}</p>
+							<p className="font-semibold obi-project mt-3">{item.projectName}</p>
+							{/* {index === 0 ? (
+								<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
+												className="btn-orange-light rounded-md px-3 py-1 mt-3">Refund</button>
+							) : (
+								)} */}
 							<button onClick={()=>dispatch(toggleModalClaimable(modalClaimableItem))} className="btn-orange-light rounded-md px-3 py-1 mt-3">Claim</button>
-						)}
+						</div>
+					</div>
+				)) :
+				<div className="owned-boxes-item rounded-lg">
+					<div className="owned-boxes-item-head">
+						<p>No Data</p>
 					</div>
 				</div>
-			))}
+			}
 		</div>
 	);
 }

@@ -6,6 +6,10 @@ import DashboardHistoryTransaction from "../../../components/Dashboard/Dashboard
 import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
 import {useDispatch} from "react-redux";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { API } from "../../../utils/globalConstant";
+import useMetaMask from "../../../wallet/hook";
 
 export default function Index() {
 	const router = useRouter();
@@ -19,6 +23,82 @@ export default function Index() {
 		dispatch(toggleNavbar(navbarHistory))
 		router.push("/profile/history/detail?=boxname123");
 	}
+
+	const [history, setHistory] = useState([]);
+	const [historyPage, setHistoryPage] = useState({});
+	const [historyFilter, setHistoryFilter] = useState({
+		limit: 5,
+		page: 1
+	})
+  const { account, signer, connectContract } = useMetaMask();
+
+	const getHistoryList = () => {
+		try {
+			axios.post(API.launchpad.local + API.launchpad.history.filter, historyFilter)
+      .then(res => {
+        if (res.status === 204) {
+					setHistory([]);
+					setHistoryPage({});
+					return;
+				}
+        setHistory(res.data.data.items);
+				paginate(res, historyPage, setHistoryPage);
+      })
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const changePage = (page) => {
+		try {
+			historyFilter.page = page;
+			setHistoryFilter({...historyFilter});
+			getHistoryList();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const paginate = async (res, getter, setter) => {
+    try {
+      let page = {};
+      page.currentPage = res.data.data.page;
+      page.maxPage = res.data.data.totalPage;
+      if (page.currentPage < 4 && page.maxPage > 5) {
+        page.listPage = [1, 2, 3, 4, 5]
+      } else if (page.currentPage >= 4 && page.currentPage + 2 <= page.maxPage) {
+        let list = [];
+        for (let i = page.currentPage - 2; i <= page.currentPage + 2; i++) {
+          list.push(i);
+        };
+        page.listPage = list;
+      } else if (page.maxPage > 5) {
+        let list = [];
+        for (let i = page.maxPage - 4; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      } else {
+        let list = [];
+        for (let i = 1; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      }
+      getter = page;
+      setter({...getter});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+	useEffect(() => {
+		if (account) {
+			historyFilter.owner = account;
+			setHistoryFilter({...historyFilter});
+			getHistoryList();
+		}
+	}, [account]);
 
 	return (
 		<div id="profile-launchpad">
@@ -35,12 +115,16 @@ export default function Index() {
 				<NavigationDashboard/> */}
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
-					<DashboardHistoryTransaction/>
+					<DashboardHistoryTransaction
+						history={history}
+						page={historyPage}
+						pageAction={changePage}
+					/>
 				</div>
 			</div>
 			<div className="owned-boxed-list">
 				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Name</p>
+					<p className="font-bold">History Name</p>
 					<div onClick={redirect} className="obi-list mt-2 py-2">
 						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
 						<div className="obi-list-detailed">

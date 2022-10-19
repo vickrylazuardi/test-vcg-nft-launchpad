@@ -4,7 +4,7 @@ import DialogClaimable from "../Common/DialogClaimable";
 import Pagination from "../Common/Pagination";
 import {useSelector} from "react-redux";
 
-export default function DashboardOwnedBox() {
+export default function DashboardOwnedBox(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
 	return (
@@ -27,9 +27,17 @@ export default function DashboardOwnedBox() {
 				</div>
 			</div>
 			<div className="dashboard-projects-body mt-2 p-3">
-				<DashboardOwnedBoxItem />
+				<DashboardOwnedBoxItem 
+					boxes={props.boxes}
+				/>
 			</div>
-			<Pagination/>
+			{
+				props?.boxes?.length ?
+				<Pagination
+					page={props.page}
+					pageAction={props.pageAction}
+				/> : ""
+			}
 			{modal.modalConfirmation.isOpen && <DialogConfirmation status="refund"/>}
 			{modal.modalClaimable.isOpen && <DialogClaimable/>}
 		</div>
