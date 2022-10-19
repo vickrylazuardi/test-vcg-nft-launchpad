@@ -40,25 +40,7 @@ export default function Table2(props) {
         </tr>
       </thead>
       <tbody>
-        {props.list.features.length == 0 ? (
-          <tr>
-            <td colSpan={5}>
-              <div className="text-center p-4">
-                <img
-                  className="mb-3 m-auto"
-                  src="/images/vicimon-question.png"
-                  alt=""
-                />
-                <p
-                  style={{ color: "#9AA4BF" }}
-                  className="text-sm font-semibold"
-                >
-                  Please input your team features
-                </p>
-              </div>
-            </td>
-          </tr>
-        ) : (
+        {props?.list?.features?.length ? (
           props.list.features.map((item, idx) => {
             return (
               <tr key={idx}>
@@ -173,6 +155,24 @@ export default function Table2(props) {
               </tr>
             );
           })
+        ) : (
+          <tr>
+            <td colSpan={5}>
+              <div className="text-center p-4">
+                <img
+                  className="mb-3 m-auto"
+                  src="/images/vicimon-question.png"
+                  alt=""
+                />
+                <p
+                  style={{ color: "#9AA4BF" }}
+                  className="text-sm font-semibold"
+                >
+                  Please input your team features
+                </p>
+              </div>
+            </td>
+          </tr>
         )}
       </tbody>
     </table>

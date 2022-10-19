@@ -52,25 +52,7 @@ export default function Table4(props) {
         </tr>
       </thead>
       <tbody>
-        {props.list.boxes.length == 0 ? (
-          <tr>
-            <td colSpan={6}>
-              <div className="text-center p-4">
-                <img
-                  className="mb-3 m-auto"
-                  src="/images/vicimon-question.png"
-                  alt=""
-                />
-                <p
-                  style={{ color: "#9AA4BF" }}
-                  className="text-sm font-semibold"
-                >
-                  Please input your team boxes
-                </p>
-              </div>
-            </td>
-          </tr>
-        ) : (
+        {props?.list?.boxes?.length ? (
           props.list.boxes.map((item, idx) => {
             return (
               <tr key={idx}>
@@ -328,6 +310,24 @@ export default function Table4(props) {
               </tr>
             );
           })
+        ) : (
+          <tr>
+            <td colSpan={6}>
+              <div className="text-center p-4">
+                <img
+                  className="mb-3 m-auto"
+                  src="/images/vicimon-question.png"
+                  alt=""
+                />
+                <p
+                  style={{ color: "#9AA4BF" }}
+                  className="text-sm font-semibold"
+                >
+                  Please input your team boxes
+                </p>
+              </div>
+            </td>
+          </tr>
         )}
       </tbody>
     </table>
