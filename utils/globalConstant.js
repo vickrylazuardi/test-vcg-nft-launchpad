@@ -119,8 +119,8 @@ export const API = {
   launchpad: {
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:4300/launchpad
-    domain: 'http://localhost:4300/launchpad',
-    local: "http://localhost:4300/launchpad",
+    domain: 'https://api-launchpad.vcg.asia/launchpad',
+    local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
