@@ -95,13 +95,13 @@ export default function ItemLaunchpad(props) {
                 className={
                   new Date() < new Date(props.project.startedAt)
                     ? "btn btn-disabled w-full"
-                    : props?.project?.finalize
+                    : props?.data?.finalize
                       ? "btn btn-disabled w-full"
                       : "btn btn-orange-light w-full"
                 }
                 disabled={
                   new Date() < new Date(props.project.startedAt) ? true :
-                  props?.project?.finalize ? true : false
+                  props?.data?.finalize ? true : false
                 }
                 onClick={() => {
                   dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
@@ -113,7 +113,7 @@ export default function ItemLaunchpad(props) {
               >
                 Finalize
               </button> :
-              props?.project?.finalize ?
+              props?.data?.finalize ?
               <div className="wrap-input flex-1">
                 <input 
                   type="text" 
@@ -162,15 +162,18 @@ export default function ItemLaunchpad(props) {
                 <button
                   className={
                     new Date() < new Date(props.project.startedAt)
-                      ? "btn btn-disabled w-full"
-                      : amount < 1
-                        ? "btn btn-disabled w-full"
-                        : props?.data?.sold == props?.data?.stock
-                          ? "btn btn-disabled w-full"
-                          : "btn btn-orange-light w-full"
+                    ? "btn btn-disabled w-full"
+                    : !props?.data?.sell 
+                    ? "btn btn-disabled w-full"
+                    : amount < 1
+                    ? "btn btn-disabled w-full"
+                    : props?.data?.sold == props?.data?.stock
+                    ? "btn btn-disabled w-full"
+                    : "btn btn-orange-light w-full"
                   }
                   disabled={
                     new Date() < new Date(props.project.startedAt) ? true :
+                    !props?.data?.sell ? true :
                     amount < 1 ? true :
                     props?.data?.sold == props?.data?.stock ? true : false
                   }
@@ -184,7 +187,7 @@ export default function ItemLaunchpad(props) {
                     })
                   }}
                 >
-                  Buy
+                  {props?.data?.sell ? "Buy" : "Coming Soon"}
                 </button>
               </div>
             ) :

@@ -118,7 +118,7 @@ export const API = {
   },
   launchpad: {
     // https://api-launchpad.vcg.asia/launchpad
-    // http://localhost:4300/launchpad
+    // http://localhost:4600/launchpad
     domain: 'https://api-launchpad.vcg.asia/launchpad',
     local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
@@ -146,7 +146,8 @@ export const API = {
       start: "/project/start",
       finish: "/project/finish",
       buy: "/project/buy",
-      finalize: "/project/finalize",
+      finalizeBox: "/project/finalizeBox",
+      finalizeProject: "/project/finalizeProject",
     },
     item: {
       filter: "/ownedItem/filter",

@@ -16,7 +16,7 @@ export default function DashboardHistoryTransaction(props) {
 				<div className="dph-left pl-3">
 					<p className="font-bold dph-title">Transaction History</p>
 				</div>
-				<div className="dph-right pr-3">
+				{/* <div className="dph-right pr-3">
 					<div className="input-wrapper w-full md:w-2/3 relative">
 						<div className="img-wrap absolute top-0 bottom-0 flex items-center left-3">
 							<img src="/images/svg/icon-search.svg" alt="search" width={16}/>
@@ -27,7 +27,7 @@ export default function DashboardHistoryTransaction(props) {
 							placeholder="Search Projects"
 						/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 			<div className="dashboard-projects-body mt-2">
 				<DashboardHistoryTransactionItem

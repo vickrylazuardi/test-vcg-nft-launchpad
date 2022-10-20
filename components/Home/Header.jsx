@@ -26,7 +26,7 @@ export default function Header(props) {
         <div className="left w-1/2 lg:w-full">
           <div className="top-title lg:flex lg:justify-between lg:items-center">
             <div className="inner-top">
-              <h1>NFTs Launchpad</h1>
+              <h1>Launchpad</h1>
               <div className="flex items-center">
                 <p className="small-semibold">Powered by</p>
                 <div className="flex items-center ml-2">

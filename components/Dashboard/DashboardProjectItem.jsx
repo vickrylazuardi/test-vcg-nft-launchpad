@@ -99,7 +99,12 @@ export default function DashboardProjectItem(props) {
 				</tr>
 			)) :
 			<tr>
-				<td className="text-center" colSpan={7}>No Data</td>
+				<td className="text-center" colSpan={7}>
+					<div className="my-16">
+						<img className="mx-auto mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+						<p className="pnd-title">No Data Found</p>
+					</div>
+				</td>
 			</tr>
 		}
 		</tbody>

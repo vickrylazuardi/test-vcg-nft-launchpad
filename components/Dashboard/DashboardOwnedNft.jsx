@@ -11,7 +11,7 @@ export default function DashboardOwnedNft(props) {
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
 				<div className="dph-left pl-3">
-					<p className="font-bold dph-title">Owned Box</p>
+					<p className="font-bold dph-title">Owned NFT</p>
 				</div>
 				<div className="dph-right pr-3">
 					<div className="input-wrapper w-full md:w-2/3 relative">
@@ -21,7 +21,7 @@ export default function DashboardOwnedNft(props) {
 						<input
 							type="text"
 							className="w-full p-3 pl-10"
-							placeholder="Search Box"
+							placeholder="Search NFT"
 						/>
 					</div>
 				</div>

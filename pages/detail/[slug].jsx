@@ -297,12 +297,12 @@ export default function _slug() {
 
       const finalize = await launchpadContract
         .connect(signer)
-        .finalizeBox();
+        .finalizeBox(boxId);
 
       finalize.hash;
       finalize.wait().then((res) => {
         if (res.status == 1) {
-          axios.post(API.launchpad.local + API.launchpad.project.finalize, {
+          axios.post(API.launchpad.local + API.launchpad.project.finalizeBox, {
             id: project._id,
             box
           })
