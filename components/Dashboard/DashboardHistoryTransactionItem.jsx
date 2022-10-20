@@ -65,9 +65,15 @@ export default function DashboardHistoryTransactionItem(props) {
 			{
 				props?.history?.length ?
 				props?.history?.map((item, index) => (
-					<div onClick={() => dispatch(toggleModalTransaction(dataModal.modalDetailTransaction))}
-							className="history-tr-item py-2" key={index}>
-						<div className="hti-count">{index + 1}</div>
+					<div 
+						key={index}
+						className="history-tr-item py-2" 
+						onClick={() => {
+							props.setData(item);
+							dispatch(toggleModalTransaction(dataModal.modalDetailTransaction));
+						}}
+					>
+						<div className="hti-count">{((props.page.currentPage - 1) * 5) + index + 1}</div>
 						<div className="hti-box">
 							<img 
 								src={item.image} 
@@ -81,7 +87,7 @@ export default function DashboardHistoryTransactionItem(props) {
 								}}/>
 							<div className="hti-detailed ml-2">
 								<p className="font-bold hti-detailed-title">{item.name}</p>
-								<p className="font-bold hti-detailed-boxes" onClick={onClickBoxes}>
+								<p className="font-bold hti-detailed-boxes">
 									{item.amount > 1 ? `${item.amount} Boxes` : "1 Box"}
 								</p>
 								<p className="font-semibold hti-detailed-projecct">{item.projectName}</p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {useSelector} from "react-redux";
 import DashboardHistoryTransactionItem from "./DashboardHistoryTransactionItem";
 import DialogBoxes from "../Common/DialogBoxes";
@@ -9,6 +9,7 @@ import DialogDetailTransaction from "../Common/DialogDetailTransaction";
 export default function DashboardHistoryTransaction(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
+	const [dataModal, setDataModal] = useState({});
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
@@ -30,7 +31,9 @@ export default function DashboardHistoryTransaction(props) {
 			</div>
 			<div className="dashboard-projects-body mt-2">
 				<DashboardHistoryTransactionItem
+					setData={setDataModal}
 					history={props.history}
+					page={props.page}
 				/>
 			</div>
 			{
@@ -42,7 +45,7 @@ export default function DashboardHistoryTransaction(props) {
 			}
 			{modal.modalBoxes.isOpen && <DialogBoxes/>}
 			{modal.modalImages.isOpen && <DialogDetailImage/>}
-			{modal.modalDetailTransaction.isOpen && <DialogDetailTransaction/>}
+			{modal.modalDetailTransaction.isOpen && <DialogDetailTransaction data={dataModal} />}
 		</div>
 	);
 }

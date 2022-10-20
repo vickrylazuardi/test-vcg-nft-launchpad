@@ -17,6 +17,7 @@ export default class Pagination extends React.Component {
 					</div>
 					<div className="pagination-content-item col-span-4">
 						{
+							this?.props?.page?.listPage ?
 							this.props.page.listPage.map((item, idx) => (
 								<div 
 									key={idx} 
@@ -31,7 +32,7 @@ export default class Pagination extends React.Component {
 								>
 									<span>{item}</span>
 								</div>
-							))
+							)) : ""
 						}
 					</div>
 					<div 

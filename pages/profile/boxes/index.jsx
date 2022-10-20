@@ -4,13 +4,15 @@ import NavigationDashboard from "../../../components/Dashboard/NavigationDashboa
 import DashboardSideMenu from "../../../components/Dashboard/DashboardSideMenu";
 import DashboardOwnedBox from "../../../components/Dashboard/DashboardOwnedBox";
 import {useSelector, useDispatch} from "react-redux";
-import {toggleModalConfirmation} from "../../../redux/modalReducer";
+import {toggleModalConfirmation, toggleModalClaimable} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
 import React, { useEffect, useState } from "react";
 import useMetaMask from "../../../wallet/hook";
 import axios from "axios";
 import { API } from "../../../utils/globalConstant";
+import { BigNumber } from "ethers";
+import abiLaunchpad from '../../../abi/launchpad.json';
 
 export default function Index() {
 	const modal = useSelector((state) => state.modal);
@@ -27,6 +29,37 @@ export default function Index() {
 			}
 		},
 	}
+
+  const modalConfirmationWhenFailed = {
+		loading: false,
+		isOpen: true,
+		isPlain: false,
+		isSuccess: false,
+		isFailed: true,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
+  const modalConfirmation = {
+		loading: false,
+		isOpen: false,
+		isPlain: false,
+		isSuccess: false,
+		isFailed: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
+  
+	const modalClaimableItem = {
+		loading: true,
+		isOpen: true,
+		showItem: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
 
 	const navbarDetailClaim = {
 		title: "Box Name",
@@ -57,7 +90,11 @@ export default function Index() {
 		amount: {$ne: 0},
 		limit: 5,
 		page: 1
-	})
+	});
+	const [modalMessage, setModalMessage] = useState({});
+  const [claimReward, setClaimReward] = useState([]);
+	const [claimData, setClaimData] = useState({});
+  const [itemURI, setItemURI] = useState({});
   const { account, signer, connectContract } = useMetaMask();
 
 	const getBoxesList = () => {
@@ -120,6 +157,153 @@ export default function Index() {
     }
   };
 
+	const modalClaim = (data) => {
+    try {
+      modalMessage.type = "Claim";
+			modalMessage.amount = data.amount;
+			modalMessage.message = "claim this box?";
+			modalMessage.successMessage = "You have successfully claimed this box";
+			modalMessage.failedMessage = "Failed to claim this box";
+			setModalMessage({...modalMessage});
+			setClaimData({
+				name: data.name, 
+				amount: data.amount, 
+				project: data.projectDetail
+			});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+	const claim = () => {
+		try {
+			claimBox(claimData.name, claimData.amount, claimData.project);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	const claimBox = async (box, amount, project) => {
+    try {
+      const boxIds = Object.keys(project.boxes);
+      const boxId = boxIds.indexOf(box) + 1;
+      const randomList = [];
+
+      for (let i = 0; i < amount; i++) {
+        const random = Math.floor((Math.random() * 100000000000) + 1);
+        randomList.push(random);
+      }
+      
+      const launchpadContract = connectContract(
+        project.address,
+        abiLaunchpad
+      );
+
+      const claim = await launchpadContract
+        .connect(signer)
+        .claimBox(boxId, amount, randomList);
+
+      claim.hash;
+      claim.wait().then(async (res) => {
+        const reward = res.events.at(-1).args.reward;
+        reward.forEach(async e => {
+          const id = BigNumber.from(e).toNumber();
+          claimReward.push(id);
+          if (itemURI[id] == undefined) {
+            await axios.post(API.launchpad.local + API.launchpad.nft.detail, {
+              projectDetail: project._id,
+              tokenId: id
+            }).then((response) => {
+              const data = response.data.data
+              itemURI[id] = data;
+              setItemURI({...itemURI});
+              axios.post(API.launchpad.local + API.launchpad.ownedNft.claim, {
+                name: data.name,
+                owner: account,
+                tokenId: data.tokenId, 
+                nftAddress: data.nftAddress,
+                nftDetail: data._id,
+                projectName: project.name,
+                projectDetail: project._id
+              });
+            })
+          }
+        });
+        setClaimReward([...claimReward]);
+        if (res.status == 1) {
+          axios.post(API.launchpad.local + API.launchpad.item.claim, {
+            owner: account,
+            itemName: box,
+            amount: amount,
+            projectName: project.name,
+            projectDetail: project._id
+          });
+          axios.post(API.launchpad.local + API.launchpad.history.add, {
+            name: box, 
+            image: project.boxes[box].image,
+            amount: Number(amount),
+            price: 0, 
+            action: 1, 
+            owner: account,
+            txHash: res.transactionHash,
+            projectName: project.name,
+            projectDetail: project._id
+          });
+          // axios.post(API.local + API.collections.fromLaunchpad, {
+          //   collectionName: project.name,
+          //   nftAddress: project.address,
+          //   icon: project.icon,
+          //   creator: "62f22a02a4fc9cd053b69da0",
+          //   category: "62f4d4c9b6265d7d3844c86e",
+          // }).then(res => {
+          //   const itemArray = Object.keys(project.boxes[box].items);
+          //   const itemAmount = Object.values(project.boxes[box].items);
+          //   for (let i = 0; i < itemArray.length; i++) {
+          //     const name = itemArray[i];
+          //     const amount = itemAmount[i];
+          //     axios.post(API.local + API.metadata.fromLaunchpad, {
+          //       collectionId: res.data.data._id,
+          //       tokenId: i + 1 + "",
+          //       creator: "62f22a02a4fc9cd053b69da0",
+          //       category: "62f4d4c9b6265d7d3844c86e",
+          //       images: {nft: {url: "ipfs://QmZYr9C5Pp6zs3bjejm1N2KhjV25PMwaiKscBXkEmkfXU5"}},
+          //       metadataName: name,
+          //       name,
+          //       nftAddress: project.address,
+          //       owner: account,
+          //       amount: ownedBox[box] * amount
+          //     });
+          //     axios.post(API.launchpad.local + API.launchpad.item.claimed, {
+          //       name,
+          //       amount,
+          //       owner: account,
+          //       nftAddress: project.address,
+          //       projectName: project.name,
+          //       projectDetail: project._id
+          //     });
+          //   }
+          // })
+          reload();
+          dispatch(toggleModalConfirmation(modalConfirmation));
+          dispatch(toggleModalClaimable(modalClaimableItem));
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+    }
+  };
+
+	const reload = () => {
+    try {
+      setTimeout(() => {
+        getBoxesList();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 	useEffect(() => {
 		if (account) {
 			boxesFilter.owner = account;
@@ -144,6 +328,11 @@ export default function Index() {
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
 					<DashboardOwnedBox
+						modalClaim={modalClaim}
+						claim={claim}
+						modalMessage={modalMessage}
+						claimReward={claimReward}
+						itemURI={itemURI}
 						boxes={boxes}
 						page={boxesPage}
 						pageAction={changePage}

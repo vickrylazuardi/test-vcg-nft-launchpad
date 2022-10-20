@@ -27,6 +27,7 @@ export default function Index() {
 	const [history, setHistory] = useState([]);
 	const [historyPage, setHistoryPage] = useState({});
 	const [historyFilter, setHistoryFilter] = useState({
+		sort: {date: -1},
 		limit: 5,
 		page: 1
 	})

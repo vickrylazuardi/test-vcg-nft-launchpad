@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalClaimable, toggleModalConfirmation} from "../../redux/modalReducer";
 
-export default function DashboardOwnedBoxItem(props) {
+export default function DashboardOwnedNftItem(props) {
 	const [value] = useState([1, 2, 3, 4, 5]);
 	const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
@@ -11,7 +11,6 @@ export default function DashboardOwnedBoxItem(props) {
 		isOpen: true,
 		isPlain: true,
 		isSuccess: false,
-		isFailed: false,
 		title: {
 			en: "Confirmation",
 		}
@@ -36,12 +35,12 @@ export default function DashboardOwnedBoxItem(props) {
 	return (
 		<div id="owned-boxes-list" className="grid grid-cols-5 gap-4">
 			{
-				props?.boxes?.length ?
-				props?.boxes?.map((item, index) => (
+				props?.nft?.length ?
+				props?.nft?.map((item, index) => (
 					<div key={index} className="owned-boxes-item rounded-lg">
 						<div className="owned-boxes-item-head">
 							<img 
-								src={item.image} 
+								src={item.nftDetail.image} 
 								className="rounded-t-lg" 
 								alt=""
 								style={{
@@ -53,27 +52,13 @@ export default function DashboardOwnedBoxItem(props) {
 							/>
 						</div>
 						<div className="owned-boxes-item-body p-3">
-							<p className="font-bold obi-name">{item.itemName} {item.amount > 1 ? `[${item.amount}]` : ""}</p>
+							<p className="font-bold obi-name">{item.name}</p>
 							<p className="font-semibold obi-project mt-3">{item.projectName}</p>
 							{/* {index === 0 ? (
 								<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 												className="btn-orange-light rounded-md px-3 py-1 mt-3">Refund</button>
 							) : (
 								)} */}
-							<button 
-								onClick={() => {
-									dispatch(toggleModalConfirmation(modalConfirmation))
-									props.action({
-										type: "claim",
-										name: item.itemName, 
-										amount: item.amount,
-										projectDetail: item.projectDetail
-									})
-								}} 
-								className="btn-orange-light rounded-md px-3 py-1 mt-3"
-							>
-								Claim
-							</button>
 						</div>
 					</div>
 				)) :

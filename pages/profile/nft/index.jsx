@@ -2,7 +2,7 @@ import Link from "next/link";
 import ProfileHeader from "../../../components/Dashboard/ProfileHeader";
 import NavigationDashboard from "../../../components/Dashboard/NavigationDashboard";
 import DashboardSideMenu from "../../../components/Dashboard/DashboardSideMenu";
-import DashboardOwnedBox from "../../../components/Dashboard/DashboardOwnedBox";
+import DashboardOwnedNft from "../../../components/Dashboard/DashboardOwnedNft";
 import {useSelector, useDispatch} from "react-redux";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 import {toggleNavbar} from "../../../redux/navbarReducer";
@@ -142,8 +142,8 @@ export default function Index() {
 				<NavigationDashboard/> */}
 				<div className="container-wrapper grid grid-cols-5 gap-4">
 					<DashboardSideMenu/>
-					<DashboardOwnedBox
-						boxes={nft}
+					<DashboardOwnedNft
+						nft={nft}
 						page={nftPage}
 						pageAction={changePage}
 					/>
