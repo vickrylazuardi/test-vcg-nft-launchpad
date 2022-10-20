@@ -155,6 +155,7 @@ export default function Home() {
         <h2 className="font-bold text-2xl lg:text-sm mb-4 lg:px-5">
           How To Buy
         </h2>
+        <a href="https://vcgamers.com/news/crypto" target="_blank" rel='nofollow'>
         <div className="relative w-full" style={{ minHeight: 150 }}>
           {isDesktop && (
             <img
@@ -173,6 +174,7 @@ export default function Home() {
             />
           )}
         </div>
+        </a>
       </div>
       {/* <Products /> */}
     </div>

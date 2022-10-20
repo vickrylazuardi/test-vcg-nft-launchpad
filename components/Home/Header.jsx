@@ -10,7 +10,7 @@ export default function Header(props) {
   
   const copyToClipboard = () => {
     try {
-      navigator.clipboard.writeText("0xi93294829488141939204823948");
+      navigator.clipboard.writeText("0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9");
       toast.info("NFT Collection Address Copied to Clipboard!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 2000,
@@ -125,23 +125,26 @@ export default function Header(props) {
                 </a>
               </button>
               <button
-                className="btn btn-orange-light w-1/2 lg:text-xs"disabled
+                className="btn btn-orange-light w-1/2 lg:text-xs btn-disabled relative" disabled
                 onClick={() => router.push("/forms/new-project")}
               >
                 Launch Your Project Now
+                <img style={{height:'38px',width:'auto',right:'0',top:'-10px',position:'absolute'}} src="/images/soon.gif"></img>
               </button>
             </div>
             <div className="sc-info-container flex items-center justify-between flex-wrap">
               <div className="item-gray flex items-center lg:w-full lg:justify-center">
                 <Image
-                  src="/images/svg/arrow-bg-left.svg"
+                  // src="/images/svg/arrow-bg-left.svg"
+                  src="/images/coin-blink.gif"
                   alt="social vcgamers"
                   width={29}
                   height={29}
                   loading="lazy"
                 />
                 <p className="small-semibold ml-1">
-                  0xi93294829488141939204823948
+                  {/* 0xi93294829488141939204823948 */}
+                  0x1F36FB2D91d9951Cf58aE4c1956C...
                 </p>
                 <div className="flex items-center ml-2 cursor-pointer" onClick={copyToClipboard}>
                   <Image
@@ -162,7 +165,7 @@ export default function Header(props) {
               <div className="flex items-center lg:justify-center lg:w-full lg:mt-4">
                 <p className="small-semibold mr-6">Follow Us on</p>
                 <div className="social-container flex items-center">
-                  <a href="https://twitter.com" rel="nofollow" target="_blank">
+                  <a href="https://twitter.com/vcgamers_io" rel="nofollow" target="_blank">
                     <div className="flex items-center">
                       <Image
                         src="/images/twitter-circle.png"
@@ -173,7 +176,7 @@ export default function Header(props) {
                       />
                     </div>
                   </a>
-                  <a href="https://medium.com" rel="nofollow" target="_blank">
+                  {/* <a href="https://medium.com" rel="nofollow" target="_blank">
                     <div className="mx-2 cursor-pointer flex items-center">
                       <Image
                         src="/images/medium-circle.png"
@@ -183,8 +186,8 @@ export default function Header(props) {
                         loading="lazy"
                       />
                     </div>
-                  </a>
-                  <a href="https://telegram.com" rel="nofollow" target="_blank">
+                  </a> */}
+                  <a href="https://t.me/vcgamers_io" rel="nofollow" target="_blank">
                     <div className="flex items-center">
                       <Image
                         src="/images/tele-circle.png"

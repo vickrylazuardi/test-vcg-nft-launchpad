@@ -29,15 +29,15 @@ export default function FooterTop() {
             <a href="https://career.vcgamers.com/" className="link-text text-sm mt-2">
               Career
             </a>
-            <a href="/" className="link-text text-sm mt-2">
+            {/* <a href="/" className="link-text text-sm mt-2">
               Legal
-            </a>
+            </a> */}
             <a href="https://whitepaper.vcgamers.com/roadmap" className="link-text text-sm mt-2">
               Roadmap
             </a>
-            <a href="/" className="link-text text-sm mt-2">
+            {/* <a href="/" className="link-text text-sm mt-2">
               Preale Release
-            </a>
+            </a> */}
           </div>
           <div className="link-wrapper">
             <p className="link-title font-bold mt-2">Product</p>
@@ -62,18 +62,28 @@ export default function FooterTop() {
           </div>
           <div className="link-wrapper mt-7">
             <p className="link-title font-bold mt-2">Help</p>
-            <a href="/" className="link-text text-sm mt-2">
-              Teams Condition
+            <a href="#" className="link-text text-sm mt-2">
+              <div className="flex gap-1" >
+                <span> Terms Condition </span>
+                <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
+              </div>
             </a>
-            <a href="/" className="link-text text-sm mt-2">
-              Privacy
+            <a href="#" className="link-text text-sm mt-2">
+              <div className="flex gap-1" >
+                <span>Privacy </span>
+                <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
+              </div>
             </a>
-            <a href="/" className="link-text text-sm mt-2">
-              FAQ
+            <a href="#" className="link-text text-sm mt-2" >
+            <div className="flex gap-1" >
+              <span>FAQ </span>
+              <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
+            </div>
             </a>
-            <a href="/" className="link-text text-sm mt-2">
+          
+            {/* <a href="/" className="link-text text-sm mt-2">
               Seller Center
-            </a>
+            </a> */}
           </div>
           <div className="link-wrapper mt-7">
             <p className="link-title font-bold mt-2">Others</p>

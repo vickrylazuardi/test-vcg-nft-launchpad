@@ -172,6 +172,7 @@ export default function _slug() {
     
           ownedBox[box] = Number(owned);
           setOwnedBox({...ownedBox});
+          // console.log('owned',owned);
         } else {
           ownedBox[box] = 0;
           setOwnedBox({...ownedBox});
@@ -223,10 +224,11 @@ export default function _slug() {
   };
 
   const buyBox = async (box, amount) => {
+    
     try {
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
-      
+
       const launchpadContract = connectContract(
         project.address,
         abiLaunchpad
@@ -238,6 +240,7 @@ export default function _slug() {
 
       buy.hash;
       buy.wait().then(async (res) => {
+        console.log('result',res);
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.project.buy, {
             id: project._id,
@@ -269,11 +272,15 @@ export default function _slug() {
             projectDetail: project._id
           });
         }
+      }).finally(()=>{
         reload();
         dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
       });
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+            position: toast.POSITION.TOP_RIGHT
+      });
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
     }
   };
@@ -504,6 +511,7 @@ export default function _slug() {
     if (account && signer && project.name) {
       getTokenBalance();
       getOwnedBox();
+      // console.log('here');
     }
   }, [project, account, signer]);
 
@@ -614,9 +622,9 @@ export default function _slug() {
                 height={332}
                 src={`https://www.youtube.com/embed/${project?.video?.split("/").at(-1)}`}
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               ></iframe> : ""
             }
           </div>

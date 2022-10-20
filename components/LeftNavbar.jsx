@@ -26,7 +26,7 @@ export default function LeftNavbar() {
             className="font-bold text-sm ml-1 cursor-default"
             style={{ color: "#9AA4BF" }}
           >
-            LAUNCHPAD
+            Launchpad
           </p>
           <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
         </div>
@@ -83,7 +83,7 @@ export default function LeftNavbar() {
               <div className="sub-menu">
                 <a href="https://token.vcgamers.com/staking" target="_blank" rel="follow">Staking</a>
                 <a href="https://ransverse.vcgamers.com" target="_blank" rel="follow">Ransverse</a>
-                <a href="#">NFT Marketplace</a>
+                <a href="#" style={{position:'relative'}}>NFT Marketplace<img style={{height:'38px',width:'auto',right:'0',top:'-10px',position:'absolute'}} src="/images/soon.gif"></img></a>
                 <a href="/">NFT Launchpad</a>
               </div>
             </div>
