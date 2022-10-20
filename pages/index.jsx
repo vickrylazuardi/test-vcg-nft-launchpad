@@ -66,6 +66,7 @@ export default function Home() {
   const getOngoing = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
+        startedAt: {$lte :new Date()},
         limit: 10,
         status: 1,
         approved: true,
@@ -82,6 +83,7 @@ export default function Home() {
   const getSoon = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
+        startedAt: {$gt :new Date()},
         limit: 10,
         status: 0,
         approved: true,
