@@ -13,7 +13,7 @@ import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
 import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
-import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
+import { vcgEnableToken, vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
 import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
@@ -132,8 +132,8 @@ export default function _slug() {
   const getTokenBalance = async () => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       const bal = await tokenContract.connect(signer).balanceOf(account);
       setBalance(Number(ethers.utils.formatEther(bal)));
@@ -186,8 +186,8 @@ export default function _slug() {
   const checkAllowance = async (box, amount, price) => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
 
       const getAllowance = await tokenContract
@@ -205,8 +205,8 @@ export default function _slug() {
   const setAllowance = async (box, amount) => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       
       const totalSupply = await tokenContract.connect(signer).totalSupply();
@@ -236,7 +236,7 @@ export default function _slug() {
 
       const buy = await launchpadContract
         .connect(signer)
-        .buyBox(boxId, amount, vcgEnableTokenTestnet.address);
+        .buyBox(boxId, amount, vcgEnableToken.address);
 
       buy.hash;
       buy.wait().then(async (res) => {
