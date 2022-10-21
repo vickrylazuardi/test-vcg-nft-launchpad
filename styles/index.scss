@@ -224,6 +224,47 @@ button.claim {
     }
 
     .left-navbar-container {
+        .primary-menu-container {
+            top: 0;
+            right: -20px;
+            min-width: 262px;
+            padding-top: 66px;
+            display: none;
+            .dropdown-content {
+                overflow: hidden;
+            }
+            li {
+                padding: 8px;
+                place-items: unset;
+                min-height: unset;
+                position: relative;
+                &:hover {
+                    background: #3f485f;
+                }
+                &:hover.hub {
+                    border-right: 5px solid #02a3dc;
+                }
+                &:hover.arena {
+                    border-right: 5px solid #a22a2a;
+                }
+                &:hover.token {
+                    border-right: 5px solid #fccf6b;
+                }
+                &:hover.news {
+                    border-right: 5px solid #a798c8;
+                }
+                &:hover.merch, &:hover.market {
+                    border-right: 5px solid #6dc7c6;
+                }
+            }
+            .dropdown-content {
+                min-width: 225px;
+                width: auto;
+                background: #2a334b;
+                border: 1.5px solid #3f485f;
+                border-radius: 10px;
+            }
+        }
         ul {
             li {
                 cursor: pointer;

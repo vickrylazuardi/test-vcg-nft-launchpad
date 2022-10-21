@@ -167,8 +167,8 @@ export default function Home() {
             //   className="rounded-xl h-auto w-full"
             // />
             <iframe
-              width={800}
-              height={550}
+              width="100%"
+              height={700}
               src="https://www.youtube.com/embed/YPXswO_yUBQ"
               title="YouTube How To Buy"
               frameBorder="0"

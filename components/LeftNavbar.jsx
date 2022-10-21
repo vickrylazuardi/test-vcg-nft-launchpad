@@ -17,18 +17,66 @@ export default function LeftNavbar() {
     }
     elm.classList.remove("active");
   };
+  const primaryMenu = (event) => {
+    let elm = document.querySelector(".primary-menu-container");
+
+    if (event == 'click'){
+      elm.style.display = 'block';
+    } else {
+      elm.style.display = 'none';
+    }
+  }
   return (
     <div className="left-navbar-container flex items-center">
-      <div className="logo-wrapper flex items-start">
+      <div className="logo-wrapper flex items-start cursor-pointer">
         <img src="/images/logo.png" alt="vcgamers" />
-        <div className="flex items-start">
-          <p
-            className="font-bold text-sm ml-1 cursor-default"
-            style={{ color: "#9AA4BF" }}
-          >
-            Launchpad
+        <div className="flex items-start relative" onClick={() => primaryMenu('click')}>
+          <p className="font-bold text-sm ml-1" style={{ color: "#9AA4BF" }}>
+            LAUNCHPAD
           </p>
           <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
+          <div className="primary-menu-container absolute" onMouseLeave={() => primaryMenu('out')}>
+            <div className="dropdown-content">
+              <ul>
+                <li className="market">
+                  <a href="https://app.vcgamers.com/" className="flex items-center">
+                    <img src="/images/svg/menu-nav-market.svg" alt="Marketplace" className="mr-1" />
+                    Marketplace
+                  </a>
+                </li>
+                <li className="hub">
+                  <a href="https://hub.vcgamers.com/" className="flex items-center">
+                    <img src="/images/svg/menu-nav-hub.svg" alt="Social Hub" className="mr-1" />
+                    Hub
+                  </a>
+                </li>
+                <li className="arena">
+                  <a href="https://app.vcgamers.com/coming-soon-arena" className="flex items-center">
+                    <img src="/images/svg/menu-nav-arena.svg" alt="Arena Games" className="mr-1" />
+                    Arena
+                  </a>
+                </li>
+                <li className="token">
+                  <a href="https://vcgamers.com/token" className="flex items-center">
+                    <img src="/images/svg/menu-nav-token.png" alt="VCG Token VCGamers" className="mr-1" />
+                    VCG Token
+                  </a>
+                </li>
+                <li className="news">
+                  <a href="https://vcgamers.com/news/" className="flex items-center">
+                    <img src="/images/svg/menu-nav-news.png" alt="News from VCGamers" className="mr-1" />
+                    News
+                  </a>
+                </li>
+                <li className="merch">
+                  <a href="https://lynk.id/vcgoods" className="flex items-center">
+                    <img src="/images/svg/menu-nav-merch.svg" alt="Good merchandise" className="mr-1" />
+                    Merchandise
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <ul className="flex items-center ml-7">
