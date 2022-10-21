@@ -495,7 +495,7 @@ export default function _slug() {
         getDetailProject(data.slug);
         getTokenBalance();
         getOwnedBox();
-      }, 1000);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -511,7 +511,9 @@ export default function _slug() {
     if (account && signer && project.name) {
       getTokenBalance();
       getOwnedBox();
-      // console.log('here');
+      setTimeout(() => {
+        reload();
+      }, 60000);
     }
   }, [project, account, signer]);
 
