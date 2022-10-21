@@ -105,7 +105,9 @@ export default function LeftNavbar() {
                     className="rotate-img"
                   />
                 </p>
-                <p className="not-enter">FAQ</p>
+                <a href="https://vcgamers.com/news/help/faq-token/" className="not-enter">
+                  FAQ
+                </a>
               </div>
               <div
                 className="sub-sub-menu-container sub-sub-menu-1"
@@ -139,7 +141,7 @@ export default function LeftNavbar() {
         </li>
         <li>
           <div className="flex items-center">
-            <a className="https://www.dextools.io/app/bsc/pair-explorer/0xae3691adfec53fe142ae0595f91811b1113d886f" target="_blank" rel="nofolow"><p className="text-link semibold">Chart</p></a>
+            <a href="https://www.dextools.io/app/bsc/pair-explorer/0xae3691adfec53fe142ae0595f91811b1113d886f" target="_blank" rel="nofolow"><p className="text-link semibold">Chart</p></a>
           </div>
         </li>
         <li

@@ -76,9 +76,9 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
         >
           <a>
             <div className="img-wrap">
-              <img src={img} alt={title} />
+              <img src={img} alt={title} className="object-cover w-36 h-36 rounded-t-xl" />
             </div>
-            <div className="content-container p-4 lg:p-2">
+            <div className="content-container p-4 h-24 flex flex-col lg:p-2">
               <h3 className="font-bold lg:text-xs">{title}</h3>
               <p
                 className="text-sm font-semibold mt-1 mb-4 lg:text-xs lg:mb-1"
