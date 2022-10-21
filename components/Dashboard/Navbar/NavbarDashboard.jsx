@@ -136,7 +136,7 @@ export default function NavbarDashboard() {
 					</div>
 				</div>
 			)}
-			{isMobile && router.pathname.startsWith("/profile/") && (
+			{isMobile && router.pathname.slice("/")[1] && (
 				<div className="dashboard-navbar-mobile-launchpad">
 					<div className="dnml-top flex">
 						<div className="flex-1 flex items-center px-2">
