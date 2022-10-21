@@ -13,7 +13,7 @@ import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
 import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
-import { vcgEnableToken, vcgEnableToken } from "../../utils/contractConfig";
+import { vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
 import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
