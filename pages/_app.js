@@ -20,22 +20,21 @@ function MyApp({ Component, pageProps, router }) {
     return new Web3(provider);
   };
 
-	// if (router.pathname.slice("/")[1] === "profile") {
-	// 	return (
-	// 		<React.StrictMode>
-	// 			<Web3ReactProvider getLibrary={getLibrary}>
-	// 				<MetaMaskProvider>
-	// 					<Provider store={store}>
-	// 						<LayoutDashboard>
-	// 							<Component {...pageProps} />
-	// 						</LayoutDashboard>
-	// 					</Provider>
-	// 				</MetaMaskProvider>
-	// 			</Web3ReactProvider>
-	// 		</React.StrictMode>
-	// 	);
-	// } else 
-	if (router.pathname === "/connect-wallet") {
+	if (router.pathname.split("/")[1] === "profile") {
+		return (
+			<React.StrictMode>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<MetaMaskProvider>
+						<Provider store={store}>
+							<LayoutDashboard>
+								<Component {...pageProps} />
+							</LayoutDashboard>
+						</Provider>
+					</MetaMaskProvider>
+				</Web3ReactProvider>
+			</React.StrictMode>
+		);
+	} else if (router.pathname === "/connect-wallet") {
 		return (
 			<React.StrictMode>
 				<Web3ReactProvider getLibrary={getLibrary}>

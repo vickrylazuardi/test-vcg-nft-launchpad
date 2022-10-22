@@ -93,7 +93,10 @@ export default function Index() {
 	}, [account]);
 	
 	return (
-		<div id="profile-launchpad" className="global-container">
+		<div 
+			id="profile-launchpad" 
+			className={isMobile ? "pb-20" : ""}
+		>
 			<div className="container mx-auto">
 				{isDesktop && (
 					<div className="navigation-container flex items-center">
@@ -117,8 +120,8 @@ export default function Index() {
 				)}
 			</div>
 			{isMobile && (
-				<div style={marginMobile}>
-					<ProfileHeaderMobile/>
+				<div>
+					{/* <ProfileHeaderMobile/> */}
 					<div className="sub-menu-mobile mt-4 p-3">
 						<p className="font-bold mb-3">Profile</p>
 						<ul>
