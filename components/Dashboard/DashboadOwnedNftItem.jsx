@@ -60,6 +60,9 @@ export default function DashboardOwnedNftItem(props) {
 										<p className="font-semibold obi-project mt-3">{item.projectName}</p>
 									</a>
 								</Link>
+								<p className="font-bold obi-name">
+									{item.description.split("- ")[1]}
+								</p>
 							</div>
 						</div>
 					)) 
