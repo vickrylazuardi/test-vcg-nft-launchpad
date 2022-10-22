@@ -61,7 +61,8 @@ export default function DashboardOwnedNftItem(props) {
 									</a>
 								</Link>
 								<p className="font-bold obi-name">
-									{item.description.split("- ")[1]}
+									{/* {item.description.split("- ")[1]} */}
+									{item.description}
 								</p>
 							</div>
 						</div>
