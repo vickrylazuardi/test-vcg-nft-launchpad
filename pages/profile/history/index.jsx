@@ -127,7 +127,7 @@ export default function Index() {
 			<div className="owned-boxed-list my-2">
 				{
 					history.length ?
-					<div className="owned-boxed-item p-3">
+					<div className="owned-boxed-item px-3 pb-3 pt-1">
 						{
 							history.map((item, index) => (
 								<div key={index} className="obi-list py-2">

@@ -124,7 +124,7 @@ export default function _slug() {
   const [modalMessage, setModalMessage] = useState({});
   const [claimReward, setClaimReward] = useState([]);
   const [itemURI, setItemURI] = useState({});
-  const { account, signer, connectContract } = useMetaMask();
+  const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
   const data = router.query;
@@ -185,6 +185,10 @@ export default function _slug() {
 
   const checkAllowance = async (box, amount, price) => {
     try {
+      if (chainId != 56) {
+        dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+        return;
+      }
       const tokenContract = connectContract(
         vcgEnableToken.address,
         vcgEnableToken.abi
@@ -224,7 +228,6 @@ export default function _slug() {
   };
 
   const buyBox = async (box, amount) => {
-    
     try {
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
@@ -240,7 +243,6 @@ export default function _slug() {
 
       buy.hash;
       buy.wait().then(async (res) => {
-        console.log('result',res);
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.project.buy, {
             id: project._id,
