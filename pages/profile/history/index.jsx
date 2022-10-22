@@ -20,9 +20,9 @@ export default function Index() {
 		status: 6,
 	};
 
-	function redirect() {
+	function redirect(id) {
 		dispatch(toggleNavbar(navbarHistory))
-		router.push("/profile/history/detail?=boxname123");
+		router.push(`/profile/history/detail?id=${id}`);
 	}
 
 	const [history, setHistory] = useState([]);
@@ -130,7 +130,7 @@ export default function Index() {
 					<div className="owned-boxed-item px-3 pb-3 pt-1">
 						{
 							history.map((item, index) => (
-								<div key={index} className="obi-list py-2">
+								<div key={index} className="obi-list py-2" onClick={() => redirect(item._id)}>
 									<img 
 										className="rounded-md mr-3" 
 										src={item.image} 
@@ -144,7 +144,7 @@ export default function Index() {
 									/>
 									<div className="obi-list-detailed">
 										<p className="font-bold">{item.name}</p>
-										<p className="font-bold">{item.projectName}</p>
+										<p className="font-semibold text-gray-400">{item.projectName}</p>
 									</div>
 									<div className="obi-list-detailed flex justify-end">
 										{
@@ -166,7 +166,7 @@ export default function Index() {
 				}
 				{
 					historyPage.currentPage ?
-					<div className="mt-8">
+					<div className="mt-2">
 						<Pagination
 							page={historyPage}
 							pageAction={changePage}
