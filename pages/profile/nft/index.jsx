@@ -158,12 +158,36 @@ export default function Index() {
 						{
 							nft.map((item, index) => (
 								<div key={index} className="obi-list mt-2 py-2">
-									<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
+									<img 
+										className="rounded-md mr-3" 
+										src={item.nftDetail.image}
+										alt=""
+										style={{
+											width: "75px",
+											height: "75px",
+											aspectRatio: "1/1",
+											objectFit: "contain"
+										}}
+									/>
 									<div className="obi-list-detailed">
-										<p className="font-bold">Box Name</p>
+										<p className="font-bold">{item.name}</p>
+										<p className="font-semibold text-gray-400">{item.projectName}</p>
 									</div>
 									<div className="obi-list-detailed flex justify-end">
-										<button className="refund px-2 py-0.5 rounded-md">Refund</button>
+										<button 
+											disable 
+											className={
+												item.nftDetail.description.split("- ")[1] == "Special" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-amber-500" :
+												item.nftDetail.description.split("- ")[1] == "Rare" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-sky-500" :
+												item.nftDetail.description.split("- ")[1] == "Uncommon" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-green-500" :
+												"font-bold px-2 py-0.5 rounded-md text-black bg-stone-400"
+											}
+										>
+											{item.nftDetail.description.split("- ")[1]}
+										</button>
 									</div>
 								</div>
 							))
@@ -176,7 +200,7 @@ export default function Index() {
 				}
 				{
 					nftPage.currentPage ?
-					<div className="mt-8">
+					<div className="mt-2">
 						<Pagination
 							page={nftPage}
 							pageAction={changePage}

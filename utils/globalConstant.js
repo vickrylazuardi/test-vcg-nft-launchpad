@@ -159,6 +159,7 @@ export const API = {
       claimed: "/ownedItem/claimed"
     },
     history: {
+      detail: "/history/info",
       filter: "/history/filter",
       add: "/history/add"
     },

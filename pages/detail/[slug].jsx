@@ -324,6 +324,8 @@ export default function _slug() {
 
   const claimBox = async (box, amount) => {
     try {
+      claimReward.splice(0);
+      setClaimReward([...claimReward]);
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
       const randomList = [];

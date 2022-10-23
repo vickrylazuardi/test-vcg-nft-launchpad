@@ -57,12 +57,23 @@ export default function DashboardOwnedNftItem(props) {
 								<p className="font-bold obi-name">{item.name}</p>
 								<Link href={`/detail/${item.projectDetail._id}`}>
 									<a>
-										<p className="font-semibold obi-project mt-3">{item.projectName}</p>
+										<p className="font-semibold obi-project mt-2">{item.projectName}</p>
 									</a>
 								</Link>
-								<p className="font-bold obi-name">
-									{item.description.split("- ")[1]}
-								</p>
+								<button 
+									disable 
+									className={
+										item.nftDetail.description.split("- ")[1] == "Special" ?
+										"font-bold mt-3 px-2 py-0.5 rounded-md text-black bg-amber-500" :
+										item.nftDetail.description.split("- ")[1] == "Rare" ?
+										"font-bold mt-3 px-2 py-0.5 rounded-md text-black bg-sky-500" :
+										item.nftDetail.description.split("- ")[1] == "Uncommon" ?
+										"font-bold mt-3 px-2 py-0.5 rounded-md text-black bg-green-500" :
+										"font-bold mt-3 px-2 py-0.5 rounded-md text-black bg-stone-400"
+									}
+								>
+									{item.nftDetail.description.split("- ")[1]}
+								</button>
 							</div>
 						</div>
 					)) 

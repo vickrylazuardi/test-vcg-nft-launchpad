@@ -75,9 +75,9 @@ export default function DashboardOwnedBoxItem(props) {
 										projectDetail: item.projectDetail
 									})
 								}} 
-								disabled={item.finalize ? false : true}
+								disabled={item.projectDetail.boxes[item.itemName].finalize ? false : true}
 								className={
-									item.finalize ?
+									item.projectDetail.boxes[item.itemName].finalize ?
 									"btn-orange-light rounded-md px-3 py-1 mt-3" :
 									"btn-disabled rounded-md px-3 py-1 mt-3"
 								}
