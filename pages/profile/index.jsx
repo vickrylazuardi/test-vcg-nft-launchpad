@@ -125,24 +125,26 @@ export default function Index() {
 					<div className="sub-menu-mobile mt-4 p-3">
 						<p className="font-bold mb-3">Profile</p>
 						<ul>
-							<Link target="_blank" href="https://app.vcgamers.com/">
+							<Link href="https://app.vcgamers.com/">
 								<li className="py-3"><img src="/images/svg/icon-cart.svg" className="mr-2" alt=""/>Marketplace</li>
 							</Link>
 							<Link href="/profile/projects">
 								<li className="py-3"><img src="/images/svg/nav-launch-icon-active.svg" className="mr-2" alt=""/>Launchpad</li>
 							</Link>
-							<li className="py-3"><img src="/images/svg/icon-info-square.svg" className="mr-2" alt=""/>
-								Social Hub
-								<div className="soon rounded-full py-0.5 px-2 ml-1">SOON</div>
-							</li>
+							<Link href="https://hub.vcgamers.com/">
+								<li className="py-3"><img src="/images/svg/icon-info-square.svg" className="mr-2" alt=""/>
+									Social Hub
+								</li>
+							</Link>
 							<li className="py-3"><img src="/images/svg/icon-info-square.svg" className="mr-2" alt=""/>
 								NFT
 								<div className="soon rounded-full py-0.5 px-2 ml-1">SOON</div>
 							</li>
-							<li className="py-3"><img src="/images/svg/icon-info-square.svg" className="mr-2" alt=""/>
-								Merchandise
-								<div className="soon rounded-full py-0.5 px-2 ml-1">SOON</div>
-							</li>
+							<a href="https://lynk.id/vcgoods/" rel="nofollow" target="_blank">
+								<li className="py-3"><img src="/images/svg/icon-info-square.svg" className="mr-2" alt=""/>
+									Merchandise
+								</li>
+							</a>
 						</ul>
 					</div>
 				</div>
