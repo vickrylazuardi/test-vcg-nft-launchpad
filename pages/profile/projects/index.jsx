@@ -7,11 +7,11 @@ import axios from "axios";
 import { API } from "../../../utils/globalConstant";
 import useMetaMask from "../../../wallet/hook";
 
-export default function index() {
+export default function Index() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const modal = useSelector((state) => state.modal);
 
-	const [project, setProject] = useState([]);
+	const [projectItem, setProjectItem] = useState([]);
 	const [projectPage, setProjectPage] = useState({});
 	const [projectFilter, setProjectFilter] = useState({
 		limit: 5,
@@ -24,11 +24,11 @@ export default function index() {
 			axios.post(API.launchpad.local + API.launchpad.project.filter, projectFilter)
       .then(res => {
         if (res.status === 204) {
-					setProject([]);
+					setProjectItem([]);
 					setProjectPage({});
 					return;
 				}
-        setProject(res.data.data.items);
+        setProjectItem(res.data.data.items);
 				paginate(res, projectPage, setProjectPage);
       })
 		} catch (error) {
@@ -90,11 +90,11 @@ export default function index() {
 	return (
 		<div id="project-section-launchpad">
 			{
-				project.length ?
-				project.map((item, index) => (
+				projectItem.length ?
+				projectItem.map((item, index) => (
 					<div key={index}>
 						<ProjectItemMobile
-							project={item}
+							projectItem={item}
 						/>
 					</div>
 				)) :
@@ -104,7 +104,7 @@ export default function index() {
 				</div>
 			}
 			{
-				project.length ?
+				projectItem.length ?
 				<div className="mb-3">
 					<Pagination 
 						page={projectPage}
