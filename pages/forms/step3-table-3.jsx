@@ -60,35 +60,34 @@ export default function Table3(props) {
                     cssCustom={"wh-100-100"}
                     result={handleInputMemberImage}
                     idx={idx}
-                    preview={props.list.items[idx].images}
+                    preview={item.images}
                   />
                 </td>
                 <td>
                   <div className="wrap-input border-dark flex-1">
-                    {props.list.items[idx].completed ? (
+                    {item.completed ? (
                       <p className="text-sm font-semibold">
-                        {props.list.items[idx].itemName}
+                        {item.itemName}
                       </p>
                     ) : (
-                      <textarea
+                      <input
                         type="text"
                         className="w-full"
                         placeholder="Input full name"
-                        rows={3}
-                        value={props.list.items[idx].itemName}
+                        value={item.itemName}
                         onChange={(e) => {
                           props.list.items[idx].itemName = e.target.value;
                           props.setList({ ...props.list });
                         }}
-                      ></textarea>
+                      ></input>
                     )}
                   </div>
                 </td>
                 <td>
                   <div className="wrap-input border-dark flex-1">
-                    {props.list.items[idx].completed ? (
+                    {item.completed ? (
                       <p className="text-sm font-semibold">
-                        {props.list.items[idx].supply}
+                        {item.supply}
                       </p>
                     ) : (
                       <input
@@ -96,8 +95,10 @@ export default function Table3(props) {
                         type="text"
                         className="w-full"
                         placeholder="Input full name"
-                        value={props.list.items[idx].supply}
+                        value={item.supply}
                         onChange={(e) => {
+                          if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                          if (e.target.value <= 0) e.target.value = "";
                           props.list.items[idx].supply = e.target.value;
                           props.setList({ ...props.list });
                         }}
@@ -107,10 +108,10 @@ export default function Table3(props) {
                 </td>
                 <td>
                   <div className="wrap-input border-dark flex-1">
-                    {props.list.items[idx].completed ? (
+                    {item.completed ? (
                       <p className="text-sm font-semibold">
-                        {props.list.items[idx].attribute.category + ","}
-                        {props.list.items[idx].attribute.rarity}
+                        {item.attribute.category + ","}
+                        {item.attribute.rarity}
                       </p>
                     ) : (
                       <>
@@ -120,7 +121,7 @@ export default function Table3(props) {
                           className="w-full"
                           placeholder="Input Category"
                           rows={3}
-                          value={props.list.items[idx].attribute.category}
+                          value={item.attribute.category}
                           onChange={(e) => {
                             props.list.items[idx].attribute.category =
                               e.target.value;
@@ -130,17 +131,18 @@ export default function Table3(props) {
                         <select
                           style={{ minWidth: "150px" }}
                           className="w-full mt-3"
-                          value={props.list.items[idx].attribute.rarity}
+                          value={item.attribute.rarity}
                           onChange={(e) => {
                             props.list.items[idx].attribute.rarity =
                               e.target.value;
                             props.setList({ ...props.list });
                           }}
                         >
-                          <option selected>Select Rarity</option>
-                          <option value="one">One</option>
-                          <option value="two">Two</option>
-                          <option value="three">Three</option>
+                          <option className="text-black" selected disabled>Select Rarity</option>
+                          <option className="text-black" value="common">Common</option>
+                          <option className="text-black" value="uncommon">Uncommon</option>
+                          <option className="text-black" value="rare">Rare</option>
+                          <option className="text-black" value="special">Special</option>
                         </select>
                       </>
                     )}
@@ -150,7 +152,7 @@ export default function Table3(props) {
                   className="text-center"
                   style={{ padding: "5px", width: "100px" }}
                 >
-                  {props.list.items[idx].completed ? (
+                  {item.completed ? (
                     <>
                       <button
                         style={{ padding: "5px" }}

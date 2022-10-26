@@ -3,7 +3,8 @@ import RightNavbar from "../../RightNavbar";
 import TopNavbar from "../../TopNavbar";
 import useMetaMask from "../../../wallet/hook";
 import BottomNavMobileDashboard from "./BottomNavMobileDashboard";
-import LeftNavbarDashboard from "./LeftNavbarDashboard";
+// import LeftNavbarDashboard from "./LeftNavbarDashboard";
+import LeftNavbarDashboard from "../../LeftNavbar";
 import {isDesktop, isMobile} from "react-device-detect";
 import {useRouter} from "next/router";
 import {toggleNavbar} from "../../../redux/navbarReducer";
@@ -73,7 +74,7 @@ export default function NavbarDashboard() {
   };
 
 	return (
-		<div id="navbar-container" className="fixed top-0 right-0 left-0 z-50">
+		<div id="navbar-container" className="sticky top-0 right-0 left-0 z-50">
 			{isDesktop && (
 				<nav>
 					<TopNavbar/>
@@ -135,7 +136,7 @@ export default function NavbarDashboard() {
 					</div>
 				</div>
 			)}
-			{isMobile && router.pathname.startsWith("/profile/") && (
+			{isMobile && router.pathname.split("/")[1] == "profile" && router.pathname.split("/").length > 2 && (
 				<div className="dashboard-navbar-mobile-launchpad">
 					<div className="dnml-top flex">
 						<div className="flex-1 flex items-center px-2">
@@ -162,10 +163,16 @@ export default function NavbarDashboard() {
 									<span>Owned Box</span>
 								</div>
 							</Link>
+							<Link href="/profile/nft">
+								<div onClick={(e) => toggleNavbarActions(0, e)}
+										 className={router.pathname === "/profile/nft" ? "dnml-bottom-tab active" : "dnml-bottom-tab"}>
+									<span>Owned NFT</span>
+								</div>
+							</Link>
 							<Link href="/profile/history">
 								<div onClick={(e) => toggleNavbarActions(0, e)}
 										 className={router.pathname === "/profile/history" ? "dnml-bottom-tab active" : "dnml-bottom-tab"}>
-									<span>History Transaction</span>
+									<span>History</span>
 								</div>
 							</Link>
 						</div>

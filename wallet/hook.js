@@ -41,7 +41,7 @@ export const MetaMaskProvider = ({ children }) => {
   }, []);
   
   useEffect(() => {
-    if (cookies.get("isConnected")) {
+    if (cookies.get("isConnected") && isActive) {
       connect(cookies.get("providerType"));
     }
   }, [isActive]);

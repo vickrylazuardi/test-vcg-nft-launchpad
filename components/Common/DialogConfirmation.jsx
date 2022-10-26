@@ -83,7 +83,10 @@ export default function DialogConfirmation(props) {
 				)}
 				{modal.loading && (
 					<div className="dialog-confirmation-body text-center">
-						<img className="dc-img m-10" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
+						<div className="m-10 flex flex-col items-center">
+							<img className="dc-img" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
+							<p className="font-bold dib-title mt-2">Please do not close this page until transaction done</p>
+						</div>
 					</div>
 				)}
 				{modal.isPlain && (

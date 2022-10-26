@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import CardItem from "../Common/CardItem";
 import styled from "styled-components";
@@ -28,7 +28,7 @@ export default function Tab(props) {
     }
   `;
 
-  const [tab] = useState([
+  const [tab, setTab] = useState([
     {
       tab: 0,
       name: "Trending",
@@ -67,67 +67,100 @@ export default function Tab(props) {
         ))}
       </div>
       <div className="item-tab-container mt-5">
-        <StyledSlider {...settings}>
-          {
-            activeTab == 0 ?
-            props?.trending?.map((item, idx) => (
-              <div key={idx} className="card-wrap">
-                <CardItem
-                  img={item.banner}
-                  title={item.name}
-                  desc={item.desc}
-                  slug={item._id}
-                  socmed={item.socialMedia}
-                />
-              </div>
-            )) : 
-            activeTab == 1 ?
-            props?.soon?.map((item, idx) => (
-              <div key={idx} className="card-wrap">
-                <CardItem
-                  img={item.banner}
-                  title={item.name}
-                  desc={item.desc}
-                  slug={item._id}
-                  socmed={item.socialMedia}
-                />
-              </div>
-            )) : 
-            activeTab == 2 ?
-            props?.ongoing?.map((item, idx) => (
-              <div key={idx} className="card-wrap">
-                <CardItem
-                  img={item.banner}
-                  title={item.name}
-                  desc={item.desc}
-                  slug={item._id}
-                  socmed={item.socialMedia}
-                />
-              </div>
-            )) : 
-            activeTab == 3 ?
-            (
-              props?.finish?.length ?
-              props.finish.map((item, idx) => (
-                <div key={idx} className="card-wrap">
-                  <CardItem
-                    img={item.banner}
-                    title={item.name}
-                    desc={item.desc}
-                    slug={item._id}
-                    socmed={item.socialMedia}
-                  />
-                </div>
-              )) : 
-              <div style={{height: "372px"}} className="text-center py-24" >
-                <img style={{width: "50%"}} src="/images/Sad_Emoji.gif" className="mx-auto" />
-                <h2 className="font-semibold pt-3 text-2xl">
-                  There are no {activeTab.name} Projects
-                </h2>
-              </div>
-            ) : ""
-          }
-        </StyledSlider>
+        {
+          activeTab == 0 ?
+          (
+            props?.trending?.length ?
+            <StyledSlider {...settings}>
+              {
+                props?.trending?.map((item, idx) => (
+                  <div key={idx} className="card-wrap">
+                    <CardItem
+                      img={item.banner}
+                      title={item.name}
+                      desc={item.desc}
+                      slug={item._id}
+                      socmed={item.socialMedia}
+                    />
+                  </div>
+                ))
+              }
+            </StyledSlider> : 
+            <div className="mx-auto my-20 flex flex-col items-center">
+              <img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+              <p className="pnd-title font-semibold">No Data Found</p>
+            </div>
+          ) :
+          activeTab == 1 ?
+          (
+            props?.soon?.length ?
+            <StyledSlider {...settings}>
+              {
+                props?.soon?.map((item, idx) => (
+                  <div key={idx} className="card-wrap">
+                    <CardItem
+                      img={item.banner}
+                      title={item.name}
+                      desc={item.desc}
+                      slug={item._id}
+                      socmed={item.socialMedia}
+                    />
+                  </div>
+                ))
+              }
+            </StyledSlider> : 
+            <div className="mx-auto my-20 flex flex-col items-center">
+              <img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+              <p className="pnd-title font-semibold">No Data Found</p>
+            </div>
+          ) :
+          activeTab == 2 ?
+          (
+            props?.ongoing?.length ?
+            <StyledSlider {...settings}>
+              {
+                props?.ongoing?.map((item, idx) => (
+                  <div key={idx} className="card-wrap">
+                    <CardItem
+                      img={item.banner}
+                      title={item.name}
+                      desc={item.desc}
+                      slug={item._id}
+                      socmed={item.socialMedia}
+                    />
+                  </div>
+                ))
+              }
+            </StyledSlider> : 
+            <div className="mx-auto my-20 flex flex-col items-center">
+              <img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+              <p className="pnd-title font-semibold">No Data Found</p>
+            </div>
+          ) :
+          activeTab == 3 ?
+          (
+            props?.finish?.length ?
+            <StyledSlider {...settings}>
+              {
+                props.finish.map((item, idx) => (
+                  <div key={idx} className="card-wrap">
+                    <CardItem
+                      img={item.banner}
+                      title={item.name}
+                      desc={item.desc}
+                      slug={item._id}
+                      socmed={item.socialMedia}
+                    />
+                  </div>
+                ))
+              }
+            </StyledSlider> : 
+            <div className="mx-auto my-20 flex flex-col items-center">
+              <img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+              <p className="pnd-title font-semibold">No Data Found</p>
+            </div>
+          ) : ""
+        }
       </div>
     </div>
   );

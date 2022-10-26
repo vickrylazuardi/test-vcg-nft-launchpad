@@ -13,7 +13,7 @@ import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
 import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
-import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
+import { vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
 import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
@@ -124,7 +124,7 @@ export default function _slug() {
   const [modalMessage, setModalMessage] = useState({});
   const [claimReward, setClaimReward] = useState([]);
   const [itemURI, setItemURI] = useState({});
-  const { account, signer, connectContract } = useMetaMask();
+  const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
   const data = router.query;
@@ -132,8 +132,8 @@ export default function _slug() {
   const getTokenBalance = async () => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       const bal = await tokenContract.connect(signer).balanceOf(account);
       setBalance(Number(ethers.utils.formatEther(bal)));
@@ -172,6 +172,7 @@ export default function _slug() {
     
           ownedBox[box] = Number(owned);
           setOwnedBox({...ownedBox});
+          // console.log('owned',owned);
         } else {
           ownedBox[box] = 0;
           setOwnedBox({...ownedBox});
@@ -184,9 +185,13 @@ export default function _slug() {
 
   const checkAllowance = async (box, amount, price) => {
     try {
+      if (chainId != 56) {
+        dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+        return;
+      }
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
 
       const getAllowance = await tokenContract
@@ -204,8 +209,8 @@ export default function _slug() {
   const setAllowance = async (box, amount) => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       
       const totalSupply = await tokenContract.connect(signer).totalSupply();
@@ -226,7 +231,7 @@ export default function _slug() {
     try {
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
-      
+
       const launchpadContract = connectContract(
         project.address,
         abiLaunchpad
@@ -234,7 +239,7 @@ export default function _slug() {
 
       const buy = await launchpadContract
         .connect(signer)
-        .buyBox(boxId, amount, vcgEnableTokenTestnet.address);
+        .buyBox(boxId, amount, vcgEnableToken.address);
 
       buy.hash;
       buy.wait().then(async (res) => {
@@ -269,11 +274,15 @@ export default function _slug() {
             projectDetail: project._id
           });
         }
+      }).finally(()=>{
         reload();
         dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
       });
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+            position: toast.POSITION.TOP_RIGHT
+      });
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
     }
   };
@@ -290,12 +299,12 @@ export default function _slug() {
 
       const finalize = await launchpadContract
         .connect(signer)
-        .finalizeBox();
+        .finalizeBox(boxId);
 
       finalize.hash;
       finalize.wait().then((res) => {
         if (res.status == 1) {
-          axios.post(API.launchpad.local + API.launchpad.project.finalize, {
+          axios.post(API.launchpad.local + API.launchpad.project.finalizeBox, {
             id: project._id,
             box
           })
@@ -315,6 +324,8 @@ export default function _slug() {
 
   const claimBox = async (box, amount) => {
     try {
+      claimReward.splice(0);
+      setClaimReward([...claimReward]);
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
       const randomList = [];
@@ -488,7 +499,7 @@ export default function _slug() {
         getDetailProject(data.slug);
         getTokenBalance();
         getOwnedBox();
-      }, 1000);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -504,6 +515,9 @@ export default function _slug() {
     if (account && signer && project.name) {
       getTokenBalance();
       getOwnedBox();
+      setTimeout(() => {
+        reload();
+      }, 60000);
     }
   }, [project, account, signer]);
 
@@ -614,9 +628,9 @@ export default function _slug() {
                 height={332}
                 src={`https://www.youtube.com/embed/${project?.video?.split("/").at(-1)}`}
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               ></iframe> : ""
             }
           </div>

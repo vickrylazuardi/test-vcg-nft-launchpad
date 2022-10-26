@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalClaimable, toggleModalConfirmation} from "../../redux/modalReducer";
@@ -33,11 +34,11 @@ export default function DashboardOwnedBoxItem(props) {
 			document.querySelector("body").style.overflow = "auto";
 		}
 	})
-	return (
-		<div id="owned-boxes-list" className="grid grid-cols-5 gap-4">
-			{
-				props?.boxes?.length ?
-				props?.boxes?.map((item, index) => (
+
+	if (props?.boxes?.length) {
+		return (
+			<div id="owned-boxes-list" className="grid grid-cols-5 gap-4">
+				{props?.boxes?.map((item, index) => (
 					<div key={index} className="owned-boxes-item rounded-lg">
 						<div className="owned-boxes-item-head">
 							<img 
@@ -54,7 +55,11 @@ export default function DashboardOwnedBoxItem(props) {
 						</div>
 						<div className="owned-boxes-item-body p-3">
 							<p className="font-bold obi-name">{item.itemName} {item.amount > 1 ? `[${item.amount}]` : ""}</p>
-							<p className="font-semibold obi-project mt-3">{item.projectName}</p>
+							<Link href={`/detail/${item.projectDetail._id}`}>
+								<a>
+									<p className="font-semibold obi-project mt-3">{item.projectName}</p>
+								</a>
+							</Link>
 							{/* {index === 0 ? (
 								<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 												className="btn-orange-light rounded-md px-3 py-1 mt-3">Refund</button>
@@ -70,19 +75,26 @@ export default function DashboardOwnedBoxItem(props) {
 										projectDetail: item.projectDetail
 									})
 								}} 
-								className="btn-orange-light rounded-md px-3 py-1 mt-3"
+								disabled={item.projectDetail.boxes[item.itemName].finalize ? false : true}
+								className={
+									item.projectDetail.boxes[item.itemName].finalize ?
+									"btn-orange-light rounded-md px-3 py-1 mt-3" :
+									"btn-disabled rounded-md px-3 py-1 mt-3"
+								}
 							>
 								Claim
 							</button>
 						</div>
 					</div>
-				)) :
-				<div className="owned-boxes-item rounded-lg">
-					<div className="owned-boxes-item-head">
-						<p>No Data</p>
-					</div>
-				</div>
-			}
-		</div>
-	);
+				))}
+			</div>
+		);
+	} else {
+		return (
+			<div className="my-16 flex flex-col items-center">
+				<img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+				<p className="pnd-title">No Data Found</p>
+			</div>
+		);
+	}
 }

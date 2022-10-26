@@ -39,7 +39,7 @@ export const firebaseConfig = {
 export const tokenAddress = {
   LAND_ADDRESS: "0xaF10C7233e84925898bCFF9139b0E942AF75c74E",
   LAND_MARKETPLACE_ADDRESS: "0x32f98cF8955D70Ef6AEFe49A58D792904004f651",
-  TOKEN_CURRENCY: "0x33e9f1d1ad100CbBd7FF35BD3d8228A7ec52C224",
+  TOKEN_CURRENCY: "0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9",
 };
 
 // 0xd4EdD685B25d6Fc6B00fed63F9aC6cBDDDDc7980
@@ -117,10 +117,11 @@ export const API = {
     fromLaunchpad: "/metadata/fromLaunchpad"
   },
   launchpad: {
+    // https://api-launchpad.vcgamers.com/launchpad
     // https://api-launchpad.vcg.asia/launchpad
-    // http://localhost:4300/launchpad
-    domain: 'https://api-launchpad.vcg.asia/launchpad',
-    local: "https://api-launchpad.vcg.asia/launchpad",
+    // http://localhost:4600/launchpad
+    domain: 'https://api-launchpad.vcgamers.com/launchpad',
+    local: "https://api-launchpad.vcgamers.com/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
@@ -146,7 +147,8 @@ export const API = {
       start: "/project/start",
       finish: "/project/finish",
       buy: "/project/buy",
-      finalize: "/project/finalize",
+      finalizeBox: "/project/finalizeBox",
+      finalizeProject: "/project/finalizeProject",
     },
     item: {
       filter: "/ownedItem/filter",
@@ -157,6 +159,7 @@ export const API = {
       claimed: "/ownedItem/claimed"
     },
     history: {
+      detail: "/history/info",
       filter: "/history/filter",
       add: "/history/add"
     },

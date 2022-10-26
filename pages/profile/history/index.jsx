@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../../utils/globalConstant";
 import useMetaMask from "../../../wallet/hook";
+import Pagination from "../../../components/Common/Pagination";
 
 export default function Index() {
 	const router = useRouter();
@@ -19,9 +20,9 @@ export default function Index() {
 		status: 6,
 	};
 
-	function redirect() {
+	function redirect(id) {
 		dispatch(toggleNavbar(navbarHistory))
-		router.push("/profile/history/detail?=boxname123");
+		router.push(`/profile/history/detail?id=${id}`);
 	}
 
 	const [history, setHistory] = useState([]);
@@ -123,31 +124,55 @@ export default function Index() {
 					/>
 				</div>
 			</div>
-			<div className="owned-boxed-list">
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">History Name</p>
-					<div onClick={redirect} className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
+			<div className="owned-boxed-list my-2">
+				{
+					history.length ?
+					<div className="owned-boxed-item px-3 pb-3 pt-1">
+						{
+							history.map((item, index) => (
+								<div key={index} className="obi-list py-2" onClick={() => redirect(item._id)}>
+									<img 
+										className="rounded-md mr-3" 
+										src={item.image} 
+										alt=""
+										style={{
+											width: "50px",
+											height: "50px",
+											aspectRatio: "1/1",
+											objectFit: "contain"
+										}}
+									/>
+									<div className="obi-list-detailed">
+										<p className="font-bold">{item.name}</p>
+										<p className="font-semibold text-gray-400">{item.projectName}</p>
+									</div>
+									<div className="obi-list-detailed flex justify-end">
+										{
+											item.action == 0 ?
+											<button className="buy px-2 py-0.5 rounded-md" disabled>Buy</button> :
+											item.action == 1 ?
+											<button className="claim px-2 py-0.5 rounded-md" disabled>Claim</button> :
+											<button className="refund px-2 py-0.5 rounded-md" disabled>Refund</button>
+										}
+									</div>
+								</div>
+							))
+						}
+					</div> :
+					<div className="my-16 flex flex-col items-center">
+						<img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+						<p className="pnd-title">No Data Found</p>
 					</div>
-					<div className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-					</div>
-				</div>
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Indonesia</p>
-					<div className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-					</div>
-				</div>
+				}
+				{
+					historyPage.currentPage ?
+					<div className="mt-2">
+						<Pagination
+							page={historyPage}
+							pageAction={changePage}
+						/>
+					</div> : ""
+				}
 			</div>
 		</div>
 	)

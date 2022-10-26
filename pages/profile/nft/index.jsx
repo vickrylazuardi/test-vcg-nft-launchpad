@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../../utils/globalConstant";
 import useMetaMask from "../../../wallet/hook";
+import Pagination from "../../../components/Common/Pagination";
 
 export default function Index() {
 	const modal = useSelector((state) => state.modal);
@@ -149,40 +150,63 @@ export default function Index() {
 					/>
 				</div>
 			</div>
-			<div className="owned-boxed-list">
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Name</p>
-					<div onClick={(e) => toggleNavbarActions(5, e)} className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="refund px-2 py-0.5 rounded-md">Refund</button>
-						</div>
+			<div className="owned-boxed-list my-2">
+				{
+					nft.length ?
+					<div className="owned-boxed-item px-3 pb-3 pt-1">
+						{/* <p className="font-bold">Project Name</p> */}
+						{
+							nft.map((item, index) => (
+								<div key={index} className="obi-list mt-2 py-2">
+									<img 
+										className="rounded-md mr-3" 
+										src={item.nftDetail.image}
+										alt=""
+										style={{
+											width: "75px",
+											height: "75px",
+											aspectRatio: "1/1",
+											objectFit: "contain"
+										}}
+									/>
+									<div className="obi-list-detailed">
+										<p className="font-bold">{item.name}</p>
+										<p className="font-semibold text-gray-400">{item.projectName}</p>
+									</div>
+									<div className="obi-list-detailed flex justify-end">
+										<button 
+											disable 
+											className={
+												item.nftDetail.description.split("- ")[1] == "Special" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-amber-500" :
+												item.nftDetail.description.split("- ")[1] == "Rare" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-sky-500" :
+												item.nftDetail.description.split("- ")[1] == "Uncommon" ?
+												"font-bold px-2 py-0.5 rounded-md text-black bg-green-500" :
+												"font-bold px-2 py-0.5 rounded-md text-black bg-stone-400"
+											}
+										>
+											{item.nftDetail.description.split("- ")[1]}
+										</button>
+									</div>
+								</div>
+							))
+						}
+					</div> :
+					<div className="my-16 flex flex-col items-center">
+						<img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+						<p className="pnd-title">No Data Found</p>
 					</div>
-					<div onClick={(e) => toggleNavbarActions(4, e)} className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="claim px-2 py-0.5 rounded-md">Claim</button>
-						</div>
-					</div>
-				</div>
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Indonesia</p>
-					<div className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="refund px-2 py-0.5 rounded-md">Refund</button>
-						</div>
-					</div>
-				</div>
+				}
+				{
+					nftPage.currentPage ?
+					<div className="mt-2">
+						<Pagination
+							page={nftPage}
+							pageAction={changePage}
+						/>
+					</div> : ""
+				}
 			</div>
 		</div>
 	)

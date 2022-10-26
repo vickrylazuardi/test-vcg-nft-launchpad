@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -60,60 +61,72 @@ export default function DashboardHistoryTransactionItem(props) {
 			dispatch(toggleModalBoxes(dataModal.modalBoxes))
 		}
 	};
-	return (
-		<div id="history-tr-list" className="p-3">
-			{
-				props?.history?.length ?
-				props?.history?.map((item, index) => (
-					<div 
-						key={index}
-						className="history-tr-item py-2" 
-						onClick={() => {
-							props.setData(item);
-							dispatch(toggleModalTransaction(dataModal.modalDetailTransaction));
-						}}
-					>
-						<div className="hti-count">{((props.page.currentPage - 1) * 5) + index + 1}</div>
-						<div className="hti-box">
-							<img 
-								src={item.image} 
-								className="rounded-t-lg" 
-								alt=""
-								style={{
-									width: "75px",
-									height: "75px",
-									aspectRatio: "1/1",
-									objectFit: "contain"
-								}}/>
-							<div className="hti-detailed ml-2">
-								<p className="font-bold hti-detailed-title">{item.name}</p>
-								<p className="font-bold hti-detailed-boxes">
-									{item.amount > 1 ? `${item.amount} Boxes` : "1 Box"}
-								</p>
-								<p className="font-semibold hti-detailed-projecct">{item.projectName}</p>
-								<p className="font-semibold hti-detailed-time">{(new Date(item.date)).toLocaleString()}</p>
+
+	if (props?.history?.length) {
+		return (
+			<div id="history-tr-list" className="p-3">
+				{
+					props?.history?.map((item, index) => (
+						<div 
+							key={index}
+							className="history-tr-item py-2" 
+							onClick={() => {
+								props.setData(item);
+								dispatch(toggleModalTransaction(dataModal.modalDetailTransaction));
+							}}
+						>
+							<div className="hti-count">{((props.page.currentPage - 1) * 5) + index + 1}</div>
+							<div className="hti-box">
+								<img 
+									src={item.image} 
+									className="rounded-t-lg" 
+									alt=""
+									style={{
+										width: "75px",
+										height: "75px",
+										aspectRatio: "1/1",
+										objectFit: "contain"
+									}}/>
+								<div className="hti-detailed ml-2">
+									<p className="font-bold hti-detailed-title">{item.name}</p>
+									<p className="font-bold hti-detailed-boxes">
+										{item.amount > 1 ? `${item.amount} Boxes` : "1 Box"}
+									</p>
+									<Link href={`/detail/${item.projectDetail._id}`} >
+										<a>
+											<p 
+												className="font-semibold hti-detailed-projecct"
+												onClick={(e) => {
+													if (e && e.stopPropagation) {
+														e.stopPropagation();
+													}
+												}}
+											>{item.projectName}</p>
+										</a>
+									</Link>
+									<p className="font-semibold hti-detailed-time">{(new Date(item.date)).toLocaleString()}</p>
+								</div>
+							</div>
+							<div className="hti-btn">
+								{
+									item.action == 0 ?
+									<button className="buy px-3 py-1 rounded-md">Buy</button> :
+									item.action == 1 ?
+									<button className="claim px-3 py-1 rounded-md">Claim</button> :
+									<button className="refund px-3 py-1 rounded-md">Refund</button>
+								}
 							</div>
 						</div>
-						<div className="hti-btn">
-							{
-								item.action == 0 ?
-								<button className="buy px-3 py-1 rounded-md">Buy</button> :
-								item.action == 1 ?
-								<button className="claim px-3 py-1 rounded-md">Claim</button> :
-								<button className="refund px-3 py-1 rounded-md">Refund</button>
-							}
-						</div>
-					</div>
-				)) :
-				<div className="history-tr-item py-2">
-					<div className="hti-count">1</div>
-					<div className="hti-box">
-						<div className="hti-detailed ml-2">
-							<p className="font-bold hti-detailed-title">No Data</p>
-						</div>
-					</div>
-				</div>
-			}
-		</div>
-	);
+					))
+				}
+			</div>
+		);
+	} else {
+		return (
+			<div className="my-16 flex flex-col items-center">
+				<img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+				<p className="pnd-title">No Data Found</p>
+			</div>
+		);
+	}
 }

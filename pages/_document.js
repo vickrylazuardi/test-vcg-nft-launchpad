@@ -13,6 +13,7 @@ class MyDocument extends Document {
           />
 
           <title>NFT Launchpad - VCGamers</title>
+          {/* <link rel="icon" type="image/x-icon" href="/images/favicon.ico"></link> */}
           {/* <link rel="shortcut icon" href="/ransverse/images/favicon.ico" /> */}
          
           {/* 

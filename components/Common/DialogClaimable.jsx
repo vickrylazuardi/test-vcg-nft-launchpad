@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {toggleModalClaimable} from "../../redux/modalReducer";
 import Link from "next/link";
+import { isDesktop } from "react-device-detect";
 const {motion} = require("framer-motion");
 
 export default function DialogClaimable(props) {
@@ -108,11 +109,23 @@ export default function DialogClaimable(props) {
 				{modal.showItem && (
 					<div className="dialog-claimable-body text-center px-4 py-4">
 						<motion.ul 
-							className={"container-motion-ul grid grid-cols-4 gap-1"}
+							className={
+								isDesktop ?
+								"container-motion-ul grid grid-cols-4 gap-1" :
+								"container-motion-ul grid grid-cols-2 gap-1"
+							}
 							variants={
-								props?.reward?.length < 8 ?
-								containerSmall :
-								containerFull
+								isDesktop ?
+								(
+									props?.reward?.length < 8 ?
+									containerSmall :
+									containerFull
+								) :
+								(
+									props?.reward?.length > 2 ?
+									containerSmall :
+									containerFull
+								)
 							} 
 							initial="hidden"
 							animate="visible"

@@ -15,7 +15,6 @@ const navbarMobSlice = createSlice({
 			if (val.payload) {
 				state.dataNavbar.title = val.payload.title;
 				state.dataNavbar.status = val.payload.status;
-				console.log(initialState.dataNavbar)
 			}
 		}
 	},

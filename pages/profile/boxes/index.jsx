@@ -13,6 +13,9 @@ import axios from "axios";
 import { API } from "../../../utils/globalConstant";
 import { BigNumber } from "ethers";
 import abiLaunchpad from '../../../abi/launchpad.json';
+import Pagination from "../../../components/Common/Pagination";
+import DialogConfirmation from "../../../components/Common/DialogConfirmation";
+import DialogClaimable from "../../../components/Common/DialogClaimable";
 
 export default function Index() {
 	const modal = useSelector((state) => state.modal);
@@ -51,6 +54,17 @@ export default function Index() {
 			en: "Confirmation",
 		}
 	};
+
+	const modalConfirmationLoading = {
+		loading: false,
+		isOpen: true,
+		isPlain: true,
+		isSuccess: false,
+		isFailed: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
   
 	const modalClaimableItem = {
 		loading: true,
@@ -72,14 +86,14 @@ export default function Index() {
 
 	const toggleNavbarActions = (params, e) => {
 		if (params === 4) {
-			e.stopPropagation();
+			// e.stopPropagation();
 			dispatch(toggleNavbar(navbarDetailClaim))
-			router.push("/profile/boxes/claim?=boxes123")
+			// router.push("/profile/boxes/claim?=boxes123")
 		} else if (params === 5) {
 			dispatch(toggleNavbar(navbarDetailRefund))
-			router.push("/profile/boxes/refund?=boxes123")
+			// router.push("/profile/boxes/refund?=boxes123")
 		}else if (params === 99) {
-			e.stopPropagation();
+			// e.stopPropagation();
 			dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
 		}
 	}
@@ -339,41 +353,86 @@ export default function Index() {
 					/>
 				</div>
 			</div>
-			<div className="owned-boxed-list">
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Name</p>
-					<div onClick={(e) => toggleNavbarActions(5, e)} className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="refund px-2 py-0.5 rounded-md">Refund</button>
-						</div>
+			<div className="owned-boxed-list my-2">
+				{
+					boxes.length ?
+					<div className="owned-boxed-item px-3 pb-3 pt-1">
+						{
+							boxes.map((item, idx) => (
+								<div 
+									key={idx} 
+									onClick={() => {
+										if (!item.projectDetail.boxes[item.itemName].finalize) return
+										dispatch(toggleModalConfirmation(modalConfirmationLoading))
+										modalClaim({
+											type: "claim",
+											name: item.itemName, 
+											amount: item.amount,
+											projectDetail: item.projectDetail
+										})
+									}} 
+									disabled={!item.projectDetail.boxes[item.itemName].finalize}
+									className="obi-list mt-2 py-2"
+								>
+									<img 
+										className="rounded-md mr-3" 
+										src={item.image}
+										alt=""
+										style={{
+											width: "75px",
+											height: "75px",
+											aspectRatio: "1/1",
+											objectFit: "contain"
+										}}
+									/>
+									<div className="obi-list-detailed">
+										<p className="font-bold">
+											{item.itemName}
+											{item.amount > 1 ? ` [${item.amount}]` : ""}
+										</p>
+										<p className="font-semibold text-gray-400">{item.projectName}</p>
+									</div>
+									<div className="obi-list-detailed flex justify-end">
+										<button disabled className="claim px-2 py-0.5 rounded-md">Claim</button>
+									</div>
+								</div>
+							))
+						}
+					</div> :
+					<div className="my-16 flex flex-col items-center">
+						<img className="mb-5 w-64" src="/images/data-not-found.png" alt=""/>
+						<p className="pnd-title">No Data Found</p>
 					</div>
-					<div onClick={(e) => toggleNavbarActions(4, e)} className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="claim px-2 py-0.5 rounded-md">Claim</button>
-						</div>
-					</div>
-				</div>
-				<div className="owned-boxed-item p-3 mt-2">
-					<p className="font-bold">Project Indonesia</p>
-					<div className="obi-list mt-2 py-2">
-						<img className="rounded-md mr-3" src="https://placeimg.com/160/160/arch" alt=""/>
-						<div className="obi-list-detailed">
-							<p className="font-bold">Box Name</p>
-						</div>
-						<div className="obi-list-detailed flex justify-end">
-							<button className="refund px-2 py-0.5 rounded-md">Refund</button>
-						</div>
-					</div>
-				</div>
+				}
+				{
+					boxesPage.currentPage ?
+					<div className="mt-2">
+						<Pagination
+							page={boxesPage}
+							pageAction={changePage}
+						/>
+					</div> : ""
+				}
 			</div>
+			
+			{
+				modal.modalConfirmation.isOpen && 
+				<DialogConfirmation
+          type={modalMessage.type}
+          amount={modalMessage.amount}
+          message={modalMessage.message}
+          successMessage={modalMessage.successMessage}
+          failedMessage={modalMessage.failedMessage}
+          action={claim}
+        />
+			}
+			{
+				modal.modalClaimable.isOpen && 
+				<DialogClaimable
+          reward={claimReward}
+          uri={itemURI}
+        />
+			}
 		</div>
 	)
 }

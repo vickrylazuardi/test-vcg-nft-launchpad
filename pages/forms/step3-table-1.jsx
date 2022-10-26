@@ -5,7 +5,7 @@ export default function Table1(props) {
   function handleAddMamber() {
     let formDefault = {
       images: "",
-      fullName: "",
+      name: "",
       title: "",
       completed: false,
     };
@@ -55,14 +55,14 @@ export default function Table1(props) {
                     cssCustom={"wh-100-100"}
                     result={handleInputMemberImage}
                     idx={idx}
-                    preview={props.list.member[idx].images}
+                    preview={item.images}
                   />
                 </td>
                 <td>
                   <div className="wrap-input border-dark flex-1">
-                    {props.list.member[idx].completed ? (
+                    {item.completed ? (
                       <p className="text-sm font-semibold">
-                        {props.list.member[idx].fullName}
+                        {item.name}
                       </p>
                     ) : (
                       <textarea
@@ -70,9 +70,9 @@ export default function Table1(props) {
                         className="w-full"
                         placeholder="Input full name"
                         rows={3}
-                        value={props.list.member[idx].fullName}
+                        value={item.name}
                         onChange={(e) => {
-                          props.list.member[idx].fullName = e.target.value;
+                          props.list.member[idx].name = e.target.value;
                           props.setList({ ...props.list });
                         }}
                       ></textarea>
@@ -81,9 +81,9 @@ export default function Table1(props) {
                 </td>
                 <td>
                   <div className="wrap-input border-dark flex-1">
-                    {props.list.member[idx].completed ? (
+                    {item.completed ? (
                       <p className="text-sm font-semibold">
-                        {props.list.member[idx].title}
+                        {item.title}
                       </p>
                     ) : (
                       <textarea
@@ -91,7 +91,7 @@ export default function Table1(props) {
                         className="w-full"
                         placeholder="Input title"
                         rows={3}
-                        value={props.list.member[idx].title}
+                        value={item.title}
                         onChange={(e) => {
                           props.list.member[idx].title = e.target.value;
                           props.setList({ ...props.list });
@@ -104,7 +104,7 @@ export default function Table1(props) {
                   className="text-center"
                   style={{ padding: "5px", width: "100px" }}
                 >
-                  {props.list.member[idx].completed ? (
+                  {item.completed ? (
                     <>
                       <button
                         style={{ padding: "5px" }}
