@@ -125,11 +125,10 @@ export default function Header(props) {
                 </a>
               </button>
               <button
-                className="btn btn-orange-light w-1/2 lg:text-xs btn-disabled relative" disabled
+                className="btn btn-orange-light w-1/2 lg:text-xs relative"
                 onClick={() => router.push("/forms/new-project")}
               >
                 Launch Your Project Now
-                <img style={{height:'38px',width:'auto',right:'0',top:'-10px',position:'absolute'}} src="/images/soon.gif"></img>
               </button>
             </div>
             <div className="sc-info-container flex items-center justify-between flex-wrap">

@@ -2,6 +2,10 @@ import React from "react";
 import { FormInputImage } from "../../components/Common/formComponent";
 
 export default function Step2(props) {
+  function handleInputMemberImage(file) {
+    props.getData("icon", file);
+  }
+
   return (
     <div className="">
       <p className="text-lg font-bold">Project Information</p>
@@ -13,7 +17,10 @@ export default function Step2(props) {
           >
             <label>Project Image</label>
           </div>
-          <FormInputImage />
+          <FormInputImage 
+            preview={props.data.icon}
+            result={handleInputMemberImage}
+          />
         </div>
       </div>
       <div className="flex md:block items-center mt-5">
@@ -24,7 +31,14 @@ export default function Step2(props) {
           <label>Project Name</label>
         </div>
         <div className="wrap-input flex-1">
-          <input type="text" className="w-full" placeholder="Project Name" />
+          <input 
+            type="text" 
+            maxLength={100}
+            className="w-full" 
+            placeholder="Project Name" 
+            value={props.data.name ?? ""}
+            onChange={(e) => props.getData("name", e.target.value)}
+          />
         </div>
       </div>
       <div className="flex md:block items-center mt-5">
@@ -36,10 +50,13 @@ export default function Step2(props) {
         </div>
         <div className="wrap-input flex-1">
           <textarea
+            rows={3}
             type="text"
+            maxLength={200}
             className="w-full"
             placeholder="Project Name"
-            rows={3}
+            value={props.data.desc ?? ""}
+            onChange={(e) => props.getData("desc", e.target.value)}
           ></textarea>
         </div>
       </div>
@@ -51,7 +68,13 @@ export default function Step2(props) {
           <label>Start Project</label>
         </div>
         <div className="wrap-input flex-1">
-          <input className="date-input" type="datetime-local" />
+          <input 
+            id="start"
+            className="date-input" 
+            type="datetime-local" 
+            value={props.data.startedAt ?? ""}
+            onChange={(e) => props.getData("startedAt", e.target.value)}
+          />
         </div>
       </div>
       <div className="flex md:block items-center mt-5">
@@ -62,7 +85,18 @@ export default function Step2(props) {
           <label>Sale Duration (Days)</label>
         </div>
         <div className="wrap-input flex-1">
-          <input type="text" defaultValue={31} style={{ width: "45px" }} />
+          <input 
+            type="text" 
+            placeholder={0} 
+            style={{ width: "50px" }} 
+            value={props.data.duration ?? ""}
+            onChange={(e) => {
+              if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+              if (e.target.value <= 0) e.target.value = "";
+              if (e.target.value > 90) e.target.value = 90;
+              props.getData("duration", e.target.value)
+            }}
+          />
         </div>
       </div>
       <div className="mt-10">
@@ -81,6 +115,8 @@ export default function Step2(props) {
               type="text"
               id="input-url"
               placeholder="https://youtube.com"
+              value={props.data.video ?? ""}
+              onChange={(e) => props.getData("video", e.target.value)}
             />
           </div>
         </div>
@@ -100,7 +136,9 @@ export default function Step2(props) {
             <input
               type="text"
               id="input-url"
-              placeholder="https://youtube.com"
+              placeholder="https://website.com"
+              value={props.data.socialMedia.website ?? ""}
+              onChange={(e) => props.getData("socialMedia.website", e.target.value)}
             />
           </div>
           <div className="input-group mt-8">
@@ -110,7 +148,9 @@ export default function Step2(props) {
             <input
               type="text"
               id="input-medium"
-              placeholder="https://website.com"
+              placeholder="https://medium.com"
+              value={props.data.socialMedia.medium ?? ""}
+              onChange={(e) => props.getData("socialMedia.medium", e.target.value)}
             />
           </div>
           <div className="input-group mt-8">
@@ -120,7 +160,9 @@ export default function Step2(props) {
             <input
               type="text"
               id="input-youtube"
-              placeholder="https://youtube,com"
+              placeholder="https://youtube.com"
+              value={props.data.socialMedia.youtube ?? ""}
+              onChange={(e) => props.getData("socialMedia.youtube", e.target.value)}
             />
           </div>
           <div className="input-group mt-8">
@@ -131,6 +173,8 @@ export default function Step2(props) {
               type="text"
               id="input-tele"
               placeholder="https://web.telegram.org/k/"
+              value={props.data.socialMedia.telegram ?? ""}
+              onChange={(e) => props.getData("socialMedia.telegram", e.target.value)}
             />
           </div>
           <div className="input-group mt-8">
@@ -141,6 +185,8 @@ export default function Step2(props) {
               type="text"
               id="input-discord"
               placeholder="https://discord.com"
+              value={props.data.socialMedia.discord ?? ""}
+              onChange={(e) => props.getData("socialMedia.discord", e.target.value)}
             />
           </div>
         </div>

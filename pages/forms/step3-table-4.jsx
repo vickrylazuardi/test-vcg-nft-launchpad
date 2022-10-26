@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormInputImage } from "../../components/Common/formComponent";
 
 export default function Table4(props) {
+  const [category, setCategory] = useState([]);
+
   function handleAddBoxes() {
     let formDefault = {
       images: "",
@@ -17,7 +19,8 @@ export default function Table4(props) {
   }
 
   function handleInputBoxesImage(file, idx) {
-    props.list.boxes[idx].images = file;
+    const index = idx.split("-")[1];
+    props.list.boxes[index].images = file;
     props.setList({ ...props.list });
   }
 
@@ -30,6 +33,18 @@ export default function Table4(props) {
     props.list.boxes[idx].items.push(formDefaultItems);
     props.setList({ ...props.list });
   }
+
+  useEffect(() => {
+    category.splice(0);
+    setCategory([...category]);
+    props.list.items.map((item) => {
+      const categoryName = item.attribute.category;
+      if (!category.includes(categoryName)) {
+        category.push(categoryName);
+        setCategory([...category]);
+      }
+    })
+  }, [props])
 
   return (
     <table className="table-flexible">
@@ -70,7 +85,7 @@ export default function Table4(props) {
                   <FormInputImage
                     cssCustom={"wh-100-100"}
                     result={handleInputBoxesImage}
-                    idx={idx}
+                    idx={`box-${idx}`}
                     preview={props.list.boxes[idx].images}
                   />
                 </td>
@@ -129,6 +144,8 @@ export default function Table4(props) {
                             placeholder="Box Price"
                             value={props.list.boxes[idx].price}
                             onChange={(e) => {
+                              if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                              if (e.target.value <= 0) e.target.value = "";
                               props.list.boxes[idx].price = e.target.value;
                               props.setList({ ...props.list });
                             }}
@@ -149,6 +166,8 @@ export default function Table4(props) {
                             placeholder="Box Supply"
                             value={props.list.boxes[idx].supply}
                             onChange={(e) => {
+                              if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                              if (e.target.value <= 0) e.target.value = "";
                               props.list.boxes[idx].supply = e.target.value;
                               props.setList({ ...props.list });
                             }}
@@ -163,7 +182,7 @@ export default function Table4(props) {
                     ? props.list.boxes[idx].items
                       ? props.list.boxes[idx].items.map((i, index) => {
                           return (
-                            <span key={index} className="boxes-items">
+                            <span key={index} className="boxes-items mr-3">
                               {props.list.boxes[idx].items[index].category} (
                               {props.list.boxes[idx].items[index].qty})
                             </span>
@@ -192,10 +211,12 @@ export default function Table4(props) {
                                   props.setList({ ...props.list });
                                 }}
                               >
-                                <option selected>Select Rarity</option>
-                                <option value="one">One</option>
-                                <option value="two">Two</option>
-                                <option value="three">Three</option>
+                                <option selected hidden>Select Category</option>
+                                {
+                                  category.map((item) => (
+                                    <option key={item} value={item} className="text-black">{item}</option>
+                                  ))
+                                }
                               </select>
                             </div>
                             <div className="wrap-input input-qty border-dark mx-3">
@@ -215,8 +236,10 @@ export default function Table4(props) {
                                 min={0}
                                 value={props.list.boxes[idx].items[index].qty}
                                 onChange={(e) => {
+                                  if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                                  if (e.target.value <= 0) e.target.value = "";
                                   props.list.boxes[idx].items[index].qty =
-                                    e.target.value;
+                                    Number(e.target.value);
                                   props.setList({ ...props.list });
                                 }}
                               />

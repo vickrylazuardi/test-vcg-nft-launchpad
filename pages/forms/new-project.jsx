@@ -7,6 +7,28 @@ import Step3 from "./step-3";
 
 export default function NewProject(props) {
   const [step, setStep] = useState(1);
+  const [selected, setSelected] = useState(1);
+  const [data, setData] = useState({ socialMedia: {} });
+  const [list, setList] = useState({ features: [], member: [], items: [], boxes: [] });
+
+  const getData = (key, value) => {
+    try {
+      const keys = key.split(".");
+      switch (keys[0]) {
+        case "socialMedia":
+          data.socialMedia[keys[1]] = value;
+          break;
+        default:
+          data[key] = value;
+          break;
+      }
+      setData({...data});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(list);
 
   return (
     <div style={{ padding: "9rem 0", background: "#1E1E1E" }}>
@@ -54,11 +76,31 @@ export default function NewProject(props) {
             </div>
           </div>
 
-          {step == 1 && <Step1 />}
+          {
+            step == 1 && 
+            <Step1 
+              data={data}
+              getData={getData} 
+            />
+          }
 
-          {step == 2 && <Step2 />}
+          {
+            step == 2 && 
+            <Step2 
+              data={data}
+              getData={getData} 
+            />
+          }
 
-          {step == 3 && <Step3 />}
+          {
+            step == 3 && 
+            <Step3 
+              list={list}
+              setList={setList}
+              selected={selected}
+              setSelected={setSelected} 
+            />
+          }
 
           <div className="mt-8 text-right">
             <button
@@ -69,14 +111,27 @@ export default function NewProject(props) {
             >
               Back
             </button>
-            <button
-              style={{ padding: "10px 30px" }}
-              className="btn btn-orange-light text-sm"
-              onClick={() => setStep(step + 1)}
-              disabled={step == 3}
-            >
-              Next
-            </button>
+            {
+              step == 3 ?
+              <button
+                style={{ padding: "10px 30px" }}
+                className={
+                  "btn btn-orange-light text-sm"
+                }
+                // onClick={() => setStep(step + 1)}
+                // disabled={step == 3}
+              >
+                Submit
+              </button> :
+              <button
+                style={{ padding: "10px 30px" }}
+                className="btn btn-orange-light text-sm"
+                onClick={() => setStep(step + 1)}
+                disabled={step == 3}
+              >
+                Next
+              </button>
+            }
           </div>
         </div>
       </div>

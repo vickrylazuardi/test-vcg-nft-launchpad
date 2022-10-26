@@ -4,10 +4,26 @@ function FormInputImage(props) {
   const [projectImage, setProjectImage] = useState("");
 
   function handleInputProject(file) {
-    if (file[0]) {
+    if (
+      file[0] &&
+      file[0].type.split("/")[0] == "image" &&
+      file[0].size <= 10485760
+    ) {
+      document.getElementById(
+        props.idx
+          ? `input-img-project-${props.idx}`
+          : "input-img-project"
+      ).classList.remove("!border-rose-600");
       let filePreview = URL.createObjectURL(file[0]);
       setProjectImage(filePreview);
       props.result(file[0], props.idx);
+    } else {
+      document.getElementById(
+        props.idx
+          ? `input-img-project-${props.idx}`
+          : "input-img-project"
+      ).classList.add("!border-rose-600");
+      props.result("", props.idx);
     }
   }
 
@@ -68,6 +84,7 @@ function FormInputImage(props) {
         id={props.idx ? `input-img-project-${props.idx}` : "input-img-project"}
         type="file"
         className="hidden"
+        accept="image/*,video/*"
         onChange={(e) => handleInputProject(e.target.files)}
       />
     </div>

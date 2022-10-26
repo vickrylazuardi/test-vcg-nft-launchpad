@@ -10,7 +10,14 @@ export default function Step1(props) {
             <p>Full Name (Contact Person)</p>
           </div>
           <div className="wrap-input flex-1">
-            <input type="text" className="w-full" placeholder="Full name" />
+            <input 
+              type="text" 
+              maxLength={100}
+              className="w-full" 
+              placeholder="Full name" 
+              value={props.data.contactName ?? ""}
+              onChange={(e) => props.getData("contactName", e.target.value)}
+            />
           </div>
         </div>
         <div className="flex md:block items-center mt-5">
@@ -18,7 +25,14 @@ export default function Step1(props) {
             <p>Wallet Address</p>
           </div>
           <div className="wrap-input flex-1">
-            <input type="text" className="w-full" placeholder="0xi93..." />
+            <input 
+              type="text" 
+              maxLength={100}
+              className="w-full" 
+              placeholder="0xi93..." 
+              value={props.data.owner ?? ""}
+              onChange={(e) => props.getData("owner", e.target.value)}
+            />
           </div>
         </div>
         <div className="flex md:block items-center mt-5">
@@ -26,7 +40,24 @@ export default function Step1(props) {
             <p>Email Address (Contact Person)</p>
           </div>
           <div className="wrap-input flex-1">
-            <input type="text" className="w-full" placeholder="Email Address" />
+            <input 
+              id="email"
+              type="text" 
+              maxLength={100}
+              className="w-full" 
+              placeholder="Email Address" 
+              value={props.data.contactEmail ?? ""}
+              onChange={(e) => {
+                const at = e.target.value.indexOf("@");
+                const dot = e.target.value.lastIndexOf(".");
+                if (at < 1 || dot < at + 2 || dot + 2 >= e.target.value.length) {
+                  document.getElementById("email").classList.add("!border-rose-600");
+                } else {
+                  document.getElementById("email").classList.remove("!border-rose-600");
+                }
+                props.getData("contactEmail", e.target.value);
+              }}
+            />
           </div>
         </div>
       </div>
