@@ -1,10 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
 import {useEffect} from "react";
+import { useRouter } from 'next/router'
 const {motion} = require("framer-motion");
 
 export default function DialogConfirmation(props) {
 	//functional
+	const router = useRouter();
 	const modal = useSelector(state => state.modal.modalConfirmation);
 	const dispatch = useDispatch();
 	const modalConfirmation = {
@@ -119,9 +121,24 @@ export default function DialogConfirmation(props) {
 							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
 							""
 						}
-						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
-										className="btn-orange-light w-full py-2 rounded-lg">Back
-						</button>
+						{
+							props.redirect ?
+							<button 
+								onClick={() => {
+									dispatch(toggleModalConfirmation(modalConfirmation));
+									router.push(props.redirect);
+								}}
+								className="btn-orange-light w-full py-2 rounded-lg"
+							>
+								Back
+							</button> :
+							<button 
+								onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
+								className="btn-orange-light w-full py-2 rounded-lg"
+							>
+								Back
+							</button>
+						}
 					</div>
 				)}
 				{modal.isFailed && (

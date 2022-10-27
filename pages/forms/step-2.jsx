@@ -1,10 +1,31 @@
 import React from "react";
+import { useEffect } from "react";
 import { FormInputImage } from "../../components/Common/formComponent";
 
 export default function Step2(props) {
   function handleInputMemberImage(file) {
     props.getData("icon", file);
   }
+
+  const getNextWeek = () => {
+    try {
+      const date = new Date();
+      date.setDate(date.getDate() + 7);
+      const minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      const day7 = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      const month = date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth() + 1;
+      const year = date.getFullYear();
+      const nextWeek = `${year}-${month}-${day7}T${hour}:${minute}:00.00`;
+      document.getElementById("start").min = nextWeek;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getNextWeek();
+  }, []);
 
   return (
     <div className="">
@@ -70,8 +91,8 @@ export default function Step2(props) {
         <div className="wrap-input flex-1">
           <input 
             id="start"
-            className="date-input" 
             type="datetime-local" 
+            className="date-input" 
             value={props.data.startedAt ?? ""}
             onChange={(e) => props.getData("startedAt", e.target.value)}
           />

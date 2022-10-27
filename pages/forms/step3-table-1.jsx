@@ -146,8 +146,19 @@ export default function Table1(props) {
                           props.list.member[idx].completed = true;
                           props.setList({ ...props.list });
                         }}
+                        disabled={
+                          item.images && item.name && 
+                          item.title ? false : true
+                        }
                       >
-                        <img src="/images/svg/icon-check.svg" alt="" />
+                        <img 
+                          alt="" 
+                          src="/images/svg/icon-check.svg" 
+                          style={
+                            item.images && item.name && item.title ?
+                            {} : {filter: "brightness(0.5)"}
+                          }
+                        />
                       </button>
                     </>
                   )}

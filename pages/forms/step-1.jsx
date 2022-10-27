@@ -7,7 +7,7 @@ export default function Step1(props) {
       <div className="mt-8">
         <div className="flex md:block items-center mt-5">
           <div className="w-1/4 md:w-full mb-2 text-sm font-semibold" style={{ color: "#9AA4BF", fontSize: "14px" }}>
-            <p>Full Name (Contact Person)</p>
+            <p>Full Name (Contact Person)*</p>
           </div>
           <div className="wrap-input flex-1">
             <input 
@@ -22,7 +22,7 @@ export default function Step1(props) {
         </div>
         <div className="flex md:block items-center mt-5">
           <div className="w-1/4 md:w-full mb-2 text-sm font-semibold" style={{ color: "#9AA4BF", fontSize: "14px" }}>
-            <p>Wallet Address</p>
+            <p>Wallet Address*</p>
           </div>
           <div className="wrap-input flex-1">
             <input 
@@ -41,21 +41,22 @@ export default function Step1(props) {
           </div>
           <div className="wrap-input flex-1">
             <input 
-              id="email"
               type="text" 
               maxLength={100}
-              className="w-full" 
+              className={
+                props.data.validEmail ?
+                "w-full" : "w-full !border-rose-600"
+              } 
               placeholder="Email Address" 
               value={props.data.contactEmail ?? ""}
               onChange={(e) => {
                 const at = e.target.value.indexOf("@");
                 const dot = e.target.value.lastIndexOf(".");
                 if (at < 1 || dot < at + 2 || dot + 2 >= e.target.value.length) {
-                  document.getElementById("email").classList.add("!border-rose-600");
+                  props.getData("contactEmail", e.target.value, false);
                 } else {
-                  document.getElementById("email").classList.remove("!border-rose-600");
+                  props.getData("contactEmail", e.target.value, true);
                 }
-                props.getData("contactEmail", e.target.value);
               }}
             />
           </div>

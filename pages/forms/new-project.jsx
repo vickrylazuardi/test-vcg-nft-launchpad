@@ -1,25 +1,78 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import axios from "axios";
+import { API } from "../../utils/globalConstant";
+import { useEffect } from "react";
 import { FormInputImage } from "../../components/Common/formComponent";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
 import Step3 from "./step-3";
+import DialogConfirmation from "../../components/Common/DialogConfirmation";
+import { useDispatch, useSelector } from "react-redux";
+import {toggleModalConfirmation} from "../../redux/modalReducer";
 
 export default function NewProject(props) {
+  const modal = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
+
+  const modalConfirmationWhenSuccess = {
+		loading: false,
+		isOpen: true,
+		isPlain: false,
+		isSuccess: true,
+		isFailed: false,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
+  const modalConfirmationWhenFailed = {
+		loading: false,
+		isOpen: true,
+		isPlain: false,
+		isSuccess: false,
+		isFailed: true,
+		title: {
+			en: "Confirmation",
+		}
+	};
+
+  const modalConfirmation = {
+    loading: false,
+    isOpen: true,
+    isPlain: true,
+    isSuccess: false,
+    isFailed: false,
+    title: {
+      en: "Confirmation",
+    }
+  }
+
   const [step, setStep] = useState(1);
   const [selected, setSelected] = useState(1);
   const [data, setData] = useState({ socialMedia: {} });
   const [list, setList] = useState({ features: [], member: [], items: [], boxes: [] });
 
-  const getData = (key, value) => {
+  const getData = (key, value, status) => {
     try {
       const keys = key.split(".");
       switch (keys[0]) {
         case "socialMedia":
-          data.socialMedia[keys[1]] = value;
+          if (value.length) data.socialMedia[keys[1]] = value;
+          else delete(data.socialMedia[keys[1]]);
+          break;
+        case "contactEmail":
+          if (value.length) {
+            data[key] = value;
+            data.validEmail = status;
+          } else {
+            delete(data[key]);
+            delete(data.validEmail);
+          }
           break;
         default:
-          data[key] = value;
+          if (value) data[key] = value;
+          else delete(data[key]);
           break;
       }
       setData({...data});
@@ -28,6 +81,69 @@ export default function NewProject(props) {
     }
   };
 
+  const submitProject = () => {
+    try {
+      // const formData = new FormData();
+      // for (const key in data) {
+      //   const value = nftData[key];
+      //   switch (key) {
+      //     case "name":
+      //       formData.append(key, value);
+      //       break;
+      //     case "description":
+      //       formData.append(key, value);
+      //       break;
+      //     case "tokenId":
+      //       formData.append(key, value);
+      //       break;
+      //     case "attributes":
+      //       const attribute = value.filter(findNotEmptyAttribute);
+      //       formData.append(key, JSON.stringify(attribute));
+      //       break;
+      //     case "owner":
+      //       formData.append(key, JSON.stringify(value));
+      //       break;
+      //     case "creator":
+      //       formData.append(key, JSON.stringify(value));
+      //       break;
+      //     case "category":
+      //       formData.append(key, value);
+      //       break;
+      //     case "collectionId":
+      //       formData.append(key, value);
+      //       break;
+      //     case "supply":
+      //       formData.append(key, value);
+      //       break;
+      //     case "external_url":
+      //       formData.append(key, value);
+      //       break;
+      //     case "royalty":
+      //       formData.append(key, value);
+      //       break;
+      //     case "image":
+      //       formData.append(key, value);
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // };
+      
+      // axios.post(API.local + API.metadata.create, formData, {
+      //   headers : {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // })
+      setTimeout(() => {
+        dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+    }
+  }
+
+  console.log(data);
   console.log(list);
 
   return (
@@ -116,10 +232,30 @@ export default function NewProject(props) {
               <button
                 style={{ padding: "10px 30px" }}
                 className={
-                  "btn btn-orange-light text-sm"
+                  data.contactName && data.contactEmail && data.duration && 
+                  data.validEmail && data.owner && data.icon && 
+                  data.name && data.desc && data.startedAt && 
+                  list.member.length && list.boxes.length && list.items.length &&
+                  list.member.find((item) => {return !item.completed}) == undefined &&
+                  list.features.find((item) => {return !item.completed}) == undefined &&
+                  list.boxes.find((item) => {return !item.completed}) == undefined &&
+                  list.items.find((item) => {return !item.completed}) == undefined ?
+                  "btn btn-orange-light text-sm" : "btn btn-disabled text-sm"
                 }
-                // onClick={() => setStep(step + 1)}
-                // disabled={step == 3}
+                onClick={() => {
+                  dispatch(toggleModalConfirmation(modalConfirmation))
+                }}
+                disabled={
+                  data.contactName && data.contactEmail && data.duration && 
+                  data.validEmail && data.owner && data.icon && 
+                  data.name && data.desc && data.startedAt && 
+                  list.member.length && list.boxes.length && list.items.length &&
+                  list.member.find((item) => {return !item.completed}) == undefined &&
+                  list.features.find((item) => {return !item.completed}) == undefined &&
+                  list.boxes.find((item) => {return !item.completed}) == undefined &&
+                  list.items.find((item) => {return !item.completed}) == undefined ?
+                  false : true
+                }
               >
                 Submit
               </button> :
@@ -135,6 +271,17 @@ export default function NewProject(props) {
           </div>
         </div>
       </div>
+      {
+        modal.modalConfirmation.isOpen && 
+        <DialogConfirmation
+          type="Submit"
+          message="submit this project?"
+          successMessage="You have successfully submitted this project"
+          failedMessage="Failed to submit this project"
+          redirect="/"
+          action={submitProject}
+        />
+      }
     </div>
   );
 }

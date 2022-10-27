@@ -34,6 +34,22 @@ export default function Table4(props) {
     props.setList({ ...props.list });
   }
 
+  function handleAddItems() {
+    let formDefault = {
+      images: "",
+      itemName: "",
+      supply: "",
+      attribute: {
+        category: "",
+        rarity: "",
+      },
+      completed: false,
+    };
+
+    props.list.items.push(formDefault);
+    props.setList({ ...props.list });
+  }
+
   useEffect(() => {
     category.splice(0);
     setCategory([...category]);
@@ -206,16 +222,24 @@ export default function Table4(props) {
                                   props.list.boxes[idx].items[index].category
                                 }
                                 onChange={(e) => {
-                                  props.list.boxes[idx].items[index].category =
-                                    e.target.value;
-                                  props.setList({ ...props.list });
+                                  if (e.target.value == "new-items") handleAddItems();
+                                  else {
+                                    props.list.boxes[idx].items[index].category =
+                                      e.target.value;
+                                    props.setList({ ...props.list });
+                                  }
                                 }}
                               >
                                 <option selected hidden>Select Category</option>
                                 {
+                                  category.length ?
                                   category.map((item) => (
                                     <option key={item} value={item} className="text-black">{item}</option>
-                                  ))
+                                  )) :
+                                  <option 
+                                    value="new-items" 
+                                    className="text-black"
+                                  >Add New Item</option>
                                 }
                               </select>
                             </div>
@@ -324,8 +348,25 @@ export default function Table4(props) {
                           props.list.boxes[idx].completed = true;
                           props.setList({ ...props.list });
                         }}
+                        disabled={
+                          item.images && item.boxName && item.price && 
+                          item.supply && item.items.length &&
+                          item.items?.find((item) => {return !item?.category}) == undefined &&
+                          item.items?.find((item) => {return item?.qty < 1}) == undefined ? 
+                          false : true
+                        }
                       >
-                        <img src="/images/svg/icon-check.svg" alt="" />
+                        <img 
+                          src="/images/svg/icon-check.svg" 
+                          alt="" 
+                          style={
+                            item.images && item.boxName && item.price && 
+                            item.supply && item.items.length &&
+                            item.items?.find((item) => {return !item?.category}) == undefined &&
+                            item.items?.find((item) => {return item?.qty < 1}) == undefined ?
+                            {} : {filter: "brightness(0.5)"}
+                          }
+                        />
                       </button>
                     </>
                   )}

@@ -138,7 +138,7 @@ export default function Table3(props) {
                             props.setList({ ...props.list });
                           }}
                         >
-                          <option className="text-black" selected disabled>Select Rarity</option>
+                          <option className="text-black" selected hidden>Select Rarity</option>
                           <option className="text-black" value="common">Common</option>
                           <option className="text-black" value="uncommon">Uncommon</option>
                           <option className="text-black" value="rare">Rare</option>
@@ -194,8 +194,21 @@ export default function Table3(props) {
                           props.list.items[idx].completed = true;
                           props.setList({ ...props.list });
                         }}
+                        disabled={
+                          item.images && item.itemName && item.supply && 
+                          item.attribute.category && item.attribute.rarity ? 
+                          false : true
+                        }
                       >
-                        <img src="/images/svg/icon-check.svg" alt="" />
+                        <img 
+                          src="/images/svg/icon-check.svg" 
+                          alt="" 
+                          style={
+                            item.images && item.itemName && item.supply && 
+                            item.attribute.category && item.attribute.rarity ? 
+                            {} : {filter: "brightness(0.5)"}
+                          }
+                        />
                       </button>
                     </>
                   )}
