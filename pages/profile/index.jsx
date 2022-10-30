@@ -115,6 +115,8 @@ export default function Index() {
 						<DashboardSideMenu/>
 						<DashboardProjects
 							project={project}
+							page={projectPage}
+							pageAction={changePage}
 						/>
 					</div>
 				)}

@@ -66,9 +66,9 @@ export const MetaMaskProvider = ({ children }) => {
       // document.getElementById("loading-vcg").classList.add("show");
       sign(messageTemplate).then((res) => {
         if (res.error == undefined) {
-          axios
-            .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
-            .then((resp) => {
+          // axios
+          //   .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
+          //   .then((resp) => {
               setSignature(res);
               setCookie(walletId, res, 1);
               setCookie(walletId + "-msg", messageTemplate, 1);
@@ -78,7 +78,7 @@ export const MetaMaskProvider = ({ children }) => {
               setIsLoading(false);
               setIsSigned(true);
               // document.getElementById("loading-vcg").classList.remove("show");
-            });
+            // });
         } else {
           disconnect();
           setIsLoading(false);

@@ -16,6 +16,7 @@ export default function DashboardSideMenu(props) {
 	const theadStyling = {
 		borderBottom: "1px solid #9AA4BF",
 	}
+
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
@@ -38,24 +39,28 @@ export default function DashboardSideMenu(props) {
 			<div className="dashboard-projects-body mt-2">
 				<table className="table-auto w-full">
 					<thead style={theadStyling}>
-					<tr style={textStyling}>
-						<th className="font-semibold">No</th>
-						<th className="text-left font-semibold">Project Name</th>
-						<th className="font-semibold">Social Media</th>
-						<th className="font-semibold">Approval</th>
-						<th className="font-semibold">Status</th>
-						<th className="font-semibold">Balance</th>
-						<th className="font-semibold">Withdraw</th>
-					</tr>
+						<tr style={textStyling}>
+							<th className="font-semibold">No</th>
+							<th className="text-left font-semibold">Project Name</th>
+							<th className="font-semibold">Social Media</th>
+							<th className="font-semibold">Approval</th>
+							<th className="font-semibold">Status</th>
+							<th className="font-semibold">Balance</th>
+							<th className="font-semibold">Withdraw</th>
+						</tr>
 					</thead>
 					<DashboardProjectItem
 						project={props.project}
+						page={props.page}
 					/>
 				</table>
 			</div>
 			{
 				props?.project?.length ?
-				<Pagination/> : ""
+				<Pagination
+					page={props.page}
+					pageAction={props.pageAction}
+				/> : ""
 			}
 			{modal.modalBoxes.isOpen && <DialogBoxes/>}
 			{modal.modalImages.isOpen && <DialogDetailImage/>}

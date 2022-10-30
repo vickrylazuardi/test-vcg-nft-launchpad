@@ -44,8 +44,11 @@ export default function Step1(props) {
               type="text" 
               maxLength={100}
               className={
+                props.data.validEmail == undefined ?
+                "w-full" : 
                 props.data.validEmail ?
-                "w-full" : "w-full !border-rose-600"
+                "w-full" : 
+                "w-full !border-rose-600"
               } 
               placeholder="Email Address" 
               value={props.data.contactEmail ?? ""}

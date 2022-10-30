@@ -50,7 +50,7 @@ export default function NewProject(props) {
 
   const [step, setStep] = useState(1);
   const [selected, setSelected] = useState(1);
-  const [data, setData] = useState({ socialMedia: {} });
+  const [data, setData] = useState({ socialMedia: {website: "", medium: "", discord: "", telegram: "", youtube: ""} });
   const [list, setList] = useState({ features: [], member: [], items: [], boxes: [] });
 
   const getData = (key, value, status) => {
@@ -83,68 +83,136 @@ export default function NewProject(props) {
 
   const submitProject = () => {
     try {
-      // const formData = new FormData();
-      // for (const key in data) {
-      //   const value = nftData[key];
-      //   switch (key) {
-      //     case "name":
-      //       formData.append(key, value);
-      //       break;
-      //     case "description":
-      //       formData.append(key, value);
-      //       break;
-      //     case "tokenId":
-      //       formData.append(key, value);
-      //       break;
-      //     case "attributes":
-      //       const attribute = value.filter(findNotEmptyAttribute);
-      //       formData.append(key, JSON.stringify(attribute));
-      //       break;
-      //     case "owner":
-      //       formData.append(key, JSON.stringify(value));
-      //       break;
-      //     case "creator":
-      //       formData.append(key, JSON.stringify(value));
-      //       break;
-      //     case "category":
-      //       formData.append(key, value);
-      //       break;
-      //     case "collectionId":
-      //       formData.append(key, value);
-      //       break;
-      //     case "supply":
-      //       formData.append(key, value);
-      //       break;
-      //     case "external_url":
-      //       formData.append(key, value);
-      //       break;
-      //     case "royalty":
-      //       formData.append(key, value);
-      //       break;
-      //     case "image":
-      //       formData.append(key, value);
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      // };
+      const formData = new FormData();
+      const team = {};
+      const boxes = {};
+      const items = [];
+      const features = [];
+
+      // append information from data var to form data
+      for (const key in data) {
+        const value = data[key];
+        switch (key) {
+          case "socialMedia":
+            formData.append(key, JSON.stringify(value));
+            break;
+          default:
+            formData.append(key, value);
+            break;
+        }
+      };
+
+      // append box info and box image to form data
+      list.boxes.map((item) => {
+        const items = {};
+        const image = new File([item.images], `${item.boxName}.${item.images.type.split("/")[1]}`, {
+          type: item.images.type,
+          lastModified: item.images.lastModified,
+        });
+
+        item.items.map((el) => {
+          items[el.category] = el.qty;
+        });
+
+        boxes[item.boxName] = {
+          price: item.price,
+          stock: item.supply,
+          sold: 0,
+          image: "",
+          items,
+          sell: false,
+          finalize: false
+        };
+
+        formData.append("boxImage", image);
+      });
+
+      formData.append("boxes", JSON.stringify(boxes));
       
-      // axios.post(API.local + API.metadata.create, formData, {
-      //   headers : {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // })
-      setTimeout(() => {
+      // append feature info and feature image to form data
+      list.features.map((item) => {
+        const image = new File([item.images], `${item.title}.${item.images.type.split("/")[1]}`, {
+          type: item.images.type,
+          lastModified: item.images.lastModified,
+        });
+
+        const feature = {
+          title: item.title,
+          text: item.description,
+          image: ""
+        };
+
+        features.push(feature);
+        formData.append("featureImage", image);
+      });
+
+      formData.append("additionalInfo", JSON.stringify(features));
+
+      // append team member info and team member image to form data
+      list.member.map((item) => {
+        const items = {};
+        const image = new File([item.images], `${item.name}.${item.images.type.split("/")[1]}`, {
+          type: item.images.type,
+          lastModified: item.images.lastModified,
+        });
+
+        team[item.name] = {
+          position: item.title,
+          image: ""
+        };
+
+        formData.append("teamImage", image);
+      });
+
+      formData.append("team", JSON.stringify(team));
+
+      // append team member info and team member image to form data
+      list.items.map((item, idx) => {
+        const attr = [];
+        const image = new File([item.images], `${idx + 1}.${item.images.type.split("/")[1]}`, {
+          type: item.images.type,
+          lastModified: item.images.lastModified,
+        });
+
+        Object.keys(item.attribute).map((e) => {
+          const value = item.attribute[e];
+          const el = {};
+          el.trait_type = e;
+          el.value = value;
+          attr.push(el);
+        });
+
+        const nft = {
+          name: item.itemName,
+          image: "",
+          tokenId: idx + 1,
+          description: "",
+          attributes: attr,
+          nftAddress: "",
+          projectName: data.name
+        };
+
+        items.push(nft);
+        formData.append("itemImage", image);
+      });
+
+      formData.append("items", JSON.stringify(items));
+      
+      // send to api
+      axios.post(API.launchpad.domain + API.launchpad.project.add, formData, {
+        headers : {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
         dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
-      }, 3000);
+      }).catch((error) => {
+        dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+      });
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
     }
-  }
-
-  console.log(data);
-  console.log(list);
+  };
 
   return (
     <div style={{ padding: "9rem 0", background: "#1E1E1E" }}>
