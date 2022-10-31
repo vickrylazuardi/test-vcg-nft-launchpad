@@ -39,7 +39,7 @@ export default function Step2(props) {
             <label>Project Image</label>
           </div>
           <FormInputImage 
-            preview={props.data.icon}
+            preview={props?.data?.icon}
             result={handleInputMemberImage}
           />
         </div>
@@ -57,7 +57,7 @@ export default function Step2(props) {
             maxLength={100}
             className="w-full" 
             placeholder="Project Name" 
-            value={props.data.name ?? ""}
+            value={props?.data?.name ?? ""}
             onChange={(e) => props.getData("name", e.target.value)}
           />
         </div>
@@ -76,7 +76,7 @@ export default function Step2(props) {
             maxLength={200}
             className="w-full"
             placeholder="Project Name"
-            value={props.data.desc ?? ""}
+            value={props?.data?.desc ?? ""}
             onChange={(e) => props.getData("desc", e.target.value)}
           ></textarea>
         </div>
@@ -93,7 +93,7 @@ export default function Step2(props) {
             id="start"
             type="datetime-local" 
             className="date-input" 
-            value={props.data.startedAt ?? ""}
+            value={props?.data?.startedAt ?? ""}
             onChange={(e) => props.getData("startedAt", e.target.value)}
           />
         </div>
@@ -110,7 +110,7 @@ export default function Step2(props) {
             type="text" 
             placeholder={0} 
             style={{ width: "50px" }} 
-            value={props.data.duration ?? ""}
+            value={props?.data?.duration ?? ""}
             onChange={(e) => {
               if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
               if (e.target.value <= 0) e.target.value = "";
@@ -136,7 +136,7 @@ export default function Step2(props) {
               type="text"
               id="input-url"
               placeholder="https://youtube.com"
-              value={props.data.video ?? ""}
+              value={props?.data?.video ?? ""}
               onChange={(e) => props.getData("video", e.target.value)}
             />
           </div>
@@ -158,7 +158,7 @@ export default function Step2(props) {
               type="text"
               id="input-url"
               placeholder="https://website.com"
-              value={props.data.socialMedia.website ?? ""}
+              value={props?.data?.socialMedia?.website ?? ""}
               onChange={(e) => props.getData("socialMedia.website", e.target.value)}
             />
           </div>
@@ -170,7 +170,7 @@ export default function Step2(props) {
               type="text"
               id="input-medium"
               placeholder="https://medium.com"
-              value={props.data.socialMedia.medium ?? ""}
+              value={props?.data?.socialMedia?.medium ?? ""}
               onChange={(e) => props.getData("socialMedia.medium", e.target.value)}
             />
           </div>
@@ -182,7 +182,7 @@ export default function Step2(props) {
               type="text"
               id="input-youtube"
               placeholder="https://youtube.com"
-              value={props.data.socialMedia.youtube ?? ""}
+              value={props?.data?.socialMedia?.youtube ?? ""}
               onChange={(e) => props.getData("socialMedia.youtube", e.target.value)}
             />
           </div>
@@ -194,7 +194,7 @@ export default function Step2(props) {
               type="text"
               id="input-tele"
               placeholder="https://web.telegram.org/k/"
-              value={props.data.socialMedia.telegram ?? ""}
+              value={props?.data?.socialMedia?.telegram ?? ""}
               onChange={(e) => props.getData("socialMedia.telegram", e.target.value)}
             />
           </div>
@@ -206,7 +206,7 @@ export default function Step2(props) {
               type="text"
               id="input-discord"
               placeholder="https://discord.com"
-              value={props.data.socialMedia.discord ?? ""}
+              value={props?.data?.socialMedia?.discord ?? ""}
               onChange={(e) => props.getData("socialMedia.discord", e.target.value)}
             />
           </div>

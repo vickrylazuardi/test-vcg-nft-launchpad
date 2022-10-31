@@ -302,8 +302,8 @@ export default function NewProject(props) {
                 className={
                   data.contactName && data.contactEmail && data.duration && 
                   data.validEmail && data.owner && data.icon && 
-                  data.name && data.desc && data.startedAt && 
-                  list.member.length && list.boxes.length && list.items.length &&
+                  data.name && data.desc && data.startedAt && list.member.length &&
+                  list.features.length && list.boxes.length && list.items.length &&
                   list.member.find((item) => {return !item.completed}) == undefined &&
                   list.features.find((item) => {return !item.completed}) == undefined &&
                   list.boxes.find((item) => {return !item.completed}) == undefined &&
@@ -316,8 +316,8 @@ export default function NewProject(props) {
                 disabled={
                   data.contactName && data.contactEmail && data.duration && 
                   data.validEmail && data.owner && data.icon && 
-                  data.name && data.desc && data.startedAt && 
-                  list.member.length && list.boxes.length && list.items.length &&
+                  data.name && data.desc && data.startedAt && list.member.length &&
+                  list.features.length && list.boxes.length && list.items.length &&
                   list.member.find((item) => {return !item.completed}) == undefined &&
                   list.features.find((item) => {return !item.completed}) == undefined &&
                   list.boxes.find((item) => {return !item.completed}) == undefined &&

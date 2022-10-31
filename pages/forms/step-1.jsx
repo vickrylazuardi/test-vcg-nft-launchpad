@@ -15,7 +15,7 @@ export default function Step1(props) {
               maxLength={100}
               className="w-full" 
               placeholder="Full name" 
-              value={props.data.contactName ?? ""}
+              value={props?.data?.contactName ?? ""}
               onChange={(e) => props.getData("contactName", e.target.value)}
             />
           </div>
@@ -30,7 +30,7 @@ export default function Step1(props) {
               maxLength={100}
               className="w-full" 
               placeholder="0xi93..." 
-              value={props.data.owner ?? ""}
+              value={props?.data?.owner ?? ""}
               onChange={(e) => props.getData("owner", e.target.value)}
             />
           </div>
@@ -44,14 +44,14 @@ export default function Step1(props) {
               type="text" 
               maxLength={100}
               className={
-                props.data.validEmail == undefined ?
+                props?.data?.validEmail == undefined ?
                 "w-full" : 
-                props.data.validEmail ?
+                props?.data?.validEmail ?
                 "w-full" : 
                 "w-full !border-rose-600"
               } 
               placeholder="Email Address" 
-              value={props.data.contactEmail ?? ""}
+              value={props?.data?.contactEmail ?? ""}
               onChange={(e) => {
                 const at = e.target.value.indexOf("@");
                 const dot = e.target.value.lastIndexOf(".");
