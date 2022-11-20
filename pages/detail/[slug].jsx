@@ -232,20 +232,8 @@ export default function _slug() {
         .connect(signer)
         .buyBox(boxId, amount, vcgEnableTokenTestnet.address);
 
-      const listen = await launchpadContract.connect(signer);
-      const request = listen.filters.TransferSingle(null, null, "0x6C932069B3C277cC206282f79011FB877Ba0cde2");
-      listen.on(request, (operator, from, to, id, value, event) => {
-        console.log("reqId -> ", operator);
-        console.log("reward -> ", from);
-        console.log("reqId -> ", to);
-        console.log("reward -> ", id);
-        console.log("reqId -> ", value);
-        console.log("event -> ", event);
-      });
-
       buy.hash;
       buy.wait().then(async (res) => {
-        console.log(res);
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.project.buy, {
             id: project._id,
@@ -341,20 +329,30 @@ export default function _slug() {
         .connect(signer)
         .claimBox(boxId, ownedBox[box]);
 
+      // const listen = await launchpadContract.connect(signer);
+      // const request = listen.filters.claimed(reqId);
+      // listen.on("RequestSent", (requestId, numWords, event) => {
+      //   console.log("reqId -> ", requestId);
+      //   console.log("numWords -> ", numWords);
+      //   console.log("event -> ", event);3
+      //   const reqId = BigNumber.from(requestId).toString();
+      //   const request = listen.filters.claimed(reqId);
+      //   listen.on(request, (requestId, reward, event) => {
+      //     console.log("reqId -> ", requestId);
+      //     console.log("reward -> ", reward);
+      //     console.log("event -> ", event);
+      //   });
+      // });
+
+      // listen.on("claimed", (requestId, reward, event) => {
+      //   console.log("reqId -> ", requestId);
+      //   console.log("reward -> ", reward);
+      //   console.log("event -> ", event);
+      // });
+
       claim.hash;
       claim.wait().then(async (res) => {
-        console.log(res);
         const reqId = res.events[1].args.requestId;
-        const listen = await launchpadContract.connect(signer);
-        const request = listen.filters.claimed(BigNumber.from(reqId));
-        listen.on("TransferSingle", (operator, from, to, event) => {
-          // console.log("reqId -> ", requestId);
-          // console.log("reward -> ", reward);
-          console.log("reqId -> ", operator);
-          console.log("reward -> ", from);
-          console.log("reqId -> ", to);
-          console.log("event -> ", event);
-        });
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
