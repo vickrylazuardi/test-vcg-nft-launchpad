@@ -2,7 +2,7 @@ import {useDispatch} from "react-redux";
 import {toggleModalTransaction} from "../../redux/modalReducer";
 const {motion} = require("framer-motion");
 
-export default function DialogDetailTransaction() {
+export default function DialogDetailTransaction(props) {
 	const dispatch = useDispatch();
 	const modalDetailTransaction = {
 		loading: false,
@@ -42,33 +42,51 @@ export default function DialogDetailTransaction() {
 				</div>
 				<div className="dialog-detail-transaction-body text-center px-4 py-4">
 					<div className="w-full flex items-center justify-center">
-						<img className="dih-img" src="https://placeimg.com/160/160/arch" alt=""/>
+						<img 
+							className="dih-img" 
+							src={props.data.image}
+							alt=""
+							style={{
+								width: "150px",
+								height: "150px",
+								aspectRatio: "1/1",
+								objectFit: "contain"
+							}}
+						/>
 					</div>
-					<p className="dih-title mt-2 font-bold">Box Name</p>
+					<p className="dih-title mt-2 font-bold">{props.data.name}</p>
 					<div className="w-full">
 						<div className="dih-detailed-transaction py-1 flex">
 							<p className="flex-1 text-left">Amount Box</p>
-							<p className="flex-1 text-right font-bold text-green-500">4 Boxes</p>
+							<p className="flex-1 text-right font-bold text-green-500">{props.data.amount > 1 ? `${props.data.amount} Boxes` : "1 Box"}</p>
 						</div>
 						<div className="dih-detailed-transaction py-1 flex">
 							<p className="flex-1 text-left">Price</p>
-							<p className="flex-1 text-right font-bold text-yellow-300">1.000 VCG</p>
+							<p className="flex-1 text-right font-bold text-yellow-300">{props.data.price} VCG</p>
 						</div>
 						<div className="dih-detailed-transaction py-1 flex">
 							<p className="flex-1 text-left">Date</p>
-							<p className="flex-1 text-right">8/13/2022, 11:30 AM</p>
+							<p className="flex-1 text-right">{(new Date(props.data.date)).toLocaleString()}</p>
 						</div>
 						<div className="dih-detailed-transaction py-1 flex">
 							<p className="flex-1 text-left">Transaction Hash</p>
-							<p className="flex-1 text-right">0xdfd0b6e...2f9cfca2</p>
+							<p className="flex-1 text-right">{props.data.txHash.slice(0,7) + "..." + props.data.txHash.slice(-7)}</p>
 						</div>
 						<div className="dih-detailed-transaction py-1 flex">
 							<p className="flex-1 text-left">Action</p>
 							<p className="flex-1 text-right">
-								<button className="refund px-2 py-0.5 rounded-md">Refund</button>
+								{
+									props.data.action == 0 ?
+									<button className="buy px-2 py-0.5 rounded-md">Buy</button> :
+									props.data.action == 1 ?
+									<button className="claim px-2 py-0.5 rounded-md">Claim</button> :
+									<button className="refund px-2 py-0.5 rounded-md">Refund</button>
+								}
 							</p>
 						</div>
-						<button className="btn-orange-light w-full py-2 mt-3 font-bold rounded-md text-white">More Detail</button>
+						<a href={`https://testnet.bscscan.com/tx/${props.data.txHash}`} rel="nofollow" target="_blank">
+							<button className="btn-orange-light w-full py-2 mt-3 font-bold rounded-md text-white">More Detail</button>
+						</a>
 					</div>
 				</div>
 			</motion.div>

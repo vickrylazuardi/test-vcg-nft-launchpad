@@ -3,10 +3,17 @@ import DialogConfirmation from "../Common/DialogConfirmation";
 import DialogClaimable from "../Common/DialogClaimable";
 import Pagination from "../Common/Pagination";
 import {useSelector} from "react-redux";
+import React, { useState } from "react";
+import abiLaunchpad from '../../abi/launchpad.json';
+import useMetaMask from "../../wallet/hook";
+import { BigNumber } from "ethers";
+import axios from "axios";
+import { API } from "../../utils/globalConstant";
 
-export default function DashboardOwnedBox() {
+export default function DashboardOwnedBox(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
+
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
@@ -27,11 +34,36 @@ export default function DashboardOwnedBox() {
 				</div>
 			</div>
 			<div className="dashboard-projects-body mt-2 p-3">
-				<DashboardOwnedBoxItem />
+				<DashboardOwnedBoxItem 
+					action={props.modalClaim}
+					boxes={props.boxes}
+				/>
 			</div>
-			<Pagination/>
-			{modal.modalConfirmation.isOpen && <DialogConfirmation status="refund"/>}
-			{modal.modalClaimable.isOpen && <DialogClaimable/>}
+			{
+				props?.boxes?.length ?
+				<Pagination
+					page={props.page}
+					pageAction={props.pageAction}
+				/> : ""
+			}
+			{
+				modal.modalConfirmation.isOpen && 
+				<DialogConfirmation
+          type={props.modalMessage.type}
+          amount={props.modalMessage.amount}
+          message={props.modalMessage.message}
+          successMessage={props.modalMessage.successMessage}
+          failedMessage={props.modalMessage.failedMessage}
+          action={props.claim}
+        />
+			}
+			{
+				modal.modalClaimable.isOpen && 
+				<DialogClaimable
+          reward={props.claimReward}
+          uri={props.itemURI}
+        />
+			}
 		</div>
 	);
 }

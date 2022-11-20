@@ -50,7 +50,7 @@ export default function Home() {
   const getTrending = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 6,
+        limit: 10,
         status: 1,
         sort: {trending: -1}
       })
@@ -66,7 +66,8 @@ export default function Home() {
   const getOngoing = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        startedAt: {$lte : new Date()},
+        limit: 10,
         status: 1,
         approved: true,
       })
@@ -82,7 +83,8 @@ export default function Home() {
   const getSoon = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        startedAt: {$gt : new Date()},
+        limit: 10,
         status: 0,
         approved: true,
       })
@@ -98,7 +100,8 @@ export default function Home() {
   const getFinish = () => {
     try {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
-        limit: 12,
+        finishedAt: {$lte : new Date()},
+        limit: 10,
         status: 2,
         approved: true,
       })
@@ -155,24 +158,44 @@ export default function Home() {
         <h2 className="font-bold text-2xl lg:text-sm mb-4 lg:px-5">
           How To Buy
         </h2>
-        <div className="relative w-full" style={{ minHeight: 150 }}>
+        {/* <a href="https://vcgamers.com/news/crypto" target="_blank" rel='nofollow'> */}
+        <div className="flex justify-center relative w-full" style={{ minHeight: 150 }}>
           {isDesktop && (
-            <img
-              src="/images/banner-htb.png"
-              alt=""
-              className="rounded-xl h-auto w-full"
-            />
+            // <img
+            //   src="/images/banner-htb.png"
+            //   alt=""
+            //   className="rounded-xl h-auto w-full"
+            // />
+            <iframe
+              width="100%"
+              height={700}
+              src="https://www.youtube.com/embed/YPXswO_yUBQ"
+              title="YouTube How To Buy"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           )}
           {isMobile && (
-            <Image
-              src="/images/banner-htb-mob.png"
-              alt="banner how to buy"
-              layout="fill"
-              objectFit="cover"
-              loading="lazy"
-            />
+            <iframe
+              width="100%"
+              height={185}
+              src="https://www.youtube.com/embed/YPXswO_yUBQ"
+              title="YouTube How To Buy"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            // <Image
+            //   src="/images/banner-htb-mob.png"
+            //   alt="banner how to buy"
+            //   layout="fill"
+            //   objectFit="cover"
+            //   loading="lazy"
+            // />
           )}
         </div>
+        {/* </a> */}
       </div>
       {/* <Products /> */}
     </div>

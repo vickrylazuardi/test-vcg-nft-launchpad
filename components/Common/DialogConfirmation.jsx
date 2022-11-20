@@ -1,10 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
 import {useEffect} from "react";
+import { useRouter } from 'next/router'
 const {motion} = require("framer-motion");
 
 export default function DialogConfirmation(props) {
 	//functional
+	const router = useRouter();
 	const modal = useSelector(state => state.modal.modalConfirmation);
 	const dispatch = useDispatch();
 	const modalConfirmation = {
@@ -83,13 +85,21 @@ export default function DialogConfirmation(props) {
 				)}
 				{modal.loading && (
 					<div className="dialog-confirmation-body text-center">
-						<img className="dc-img m-10" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
+						<div className="m-10 flex flex-col items-center">
+							<img className="dc-img" src="/loaders/loaders.gif" style={imgLoader} alt=""/>
+							<p className="font-bold dib-title mt-2">Please do not close this page until transaction done</p>
+						</div>
 					</div>
 				)}
 				{modal.isPlain && (
 					<div className="dialog-confirmation-body text-center">
 						<img className="dc-img" src="/images/coin-big.png" alt=""/>
 						<p className="font-bold dib-title mt-2 mb-2">Are you sure to {props.message}</p>
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
 						<button 
 							onClick={() => {
 								dispatch(toggleModalConfirmation(modalConfirmationSuccess))
@@ -106,10 +116,29 @@ export default function DialogConfirmation(props) {
 						<img className="dc-img" src="/images/success-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Success !</p>
 						<p className="dib-title mt-2 mb-2">{props.successMessage}</p>
-						{/*<p className="font-semibold">You have bought this box</p>*/}
-						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
-										className="btn-orange-light w-full py-2 rounded-lg">Back
-						</button>
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
+						{
+							props.redirect ?
+							<button 
+								onClick={() => {
+									dispatch(toggleModalConfirmation(modalConfirmation));
+									router.push(props.redirect);
+								}}
+								className="btn-orange-light w-full py-2 rounded-lg"
+							>
+								Back
+							</button> :
+							<button 
+								onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
+								className="btn-orange-light w-full py-2 rounded-lg"
+							>
+								Back
+							</button>
+						}
 					</div>
 				)}
 				{modal.isFailed && (
@@ -117,7 +146,11 @@ export default function DialogConfirmation(props) {
 						<img className="dc-img" src="/images/failed-img.png" alt=""/>
 						<p className="font-bold dib-success-word mt-2 mb-2">Failed !</p>
 						<p className="dib-title mt-2 mb-2">{props.failedMessage}</p>
-						{/*<p className="font-semibold">You have bought this box</p>*/}
+						{
+							props.amount ?
+							<p className="font-bold dib-title mt-2 mb-2">Amount : {props.amount}</p> :
+							""
+						}
 						<button onClick={() => dispatch(toggleModalConfirmation(modalConfirmation))}
 										className="btn-orange-light w-full py-2 rounded-lg">Back
 						</button>

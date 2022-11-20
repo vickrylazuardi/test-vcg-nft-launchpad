@@ -63,10 +63,10 @@ export default function RightNavbar(props) {
             <div className="relative sub-menu-container sub-menu-4">
               <div className="sub-menu">
                 {
-                  props.router?.startsWith("/profile") ?
-                  <Link href="/">
-                    <a>Home</a>
-                  </Link> :
+                  // props?.router?.slice("/")[1] ?
+                  // <Link href="/">
+                  //   <a>Home</a>
+                  // </Link> :
                   <Link href="/profile">
                     <a>Profile</a>
                   </Link>

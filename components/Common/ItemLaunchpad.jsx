@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalConfirmation} from "../../redux/modalReducer";
@@ -6,6 +6,8 @@ import {toggleModalConfirmation} from "../../redux/modalReducer";
 export default function ItemLaunchpad(props) {
   const modal = useSelector(state => state.modal);
 	const dispatch = useDispatch();
+
+  const [amount, setAmount] = useState(0);
 
 	const dataModal = {
 		modalConfirmation: {
@@ -72,9 +74,7 @@ export default function ItemLaunchpad(props) {
           <div className="price-bar">
             <div
               className={"price-inner-bar"}
-              style={{
-                width: `${props?.data?.sold / props?.data?.stock * 100}%`
-              }}
+              style={{width: `${props?.data?.sold / props?.data?.stock * 100}%`}}
             />
           </div>
         </div>
@@ -95,13 +95,13 @@ export default function ItemLaunchpad(props) {
                 className={
                   new Date() < new Date(props.project.startedAt)
                     ? "btn btn-disabled w-full"
-                    : props?.project?.finalize
+                    : props?.data?.finalize
                       ? "btn btn-disabled w-full"
-                      : "btn btn-purple-primary w-full"
+                      : "btn btn-orange-light w-full"
                 }
                 disabled={
                   new Date() < new Date(props.project.startedAt) ? true :
-                  props?.project?.finalize ? true : false
+                  props?.data?.finalize ? true : false
                 }
                 onClick={() => {
                   dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
@@ -113,53 +113,88 @@ export default function ItemLaunchpad(props) {
               >
                 Finalize
               </button> :
-              props?.project?.finalize ?
-              <button
-                className={
-                  props?.owned < 1
+              props?.data?.finalize ?
+              <div className="wrap-input flex-1">
+                <input 
+                  type="text" 
+                  className="w-full mb-3" 
+                  style={{padding: "8px 12px"}}
+                  placeholder="Insert Amount" 
+                  onChange={e => {
+                    if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                    if (e.target.value <= 0) e.target.value = "";
+                    if (e.target.value > props?.owned) e.target.value = props?.owned;
+                    setAmount(e.target.value);
+                  }}
+                />
+                <button
+                  className={
+                    amount < 1
+                      ? "btn btn-disabled w-full"
+                      : "btn btn-orange-light w-full"
+                  }
+                  disabled={amount < 1 ? true : false}
+                  onClick={() => {
+                    dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
+                    props.action({
+                      type: "claim",
+                      name: props.name, 
+                      amount
+                    })
+                  }}
+                >
+                  Claim
+                </button>
+              </div> :
+              <div className="wrap-input flex-1">
+                <input 
+                  type="text" 
+                  className="w-full mb-3" 
+                  style={{padding: "8px 12px"}}
+                  placeholder="Insert Amount" 
+                  onChange={e => {
+                    if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                    if (e.target.value <= 0) e.target.value = "";
+                    if (e.target.value > props?.data?.stock - props?.data?.sold) e.target.value = props?.data?.stock - props?.data?.sold;
+                    setAmount(e.target.value);
+                  }}
+                />
+                <button
+                  className={
+                    new Date() < new Date(props.project.startedAt)
                     ? "btn btn-disabled w-full"
-                    : "btn btn-purple-primary w-full"
-                }
-                disabled={props?.owned < 1 ? true : false}
-                onClick={() => {
-                  dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
-                  props.action({
-                    type: "claim",
-                    name: props.name
-                  })
-                }}
-              >
-                Claim
-              </button> :
-              <button
-                className={
-                  new Date() < new Date(props.project.startedAt)
+                    : !props?.data?.sell 
+                    ? "btn btn-disabled w-full"
+                    : amount < 1
                     ? "btn btn-disabled w-full"
                     : props?.data?.sold == props?.data?.stock
-                      ? "btn btn-disabled w-full"
-                      : "btn btn-purple-primary w-full"
-                }
-                disabled={
-                  new Date() < new Date(props.project.startedAt) ? true :
-                  props?.data?.sold == props?.data?.stock ? true : false
-                }
-                onClick={() => {
-                  dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
-                  props.action({
-                    type: "buy",
-                    name: props.name, 
-                    amount: 1, 
-                    price: props.data.price
-                  })
-                }}
-              >
-                Buy
-              </button>
+                    ? "btn btn-disabled w-full"
+                    : "btn btn-orange-light w-full"
+                  }
+                  disabled={
+                    new Date() < new Date(props.project.startedAt) ? true :
+                    !props?.data?.sell ? true :
+                    amount < 1 ? true :
+                    props?.data?.sold == props?.data?.stock ? true : false
+                  }
+                  onClick={() => {
+                    dispatch(toggleModalConfirmation(dataModal.modalConfirmation))
+                    props.action({
+                      type: "buy",
+                      name: props.name, 
+                      amount, 
+                      price: props.data.price
+                    })
+                  }}
+                >
+                  {props?.data?.sell ? "Buy" : "Coming Soon"}
+                </button>
+              </div>
             ) :
             <Link href="/connect-wallet">
               <a>
                 <button
-                  className={"btn btn-purple-primary w-full"}
+                  className={"btn btn-orange-light w-full"}
                 >
                   Connect Wallet
                 </button>

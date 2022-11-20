@@ -18,30 +18,34 @@ export default function BottomNavMobile() {
           <img src="/images/svg/icon-home.svg" alt="home" className="mr-1" />{" "}
           Home
         </button>
-        <button className="btn btn-gray flex items-center" style={btnLink}>
-          <img
-            src="/images/svg/icon-tutorial.svg"
-            alt="home"
-            className="mr-1"
-          />{" "}
-          Tutorial
-        </button>
-        <button className="btn btn-gray flex items-center" style={btnLink}>
+        <a href="https://vcgamers.com/news/help/faq-token/" rel="nofollow" target="_blank">
+          <button className="btn btn-gray flex items-center" style={btnLink}>
+            <img
+              src="/images/svg/icon-tutorial.svg"
+              alt="home"
+              className="mr-1"
+            />{" "}
+            Tutorial
+          </button>
+        </a>
+        <a href="https://whitepaper.vcgamers.com/" rel="nofollow" target="_blank">
+          <button className="btn btn-gray flex items-center" style={btnLink}>
+            <img
+              src="/images/svg/icon-whitepaper.svg"
+              alt="home"
+              className="mr-1"
+            />{" "}
+            Whitepaper
+          </button>
+        </a>
+        {/* <button className="btn btn-gray flex items-center" style={btnLink}>
           <img
             src="/images/svg/icon-features.svg"
             alt="home"
             className="mr-1"
           />{" "}
           Features
-        </button>
-        <button className="btn btn-gray flex items-center" style={btnLink}>
-          <img
-            src="/images/svg/icon-whitepaper.svg"
-            alt="home"
-            className="mr-1"
-          />{" "}
-          Whitepaper
-        </button>
+        </button> */}
       </div>
     </div>
   );

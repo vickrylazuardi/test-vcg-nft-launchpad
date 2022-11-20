@@ -13,8 +13,9 @@ import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
 import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
-import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
+import { vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from '../../abi/launchpad.json';
+import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 
 export default function _slug() {
@@ -109,13 +110,21 @@ export default function _slug() {
     ],
   };
 
+  const StyledSlider = styled(Slider)`
+    .slick-track {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  `;
+
   const [project, setProject] = useState({});
   const [balance, setBalance] = useState(null);
-  const [amount, setAmount] = useState({});
   const [ownedBox, setOwnedBox] = useState({});
   const [dataModal, setDataModal] = useState({});
   const [modalMessage, setModalMessage] = useState({});
-  const { account, signer, connectContract } = useMetaMask();
+  const [claimReward, setClaimReward] = useState([]);
+  const [itemURI, setItemURI] = useState({});
+  const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
   const data = router.query;
@@ -123,8 +132,8 @@ export default function _slug() {
   const getTokenBalance = async () => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       const bal = await tokenContract.connect(signer).balanceOf(account);
       setBalance(Number(ethers.utils.formatEther(bal)));
@@ -163,6 +172,7 @@ export default function _slug() {
     
           ownedBox[box] = Number(owned);
           setOwnedBox({...ownedBox});
+          // console.log('owned',owned);
         } else {
           ownedBox[box] = 0;
           setOwnedBox({...ownedBox});
@@ -175,10 +185,13 @@ export default function _slug() {
 
   const checkAllowance = async (box, amount, price) => {
     try {
-      // document.getElementById("loading-vcg").classList.add("show");
+      if (chainId != 56) {
+        dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+        return;
+      }
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
 
       const getAllowance = await tokenContract
@@ -196,8 +209,8 @@ export default function _slug() {
   const setAllowance = async (box, amount) => {
     try {
       const tokenContract = connectContract(
-        vcgEnableTokenTestnet.address,
-        vcgEnableTokenTestnet.abi
+        vcgEnableToken.address,
+        vcgEnableToken.abi
       );
       
       const totalSupply = await tokenContract.connect(signer).totalSupply();
@@ -211,10 +224,6 @@ export default function _slug() {
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      // document.getElementById("loading-vcg").classList.remove("show");
-      // toast.error("Enable Token - Request was rejected", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
     }
   };
 
@@ -222,7 +231,7 @@ export default function _slug() {
     try {
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
-      
+
       const launchpadContract = connectContract(
         project.address,
         abiLaunchpad
@@ -230,7 +239,7 @@ export default function _slug() {
 
       const buy = await launchpadContract
         .connect(signer)
-        .buyBox(boxId, amount, vcgEnableTokenTestnet.address);
+        .buyBox(boxId, amount, vcgEnableToken.address);
 
       buy.hash;
       buy.wait().then(async (res) => {
@@ -248,31 +257,38 @@ export default function _slug() {
           axios.post(API.launchpad.local + API.launchpad.item.buy, {
             owner: account,
             itemName: box,
-            amount,
+            amount: Number(amount),
+            image: project.boxes[box].image,
+            projectName: project.name,
+            projectDetail: project._id
+          });
+          axios.post(API.launchpad.local + API.launchpad.history.add, {
+            name: box, 
+            image: project.boxes[box].image,
+            amount: Number(amount),
+            price: project.boxes[box].price * Number(amount), 
+            action: 0, 
+            owner: account,
+            txHash: res.transactionHash,
             projectName: project.name,
             projectDetail: project._id
           });
         }
+      }).finally(()=>{
         reload();
         dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
-        // document.getElementById("loading-vcg").classList.remove("show");
-        // toast.success("Buy Box successfull!", {
-        //   position: toast.POSITION.TOP_RIGHT,
-        // });
       });
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+            position: toast.POSITION.TOP_RIGHT
+      });
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      // document.getElementById("loading-vcg").classList.remove("show");
-      // toast.error("Buy Box - Request was rejected", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
     }
   };
 
   const finalizeBox = async (box) => {
     try {
-      // document.getElementById("loading-vcg").classList.add("show");
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
       
@@ -283,12 +299,12 @@ export default function _slug() {
 
       const finalize = await launchpadContract
         .connect(signer)
-        .finalizeBox();
+        .finalizeBox(boxId);
 
       finalize.hash;
       finalize.wait().then((res) => {
         if (res.status == 1) {
-          axios.post(API.launchpad.local + API.launchpad.project.finalize, {
+          axios.post(API.launchpad.local + API.launchpad.project.finalizeBox, {
             id: project._id,
             box
           })
@@ -297,28 +313,27 @@ export default function _slug() {
             setProject(res.data.data);
             reload();
             dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
-            // document.getElementById("loading-vcg").classList.remove("show");
-            // toast.success("Finalize Box successfull!", {
-            //   position: toast.POSITION.TOP_RIGHT,
-            // });
           })
         }
       })
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      // document.getElementById("loading-vcg").classList.remove("show");
-      // toast.error("Finalize Box - Request was rejected", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
     }
   };
 
-  const claimBox = async (box) => {
+  const claimBox = async (box, amount) => {
     try {
-      // document.getElementById("loading-vcg").classList.add("show");
+      claimReward.splice(0);
+      setClaimReward([...claimReward]);
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
+      const randomList = [];
+
+      for (let i = 0; i < amount; i++) {
+        const random = Math.floor((Math.random() * 100000000000) + 1);
+        randomList.push(random);
+      }
       
       const launchpadContract = connectContract(
         project.address,
@@ -327,37 +342,51 @@ export default function _slug() {
 
       const claim = await launchpadContract
         .connect(signer)
-        .claimBox(boxId, ownedBox[box]);
-
-      // const listen = await launchpadContract.connect(signer);
-      // const request = listen.filters.claimed(reqId);
-      // listen.on("RequestSent", (requestId, numWords, event) => {
-      //   console.log("reqId -> ", requestId);
-      //   console.log("numWords -> ", numWords);
-      //   console.log("event -> ", event);3
-      //   const reqId = BigNumber.from(requestId).toString();
-      //   const request = listen.filters.claimed(reqId);
-      //   listen.on(request, (requestId, reward, event) => {
-      //     console.log("reqId -> ", requestId);
-      //     console.log("reward -> ", reward);
-      //     console.log("event -> ", event);
-      //   });
-      // });
-
-      // listen.on("claimed", (requestId, reward, event) => {
-      //   console.log("reqId -> ", requestId);
-      //   console.log("reward -> ", reward);
-      //   console.log("event -> ", event);
-      // });
+        .claimBox(boxId, amount, randomList);
 
       claim.hash;
       claim.wait().then(async (res) => {
-        const reqId = res.events[1].args.requestId;
+        const reward = res.events.at(-1).args.reward;
+        reward.forEach(async e => {
+          const id = BigNumber.from(e).toNumber();
+          claimReward.push(id);
+          if (itemURI[id] == undefined) {
+            await axios.post(API.launchpad.local + API.launchpad.nft.detail, {
+              projectDetail: project._id,
+              tokenId: id
+            }).then((response) => {
+              const data = response.data.data
+              itemURI[id] = data;
+              setItemURI({...itemURI});
+              axios.post(API.launchpad.local + API.launchpad.ownedNft.claim, {
+                name: data.name,
+                owner: account,
+                tokenId: data.tokenId, 
+                nftAddress: data.nftAddress,
+                nftDetail: data._id,
+                projectName: project.name,
+                projectDetail: project._id
+              });
+            })
+          }
+        });
+        setClaimReward([...claimReward]);
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
             owner: account,
             itemName: box,
-            amount: ownedBox[box],
+            amount: amount,
+            projectName: project.name,
+            projectDetail: project._id
+          });
+          axios.post(API.launchpad.local + API.launchpad.history.add, {
+            name: box, 
+            image: project.boxes[box].image,
+            amount: Number(amount),
+            price: 0, 
+            action: 1, 
+            owner: account,
+            txHash: res.transactionHash,
             projectName: project.name,
             projectDetail: project._id
           });
@@ -398,19 +427,11 @@ export default function _slug() {
           reload();
           dispatch(toggleModalConfirmation(modalConfirmation));
           dispatch(toggleModalClaimable(modalClaimableItem));
-          // document.getElementById("loading-vcg").classList.remove("show");
-          // toast.success("Claim Box successfull!", {
-          //   position: toast.POSITION.TOP_RIGHT,
-          // });
         }
       });
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      // document.getElementById("loading-vcg").classList.remove("show");
-      // toast.error("Claim Box - Request was rejected", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
     }
   };
 
@@ -419,6 +440,7 @@ export default function _slug() {
       switch (data.type) {
         case "buy":
           modalMessage.type = "Buy";
+          modalMessage.amount = data.amount;
           modalMessage.message = "buy this box?";
           modalMessage.successMessage = "You have successfully bought this box";
           modalMessage.failedMessage = "Failed to buy this box";
@@ -426,6 +448,7 @@ export default function _slug() {
           break;
         case "claim":
           modalMessage.type = "Claim";
+          modalMessage.amount = data.amount;
           modalMessage.message = "claim this box?";
           modalMessage.successMessage = "You have successfully claimed this box";
           modalMessage.failedMessage = "Failed to claim this box";
@@ -457,7 +480,7 @@ export default function _slug() {
           checkAllowance(dataModal.name, dataModal.amount, dataModal.price);
           break;
         case "claim":
-          claimBox(dataModal.name);
+          claimBox(dataModal.name, dataModal.amount);
           break;
         case "finalize":
           finalizeBox(dataModal.name);
@@ -472,9 +495,11 @@ export default function _slug() {
 
   const reload = () => {
     try {
-      getDetailProject(data.slug);
-      getTokenBalance();
-      getOwnedBox();
+      setTimeout(() => {
+        getDetailProject(data.slug);
+        getTokenBalance();
+        getOwnedBox();
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -490,6 +515,9 @@ export default function _slug() {
     if (account && signer && project.name) {
       getTokenBalance();
       getOwnedBox();
+      setTimeout(() => {
+        reload();
+      }, 60000);
     }
   }, [project, account, signer]);
 
@@ -513,7 +541,7 @@ export default function _slug() {
             <div className="mask mask-hexagon profile-pict-container relative">
               <div
                 className="mask mask-hexagon profile-wrap"
-                style={{ backgroundImage: `url(${project?.banner})`, backgroundSize: "contain" }}
+                style={{ background: "#3f485f" }}
               >
                 <img
                   src={project?.icon}
@@ -598,11 +626,11 @@ export default function _slug() {
               <iframe
                 width={590}
                 height={332}
-                src={`https://www.youtube.com/embed/${project.video.split("/").at(-1)}`}
+                src={`https://www.youtube.com/embed/${project?.video?.split("/").at(-1)}`}
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               ></iframe> : ""
             }
           </div>
@@ -632,7 +660,7 @@ export default function _slug() {
         <div className="item-launchpad">
           <h2 className="font-bold text-2xl mb-3 lg:text-base">Items</h2>
           <div className="item-wrapper">
-            <Slider {...settingsItems}>
+            <StyledSlider {...settingsItems}>
               {
                 project.boxes ?
                 Object.keys(project.boxes).map((item, idx) => {
@@ -652,7 +680,7 @@ export default function _slug() {
                   )
                 }) : ""
               }
-            </Slider>
+            </StyledSlider>
           </div>
         </div>
         {/* /ITEMS */}
@@ -733,13 +761,20 @@ export default function _slug() {
         modal.modalConfirmation.isOpen && 
         <DialogConfirmation
           type={modalMessage.type}
+          amount={modalMessage.amount}
           message={modalMessage.message}
           successMessage={modalMessage.successMessage}
           failedMessage={modalMessage.failedMessage}
           action={actionModal}
         />
       }
-      {modal.modalClaimable.isOpen && <DialogClaimable/>}
+      {
+        modal.modalClaimable.isOpen && 
+        <DialogClaimable
+          reward={claimReward}
+          uri={itemURI}
+        />
+      }
     </div>
   );
 }

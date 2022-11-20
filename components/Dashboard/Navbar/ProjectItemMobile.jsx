@@ -3,7 +3,7 @@ import {toggleNavbar} from "../../../redux/navbarReducer";
 import {useRouter} from "next/router";
 import {toggleModalConfirmation} from "../../../redux/modalReducer";
 
-export default function ProjectItemMobile() {
+export default function ProjectItemMobile(props) {
 	//function
 	const dispatch = useDispatch();
 
