@@ -69,7 +69,7 @@ export default function Home() {
         startedAt: {$lte : new Date()},
         limit: 10,
         status: 1,
-        approved: true,
+        approved: 1,
       })
       .then(res => {
         if (res.status === 204) return;
@@ -86,7 +86,7 @@ export default function Home() {
         startedAt: {$gt : new Date()},
         limit: 10,
         status: 0,
-        approved: true,
+        approved: 1,
       })
       .then(res => {
         if (res.status === 204) return;
@@ -103,7 +103,7 @@ export default function Home() {
         finishedAt: {$lte : new Date()},
         limit: 10,
         status: 2,
-        approved: true,
+        approved: 1,
       })
       .then(res => {
         if (res.status === 204) return;

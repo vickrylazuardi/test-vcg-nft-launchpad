@@ -4,12 +4,15 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import useMetaMask from "../../wallet/hook";
 import { API } from "../../utils/globalConstant";
+import { BigNumber } from "ethers";
+import abiLaunchpadFactory from '../../abi/launchpad_factory.json';
 import {isDesktop, isMobile} from "react-device-detect";
 import ProfileHeader from "../../components/Dashboard/ProfileHeader";
 import NavigationDashboard from "../../components/Dashboard/NavigationDashboard";
 import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 import DashboardProjects from "../../components/Dashboard/DashboardProjects";
 import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile";
+import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 
 export default function Index() {
 	const marginMobile = {
@@ -84,11 +87,58 @@ export default function Index() {
     }
   };
 
+	const approve = async (item, id, approved) => {
+		try {
+			const launchpadContract = connectContract(
+				"0x6583590D6ad0feAFFE811E801a54fCe1d10c259c",
+				abiLaunchpadFactory
+			);
+
+			const startDate = new Date(item.startedAt).getTime() / 1000;
+
+			const create = await launchpadContract
+				.connect(signer)
+				.createProject(
+					item.name, 
+					item.name.slice(-3), 
+					"https://tes.uri",
+					vcgEnableTokenTestnet.address,
+					startDate,
+					[1],
+					[1],
+					[100000000],
+					"https://tes.uri",
+					item.owner
+				);
+
+			create.hash;
+			create.wait().then((res) => isProjectApprove(id, approved))
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	const isProjectApprove = (id, approved) => {
+		try {
+			axios.post(API.launchpad.local + API.launchpad.project.approve, {
+				id, approved
+			}).then((res) => getProjectList())
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		if (account) {
-			projectFilter.owner = account;
-			setProjectFilter({...projectFilter});
-			getProjectList();
+			if (account == "0x71a183F10d6e6a56CAa2B589651B4958b5Af5aF6") {
+				delete(projectFilter.owner);
+				setProjectFilter({...projectFilter});
+				getProjectList();
+			} else {
+				projectFilter.owner = account;
+				setProjectFilter({...projectFilter});
+				getProjectList();
+			}
 		}
 	}, [account]);
 	
@@ -114,7 +164,10 @@ export default function Index() {
 					<div className="container-wrapper grid grid-cols-5 gap-4">
 						<DashboardSideMenu/>
 						<DashboardProjects
+							account={account}
 							project={project}
+							action={isProjectApprove}
+							approve={approve}
 							page={projectPage}
 							pageAction={changePage}
 						/>

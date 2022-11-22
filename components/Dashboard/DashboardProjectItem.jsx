@@ -65,6 +65,10 @@ export default function DashboardProjectItem(props) {
 		backgroundColor: "#C4FBCA",
 		color: "#40D04F"
 	};
+	const bgChipsRejected = {
+		backgroundColor: "#ffb5b5",
+		color: "#ea5858"
+	};
 	return (
 		<tbody>
 		{
@@ -122,27 +126,72 @@ export default function DashboardProjectItem(props) {
 						}
 					</td>
 					<td className="text-center">
-						<div className="approval-chips px-1 py-0.5 rounded-md" style={bgChipsRequest}>
-							{item.approved ? "Approved" : "Requested"}
+						<div 
+							className="approval-chips px-1 py-0.5 rounded-md" 
+							style={
+								item.approved == 0 ? bgChipsRequest :
+								item.approved == 1 ? bgChipsApproved :
+								bgChipsRejected
+							}
+						>
+							{
+								item.approved == 0 ? "Requested" : 
+								item.approved == 1 ? "Approved" : 
+								"Rejected"
+							}
 						</div>
 					</td>
 					<td className="text-center">
 						{
-							item.approved && new Date(item.startedAt) > new Date() ? 
+							item.approved == 1 && new Date(item.startedAt) > new Date() ? 
 							"On Going" :
-							item.approved && new Date(item.finishedAt) > new Date() ? 
+							item.approved == 1 && new Date(item.finishedAt) > new Date() ? 
 							"Finished" : "Not Started"
 						}
 					</td>
-					<td className="text-center project-balance">{item.address ? "1000" : "0"} VCG</td>
-					<td className="text-center project-withdraw">
-						<button 
-							// onClick={() => dispatch(toggleModalConfirmation(dataModal.modalConfirmation))}
-							className="btn-gray rounded-md px-2 py-1 active"
-						>
-								Withdraw
-						</button>
-					</td>
+					{
+						props.account == "0x71a183F10d6e6a56CAa2B589651B4958b5Af5aF6" ?
+						<td className="text-center project-withdraw">
+							<button 
+								onClick={() => props.approve(item, item._id, 1)}
+								className={
+									item.approved == 0 ?
+									"btn-gray mr-4 rounded-md px-2 py-1 active" : 
+									"btn-disabled mr-4 rounded-md px-2 py-1"
+								}
+								disabled={item.approved == 0 ? false : true}
+							>
+								Approve
+							</button>
+							<button 
+								onClick={() => props.action(item._id, 2)}
+								className={
+									item.approved == 0 ?
+									"btn-gray rounded-md px-2 py-1 active" : 
+									"btn-disabled rounded-md px-2 py-1"
+								}
+								disabled={item.approved == 0 ? false : true}
+							>
+								Reject
+							</button>
+						</td> :
+						<>
+							<td className="text-center project-balance">{item.address ? "1000" : "0"} VCG</td>
+							<td className="text-center project-withdraw">
+								<button 
+									// onClick={() => dispatch(toggleModalConfirmation(dataModal.modalConfirmation))}
+									className={
+										item.approved == 1 ?
+										"btn-gray rounded-md px-2 py-1 active" : 
+										"btn-disabled rounded-md px-2 py-1"
+									}
+									disabled={item.approved == 1 ? false : true}
+								>
+										Withdraw
+								</button>
+							</td>
+						</>
+					}
 				</tr>
 			)) :
 			<tr>

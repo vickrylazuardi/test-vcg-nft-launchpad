@@ -45,12 +45,21 @@ export default function DashboardSideMenu(props) {
 							<th className="font-semibold">Social Media</th>
 							<th className="font-semibold">Approval</th>
 							<th className="font-semibold">Status</th>
-							<th className="font-semibold">Balance</th>
-							<th className="font-semibold">Withdraw</th>
+							{
+								props.account == "0x71a183F10d6e6a56CAa2B589651B4958b5Af5aF6" ?
+								<th className="font-semibold">Action</th> : 
+								<>
+									<th className="font-semibold">Balance</th>
+									<th className="font-semibold">Withdraw</th>
+								</>
+							}
 						</tr>
 					</thead>
 					<DashboardProjectItem
+						account={props.account}
 						project={props.project}
+						action={props.action}
+						approve={props.approve}
 						page={props.page}
 					/>
 				</table>
