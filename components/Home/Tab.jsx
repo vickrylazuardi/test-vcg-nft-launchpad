@@ -76,7 +76,7 @@ export default function Tab(props) {
                 props?.trending?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
-                      img={item.banner}
+                      img={item?.banner? item.banner : item.icon}
                       title={item.name}
                       desc={item.desc}
                       slug={item._id}

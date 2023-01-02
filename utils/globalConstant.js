@@ -122,6 +122,12 @@ export const API = {
     // http://localhost:3700/launchpad
     domain: 'http://localhost:3700/launchpad',
     local: "http://localhost:3700/launchpad",
+
+    // domain: 'https://api-launchpad.vcgamers.com/launchpad',
+    // local: "https://api-launchpad.vcgamers.com/launchpad",
+
+    // domain: 'https://api-launchpad.vcgamers.io/launchpad',
+    // local: "https://api-launchpad.vcgamers.io/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",

@@ -231,7 +231,9 @@ export const MetaMaskProvider = ({ children }) => {
   };
 
   const connectContract = (contractAddress, ABI) => {
-    return new ethers.Contract(contractAddress, ABI);
+    
+    return new ethers.Contract(contractAddress, ABI, new ethers.providers.JsonRpcProvider("https://apis.ankr.com/1d773c13580146fb9c5419ee763d2543/9deca392b81a904bd9568c58d3f47228/binance/full/test")
+    );
   };
 
   const values = useMemo(

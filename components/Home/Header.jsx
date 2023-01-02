@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Header(props) {
   const router = useRouter();
+  console.log("project",props.totalProject);
   
   const copyToClipboard = () => {
     try {
@@ -86,7 +87,7 @@ export default function Header(props) {
               </div>
               <div className="item-gray text-center" style={{ width: "50%" }}>
                 {
-                  props.totalFunded ?
+                  props.totalFunded!=null ?
                   <p className="font-bold text-lg">
                     ${props.totalFunded}
                   </p> :

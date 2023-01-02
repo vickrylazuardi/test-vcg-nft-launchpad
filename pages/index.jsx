@@ -52,6 +52,7 @@ export default function Home() {
       axios.post(API.launchpad.local + API.launchpad.project.filter, {
         limit: 10,
         status: 1,
+        approved:1,
         sort: {trending: -1}
       })
       .then(res => {
