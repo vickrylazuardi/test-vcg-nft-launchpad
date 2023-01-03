@@ -3,6 +3,7 @@
     --purple-primary: #7750f8;
     --gray-primary: #2a334b;
     --gray-dark: #21293d;
+    --gray-light: #9AA4BF;
 }
 
 // Hexagon
@@ -2224,4 +2225,75 @@ footer {
     padding: 5px 10px;
     font-weight: 600;
     font-size: 14px;
+}
+
+.text-color-grey{
+    color: var(--gray-light);
+}
+
+
+.image-absolute-up-and-down {
+    animation: MoveUpDown 5s linear infinite;
+    position: absolute;
+    bottom: 0;
+}
+  
+@keyframes MoveUpDown {
+    0%, 100% {
+        bottom: 0;
+    }
+    50% {
+        bottom: 30px;
+    }
+}
+
+
+.navigation-tabs-content {
+    background-color: #1d2333;
+    height: 60px;
+    border-radius: 10px;
+
+    .nav-tabs {
+        display: flex;
+        border: none;
+        height: 100%;
+        flex-wrap: nowrap;
+        padding: 0 20px;
+        overflow: auto;
+
+        .nav-link {
+            border: none;
+            background: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link.active {
+            border-bottom: 2px solid #E28058;
+            background-color: transparent;
+
+            p {
+                color: white;
+            }
+        }
+
+        p {
+            padding: 0 30px;
+            color: var(--gray-light);
+            border-right: 2px solid #2a334b;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .nav-link:nth-child(1) p {
+            border-left: 2px solid #2a334b;
+        }
+    }
+
+    .nav-tabs::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+    }
 }

@@ -8,10 +8,14 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
       {isDesktop && (
         <div id="card-item-container" className="lg:mr-3">
           <div className="img-wrap">
-            <img 
-              src={img} 
-              alt={title} 
+            <img
+              src={img}
+              alt={title}
               className="object-cover w-56 h-56 rounded-t-xl"
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/Broken-Image.png";
+              }}
             />
           </div>
           <div className="content-container p-4 lg:p-2">
@@ -24,31 +28,39 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
             </p>
             <div className="action-container flex justify-between items-center lg:hidden">
               <div className="social flex items-center">
-                {
-                  socmed?.website ?
+                {socmed?.website ? (
                   <a href={socmed.website} rel="nofollow" target="_blank">
-                    <img src="/images/svg/icon-gray-web.svg" alt="web vcgamers" />
-                  </a> : ""
-                }
-                {
-                  socmed?.discord ?
+                    <img
+                      src="/images/svg/icon-gray-web.svg"
+                      alt="web vcgamers"
+                    />
+                  </a>
+                ) : (
+                  ""
+                )}
+                {socmed?.discord ? (
                   <a href={socmed.discord} rel="nofollow" target="_blank">
                     <img
                       src="/images/svg/icon-gray-discord.svg"
                       alt="discord vcgamers"
                       className="mx-3"
                     />
-                  </a> : ""
-                }
-                {
-                  socmed?.telegram ?
+                  </a>
+                ) : (
+                  ""
+                )}
+                {socmed?.telegram ? (
                   <a href={socmed.telegram} rel="nofollow" target="_blank">
-                    <img src="/images/svg/icon-gray-tele.svg" alt="tele vcgamers" />
-                  </a> : ""
-                }
+                    <img
+                      src="/images/svg/icon-gray-tele.svg"
+                      alt="tele vcgamers"
+                    />
+                  </a>
+                ) : (
+                  ""
+                )}
               </div>
-              {
-                slug == "634bc1880d026b6ffb8380f5" ?
+              {slug == "634bc1880d026b6ffb8380f5" ? (
                 <Link href={`/detail/${slug}`}>
                   <button
                     className="btn btn-bordered"
@@ -56,27 +68,32 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
                   >
                     View Detail
                   </button>
-                </Link> :
+                </Link>
+              ) : (
                 <button
                   className="btn btn-bordered"
                   style={{ padding: "8px 10px" }}
                 >
                   Coming Soon
                 </button>
-              }
+              )}
             </div>
           </div>
         </div>
       )}
       {isMobile && (
         <Link
-          href={ slug==='634bc1880d026b6ffb8380f5'? `/detail/${slug}` : '#'}
+          href={slug === "634bc1880d026b6ffb8380f5" ? `/detail/${slug}` : "#"}
           id="card-item-container"
           className="lg:mr-3"
         >
           <a>
-            <div className="img-wrap" style={{position:'relative'}}>
-              <img src={img} alt={title} className="object-cover w-36 h-36 rounded-t-xl" />
+            <div className="img-wrap" style={{ position: "relative" }}>
+              <img
+                src={img}
+                alt={title}
+                className="object-cover w-36 h-36 rounded-t-xl"
+              />
             </div>
             <div className="content-container p-4 h-24 flex flex-col lg:p-2">
               <h3 className="font-bold lg:text-xs">{title}</h3>
@@ -87,12 +104,21 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
                 {desc.length > 33 ? `${desc.substring(0, 31)}...` : desc}
               </p>
 
-            {slug!=='634bc1880d026b6ffb8380f5'? 
-              <img style={{height:'24px',width:'auto', marginTop:'-4px',position:'absolute',top:'10px'}} src="/images/soon.gif"></img>:""
-            }
-              
+              {slug !== "634bc1880d026b6ffb8380f5" ? (
+                <img
+                  style={{
+                    height: "24px",
+                    width: "auto",
+                    marginTop: "-4px",
+                    position: "absolute",
+                    top: "10px",
+                  }}
+                  src="/images/soon.gif"
+                ></img>
+              ) : (
+                ""
+              )}
             </div>
-            
           </a>
         </Link>
       )}
