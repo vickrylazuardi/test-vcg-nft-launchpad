@@ -120,14 +120,13 @@ export const API = {
     // https://api-launchpad.vcgamers.com/launchpad
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:3700/launchpad
-    domain: 'http://localhost:3700/launchpad',
-    local: "http://localhost:3700/launchpad",
-
+    // domain: 'http://localhost:3700/launchpad',
+    // local: "http://localhost:3700/launchpad",
     // domain: 'https://api-launchpad.vcgamers.com/launchpad',
     // local: "https://api-launchpad.vcgamers.com/launchpad",
 
-    // domain: 'https://api-launchpad.vcgamers.io/launchpad',
-    // local: "https://api-launchpad.vcgamers.io/launchpad",
+    domain: 'https://api-launchpad.vcg.asia/launchpad',
+    local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
