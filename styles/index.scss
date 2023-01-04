@@ -66,12 +66,21 @@
     font-weight: 700;
 }
 
+.btn:disabled{
+    background: #919AB5;
+    border-color: #919AB5;
+}
+
 .btn-bordered {
     border: 2px solid white;
 }
 
 .btn-orange-light {
     background: var(--orange-light);
+}
+
+.btn-outline-orange-light {
+    border: 1px solid var(--orange-light);
 }
 
 .btn-purple-primary {
@@ -81,6 +90,22 @@
 .btn-disabled {
     background: #3f485f;
     cursor: not-allowed;
+}
+
+.btn-light-green{
+    background: #40D04F;
+    color: white;
+    border: 1px solid #40D04F;
+}
+
+.btn-light-blue{
+    background: #48A6EA;
+    color: white;
+    border: 1px solid #48A6EA;
+}
+
+.btn-outline-white{
+    border: 1px solid #919AB5;
 }
 
 button.buy {
@@ -2296,4 +2321,163 @@ footer {
         width: 0px;
         height: 0px;
     }
+
+    @media (max-width: 940px) {
+        border-radius: 0;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+}
+
+.table-dark-light {
+    overflow: hidden;
+    border-radius: 5px;
+    font-size: 14px;
+
+    th,
+    td {
+        border: 1px solid #3f485f;
+    }
+
+    thead {
+        font-size: 14px;
+        background: #1d2333;
+
+        th {
+            padding: 10px 20px;
+            vertical-align: middle;
+        }
+    }
+
+    tbody{
+        td {
+            padding: 10px 20px;
+            vertical-align: middle;
+        }
+
+        .row-dark {
+            background: #1d2333;
+        }
+
+        .row-light {
+            background: #2a334b;
+        }
+
+    }
+}
+
+.table-mobile {
+    .row-light {
+        background: #2a334b;
+        border-bottom: 1px solid #3f485f;
+    }
+
+    .row-dark {
+        background: #1d2333;
+        border-bottom: 1px solid #3f485f;
+    }
+}
+
+.card-tournament{
+    border-radius: 10px;
+    background: #1D2333;
+
+    .card-img{
+        position: relative;
+
+        img {
+            border-radius: 10px 10px 0 0;
+            aspect-ratio: 2/1;
+            object-fit: cover;
+        }
+
+        .label-status{
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            width: 100%;
+            max-width: 129px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 0px 5px;   
+            background: darkgray;   
+        }
+
+        .open{
+            background: #86F1DE;
+            color: #034E40;
+        }
+
+        .ongoing{
+            background: #B5C6FF;
+            color: #041956;
+        }
+
+        .soon{
+            background: #F3C4EF;
+            color: #480442;
+        }
+    }
+
+    .card-detail{
+        .creator-img{
+            border: 2px solid #FFFFFF;
+            border-radius: 5px;
+            width: 26px;
+            aspect-ratio: 1/1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #2a334b;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+    
+            .progress-bar-inner-bar {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                background: #7750F8;
+                width: 30%;
+    
+                &.full {
+                    background: red;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
+}
+
+
+/* update color & background for today date */
+.slds-datepicker tbody>tr>td.slds-is-today>.slds-day {
+    background: green;
+    color: blue;
+}
+
+/* update color & background for selected date */
+.slds-datepicker tbody>tr>td.slds-is-selected>.slds-day {
+    background: red;
+    color: pink;
+    font-weight: 700;
+}
+
+/* update color & background for hover date */
+.slds-datepicker tbody>tr>td:hover span {
+    background: red !important;
+} 
+
+.max-3-line{
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }

@@ -21,6 +21,9 @@ import abiLaunchpad from "../../abi/launchpad.json";
 import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 import ContentActivty from "../../components/Detail/contentActivty";
+import ContentTournament from "../../components/Detail/contentTournament";
+import ItemLaunchpadv2 from "../../components/Common/ItemLaunchpadv2";
+import { FiPlay } from "react-icons/fi";
 
 export default function _slug() {
   const modal = useSelector((state) => state.modal);
@@ -137,6 +140,7 @@ export default function _slug() {
   const [modalMessage, setModalMessage] = useState({});
   const [claimReward, setClaimReward] = useState([]);
   const [itemURI, setItemURI] = useState({});
+  const [isShowMoreDesc, setisShowMoreDesc] = useState(false);
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -550,7 +554,7 @@ export default function _slug() {
         </div>
 
         {/* HEADER */}
-        <div className="content-header flex items-start justify-between my-10 lg:mt-0 lg:flex-col">
+        <div className="content-header gap-x-4 flex items-start md:items-center justify-between mt-10 mb-5 lg:mt-0 lg:flex-col">
           <div className="left flex items-start lg:flex-col lg:items-center">
             <div className="mask mask-hexagon profile-pict-container relative">
               <div
@@ -565,20 +569,62 @@ export default function _slug() {
               </div>
             </div>
             <div className="content-text ml-3 lg:ml-0">
-              <h2 className="text-4xl font-bold lg:text-center lg:text-lg">
+              <h2 className="text-2xl font-bold lg:text-center lg:text-lg">
                 {project?.name}
               </h2>
-              <p style={{ maxWidth: 492 }} className="font-semibold my-3">
-                {project?.desc}
+              <div className="hidden md:block text-center my-3">
+                <button
+                  className="btn btn-outline-orange-light mr-2 text-sm"
+                  style={{ padding: "10px 16px" }}
+                >
+                  Watch Trailer
+                </button>
+                <button
+                  className="btn btn-orange-light text-sm"
+                  style={{ padding: "10px 16px" }}
+                >
+                  <FiPlay className="inline mr-1 text-base" />
+                  Play Now
+                </button>
+              </div>
+              <div className="my-3 text-left md:text-center">
+                <p
+                  style={{ maxWidth: 492 }}
+                  className={`text-sm text-color-grey font-semibold ${
+                    isShowMoreDesc ? "" : "max-3-line"
+                  }`}
+                >
+                  {project?.desc}
+                </p>
+                <p
+                  className="text-sm font-bold cursor-pointer"
+                  style={{ color: "#E28058" }}
+                  onClick={() => setisShowMoreDesc(!isShowMoreDesc)}
+                >
+                  {isShowMoreDesc ? "See Less" : "See More"}
+                </p>
+              </div>
+
+              <p className="font-bold text-left md:text-center">
+                Start at :{" "}
+                <span className="font-semibold">
+                  {new Date(project?.startedAt).toLocaleString()}
+                </span>
               </p>
-              <p className="font-bold">
-                Start at {new Date(project?.startedAt).toLocaleString()}
+              <p className="font-bold text-left md:text-center mt-2">
+                Finish at :{" "}
+                <span className="font-semibold">
+                  {new Date(project?.startedAt).toLocaleString()}
+                </span>
               </p>
-              <div className="social-container mt-3 flex items-center lg:my-3">
-                <p className="font-semibold lg:text-sm">
+              <div
+                style={{ borderTop: "1px solid #3F485F" }}
+                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2"
+              >
+                <p className="font-semibold text-color-grey lg:text-sm text-left md:text-center">
                   Find out more about this project
                 </p>
-                <div className="social flex items-center gap-4 ml-5">
+                <div className="social flex items-center justify-left md:justify-center gap-4">
                   {project?.socialMedia?.website ? (
                     <a
                       href={project?.socialMedia?.website}
@@ -634,6 +680,7 @@ export default function _slug() {
                         src="/images/svg/youtube-fill.svg"
                         alt="web vcgamers"
                         className="cursor-pointer"
+                        style={{ width: "22px" }}
                       />
                     </a>
                   ) : (
@@ -651,16 +698,23 @@ export default function _slug() {
                   } */}
                 </div>
               </div>
+              <button
+                className="btn btn-orange-light mt-3 block md:hidden"
+                style={{ padding: "10px 16px" }}
+              >
+                <FiPlay className="inline mr-1 text-base" />
+                Play Now
+              </button>
             </div>
           </div>
           <div
             className="right youtube-container overflow-hidden lg:hidden"
-            style={{ borderRadius: 10 }}
+            style={{ borderRadius: 10, flex: "1" }}
           >
             {project?.socialMedia?.youtube ? (
               <iframe
-                width={590}
-                height={332}
+                style={{ aspectRatio: "2/1" }}
+                className="w-full"
                 src={`https://www.youtube.com/embed/${project?.video
                   ?.split("/")
                   .at(-1)}`}
@@ -673,28 +727,6 @@ export default function _slug() {
               ""
             )}
           </div>
-          {isMobile && (
-            <div
-              className="right youtube-container overflow-hidden w-full"
-              style={{ borderRadius: 10 }}
-            >
-              {project?.socialMedia?.youtube ? (
-                <iframe
-                  width="100%"
-                  height={185}
-                  src={`https://www.youtube.com/embed/${project.video
-                    .split("/")
-                    .at(-1)}`}
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-              ) : (
-                ""
-              )}
-            </div>
-          )}
         </div>
         {/* /HEADER */}
 
@@ -720,28 +752,25 @@ export default function _slug() {
         {/* Minting Content */}
         {activeContent == listContent[0] && (
           <div className="item-launchpad">
-            {/* <h2 className="font-bold text-2xl mb-3 lg:text-base">Items</h2> */}
-            <div className="item-wrapper">
-              <StyledSlider {...settingsItems}>
-                {project.boxes
-                  ? Object.keys(project.boxes).map((item, idx) => {
-                      const value = project.boxes[item];
-                      const owned = ownedBox[item];
-                      return (
-                        <div key={idx} className="wrapper">
-                          <ItemLaunchpad
-                            name={item}
-                            data={value}
-                            owned={owned}
-                            project={project}
-                            account={account}
-                            action={setModal}
-                          />
-                        </div>
-                      );
-                    })
-                  : ""}
-              </StyledSlider>
+            <div className="item-wrapper grid gap-x-6 gap-y-6 grid-cols-5 md:grid-cols-3 sm:grid-cols-2">
+              {project.boxes
+                ? Object.keys(project.boxes).map((item, idx) => {
+                    const value = project.boxes[item];
+                    const owned = ownedBox[item];
+                    return (
+                      <div key={idx} className="">
+                        <ItemLaunchpadv2
+                          name={item}
+                          data={value}
+                          owned={owned}
+                          project={project}
+                          account={account}
+                          action={setModal}
+                        />
+                      </div>
+                    );
+                  })
+                : ""}
             </div>
           </div>
         )}
@@ -753,8 +782,30 @@ export default function _slug() {
 
         {/* Items Content */}
         {activeContent == listContent[2] && (
-          <img className="w-full" src="/images/banner-crossout-1.png" alt="" />
+          <div className="grid grid-cols-2 md:grid-cols-1">
+            <img
+              className="w-full"
+              src="/images/banner-crossout-1.png"
+              alt=""
+            />
+            <div className="p-4 self-center text-left md:text-center">
+              <p className="mb-2 text-2xl font-bold md:text-sm">
+                Get these items and trade them with other players on VCGamers
+                NFT Marketplace
+              </p>
+              <button
+                className="btn btn-orange-light md:text-sm"
+                style={{ padding: "10px 16px" }}
+              >
+                Visit NFT Marketplace
+              </button>
+            </div>
+          </div>
         )}
+        {/* /items Content */}
+
+        {/* Items Content */}
+        {activeContent == listContent[3] && <ContentTournament />}
         {/* /items Content */}
 
         {/* Play Now Content */}

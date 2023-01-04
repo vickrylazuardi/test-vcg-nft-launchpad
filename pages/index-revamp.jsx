@@ -207,6 +207,35 @@ export default function Home() {
             )}
           </div>
         </div>
+        <div className="mt-10">
+          <p className="text-lg font-bold pb-5">Featured Projects</p>
+          <div className="item-tab-container mt-5">
+            {trending?.length ? (
+              <StyledSlider {...settings}>
+                {trending?.map((item, idx) => (
+                  <div key={idx} className="card-wrap">
+                    <CardItem
+                      img={item.banner}
+                      title={item.name}
+                      desc={item.desc}
+                      slug={item._id}
+                      socmed={item.socialMedia}
+                    />
+                  </div>
+                ))}
+              </StyledSlider>
+            ) : (
+              <div className="mx-auto my-20 flex flex-col items-center">
+                <img
+                  className="mb-5 w-64"
+                  src="/images/data-not-found.png"
+                  alt=""
+                />
+                <p className="pnd-title font-semibold">No Data Found</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
