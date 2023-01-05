@@ -730,7 +730,7 @@ export default function _slug() {
         </div>
         {/* /HEADER */}
 
-        <nav className="navigation-tabs-content mt-3 mb-14">
+        <nav className="navigation-tabs-content mt-3 mb-10">
           <div className="nav nav-tabs" role="tablist">
             {listContent.map((item, idx) => {
               return (

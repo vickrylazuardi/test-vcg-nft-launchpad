@@ -1,14 +1,42 @@
 import React from "react";
+import { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import { HiOutlineExternalLink } from "react-icons/hi";
 
 const listTable = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 export default function ContentActivty(props) {
+  const [activeContent, setActiveContent] = useState("sales");
+
   return (
     <>
-      <TableWeb />
-      <TableMobile />
+      <div className="mb-7">
+        <button
+          className={`select-tab-orange mr-3 ${
+            activeContent == "sales" ? "active" : ""
+          }`}
+          onClick={() => setActiveContent("sales")}
+        >
+          Sales
+        </button>
+        <button
+          className={`select-tab-orange mr-3 ${
+            activeContent == "timeline" ? "active" : ""
+          }`}
+          onClick={() => setActiveContent("timeline")}
+        >
+          Timeline
+        </button>
+      </div>
+
+      {activeContent == "sales" ? (
+        <>
+          <TableWeb />
+          <TableMobile />
+        </>
+      ) : (
+        <ContentTimeline />
+      )}
     </>
   );
 }
@@ -148,5 +176,42 @@ function TableMobile(props) {
         })}
       </div>
     </div>
+  );
+}
+
+function ContentTimeline(props) {
+  return (
+    <ul className="proses-listing list-unstyled">
+      <li id="process-1" className="list-proses active">
+        <span className="date-timeline">30 Apr 2022</span>
+        <div className="list-proses-content">
+          <h6 className="fw-bold">Approve this item </h6>
+          <p className="mb-0">
+            To get set up for listings for the first time, you must approve this
+            item for sale, which requires a one-time gas fee.
+          </p>
+        </div>
+      </li>
+      <li id="process-2" className="list-proses active">
+        <span className="date-timeline">30 Apr 2022</span>
+        <div className="list-proses-content">
+          <h6 className="fw-bold">Confirm Listing </h6>
+          <p className="mb-0">
+            Accept the signature request in your wallet and wait for your
+            listing to process.
+          </p>
+        </div>
+      </li>
+      <li id="process-3" className="list-proses">
+        <span className="date-timeline">30 Apr 2022</span>
+        <div className="list-proses-content">
+          <h6 className="fw-bold">Listing In Process </h6>
+          <p className="mb-0">
+            Your item listing is being processed, please check the listing
+            status regularly.
+          </p>
+        </div>
+      </li>
+    </ul>
   );
 }
