@@ -104,6 +104,11 @@
     border: 1px solid #48A6EA;
 }
 
+.btn-connect-wallet-dark{
+    background: #19094F;
+    border: 1px solid #9AA4BF;
+}
+
 .btn-outline-white{
     border: 1px solid #919AB5;
 }
@@ -557,7 +562,7 @@ footer {
 
 @media (max-width: 940px) {
     .global-container {
-        padding-top: 8rem;
+        padding-top: 5rem;
     }
     // Navbar
     #navbar-container {
@@ -2480,4 +2485,22 @@ footer {
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.card-dark{
+    padding: 20px;
+    background: #1D2333;
+    border-radius: 10px;
+}
+
+.navbar-mobile{
+    padding: 15px 20px;
+    background: #CD4E2B;
+}
+
+.navigation-bottom-mobile{
+    padding: 10px 16px;
+    background: #1D2333;
+    border-top: 1px solid #2A334B;
+    z-index: 9;
 }

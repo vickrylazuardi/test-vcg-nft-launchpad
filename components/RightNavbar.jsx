@@ -44,9 +44,8 @@ export default function RightNavbar(props) {
           </div>
           <p className="font-semibold text-sm ml-1">Toko</p>
         </div> */}
-        {
-          props.account ?
-          <div 
+        {props.account ? (
+          <div
             className="profile flex items-center cursor-pointer ml-4"
             onMouseEnter={() => handleEnter("sub-menu-4")}
             onMouseLeave={() => handleLeave("sub-menu-4")}
@@ -71,24 +70,44 @@ export default function RightNavbar(props) {
                     <a>Profile</a>
                   </Link>
                 }
-                <p className="not-enter" onClick={() => props.disconnect()}>Disconnect</p>
+                <p className="not-enter" onClick={() => props.disconnect()}>
+                  Disconnect
+                </p>
               </div>
             </div>
             <p className="font-semibold text-sm ml-1">
-              {props.account.slice(0,7) + "..." + props.account.slice(-7)}
+              {props.account.slice(0, 7) + "..." + props.account.slice(-7)}
             </p>
             <img src="/images/svg/arrow-down.svg" alt="" className="ml-1" />
-          </div> :
-          <Link href="/connect-wallet">
-            <a>
-              <button 
-                className="btn-connect-wallet py-3.5 px-7 rounded-md ml-4"
-              >
-                Connect Wallet
-              </button>
-            </a>
-          </Link>
-        }
+          </div>
+        ) : (
+          <>
+            <Link href="/connect-wallet">
+              <a>
+                <button
+                  className="btn btn-connect-wallet-dark text-sm font-semibold mr-3"
+                  style={{ padding: "10px 16px" }}
+                >
+                  Connect Wallet
+                </button>
+              </a>
+            </Link>
+            <Link href="">
+              <a>
+                <button
+                  className="btn btn-light-green text-sm font-semibold"
+                  style={{
+                    padding: "10px 16px",
+                    border: "none",
+                    minWidth: "120px",
+                  }}
+                >
+                  Login
+                </button>
+              </a>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

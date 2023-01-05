@@ -61,7 +61,7 @@ export default function CardItem({ img, title, desc, slug, socmed }) {
                 )}
               </div>
               {slug == "634bc1880d026b6ffb8380f5" ? (
-                <Link href={`/detail/${slug}`}>
+                <Link href={`/detail-revamp/${slug}`}>
                   <button
                     className="btn btn-bordered"
                     style={{ padding: "8px 10px" }}
