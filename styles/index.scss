@@ -6,6 +6,14 @@
     --gray-light: #9AA4BF;
 }
 
+body::-webkit-scrollbar {
+    width: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #7750f8;
+}
+
 // Hexagon
 .mask {
     -webkit-mask-size: contain;

@@ -24,6 +24,7 @@ import ContentActivty from "../../components/Detail/contentActivty";
 import ContentTournament from "../../components/Detail/contentTournament";
 import ItemLaunchpadv2 from "../../components/Common/ItemLaunchpadv2";
 import { FiPlay } from "react-icons/fi";
+import ContentTeams from "../../components/Detail/contentTeams";
 
 export default function _slug() {
   const modal = useSelector((state) => state.modal);
@@ -130,6 +131,7 @@ export default function _slug() {
     "Items",
     "Tournament",
     "Plat Now",
+    "Teams",
   ];
 
   const [activeContent, setActiveContent] = useState(listContent[0]);
@@ -812,6 +814,10 @@ export default function _slug() {
         {activeContent == listContent[4] && (
           <img className="w-full" src="/images/banner-crossout-2.png" alt="" />
         )}
+        {/* /Play Now Content */}
+
+        {/* Play Now Content */}
+        {activeContent == listContent[5] && <ContentTeams />}
         {/* /Play Now Content */}
       </div>
       {modal.modalConfirmation.isOpen && (
