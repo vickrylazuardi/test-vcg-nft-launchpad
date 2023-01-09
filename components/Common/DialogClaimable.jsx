@@ -156,7 +156,7 @@ export default function DialogClaimable(props) {
 													height: "160px"
 												}}
 											>
-												<div class="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full"/>
+												<div className="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full"/>
 											</div>
 											<p className="font-semibold text-white dcb-item-name mt-2">Loading</p>
 										</>

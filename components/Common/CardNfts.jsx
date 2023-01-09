@@ -37,7 +37,7 @@ export default function CardNfts(props) {
             props.item?.metadataName
           ) : (
             <div
-              class="h-3 bg-slate-700 mb-3 animate-pulse"
+              className="h-3 bg-slate-700 mb-3 animate-pulse"
               style={{ borderRadius: "3px" }}
             ></div>
           )}

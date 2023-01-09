@@ -82,8 +82,8 @@ export default function ContentTournament(props) {
             </div>
           </div>
           <div className="mt-4">
-            <div class="flex gap-x-2">
-              <div class="flex-none">
+            <div className="flex gap-x-2">
+              <div className="flex-none">
                 <button
                   className="btn btn-outline-white"
                   style={{ padding: "5px 20px" }}
@@ -91,7 +91,7 @@ export default function ContentTournament(props) {
                   Detail
                 </button>
               </div>
-              <div class="flex-1">
+              <div className="flex-1">
                 <button
                   className="btn btn-light-green w-full"
                   style={{ padding: "5px 20px" }}
@@ -181,8 +181,8 @@ export default function ContentTournament(props) {
             </div>
           </div>
           <div className="mt-4">
-            <div class="flex gap-x-2">
-              <div class="flex-none">
+            <div className="flex gap-x-2">
+              <div className="flex-none">
                 <button
                   className="btn btn-outline-white"
                   style={{ padding: "5px 20px" }}
@@ -190,7 +190,7 @@ export default function ContentTournament(props) {
                   Detail
                 </button>
               </div>
-              <div class="flex-1">
+              <div className="flex-1">
                 <button
                   className="btn btn-light-blue w-full"
                   style={{ padding: "5px 20px" }}
@@ -280,8 +280,8 @@ export default function ContentTournament(props) {
             </div>
           </div>
           <div className="mt-4">
-            <div class="flex gap-x-2">
-              <div class="flex-none">
+            <div classname="flex gap-x-2">
+              <div className="flex-none">
                 <button
                   className="btn btn-outline-white"
                   style={{ padding: "5px 20px" }}
@@ -289,7 +289,7 @@ export default function ContentTournament(props) {
                   Detail
                 </button>
               </div>
-              <div class="flex-1">
+              <div className="flex-1">
                 <button
                   className="btn btn-light-green w-full"
                   style={{ padding: "5px 20px" }}

@@ -587,6 +587,10 @@ export default function _slug() {
                   src={project?.icon}
                   alt={project?.name}
                   className="mask mask-hexagon object-contain h-full w-full"
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = "/images/Broken-Image.png";
+                  }}
                 />
               </div>
             </div>
