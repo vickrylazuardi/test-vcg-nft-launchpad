@@ -170,3 +170,9 @@ export const API = {
     }
   }
 };
+
+export const domainMp = {
+  dev :'https://nft.vcg.asia',
+  stg :'https://nft.vcgamers.io',
+  pro :'https://nft.vcgamers.com'
+}

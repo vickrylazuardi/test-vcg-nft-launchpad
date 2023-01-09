@@ -2495,6 +2495,14 @@ footer {
     -webkit-box-orient: vertical;
 }
 
+.max-1-line{
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 .card-dark{
     padding: 20px;
     background: #1D2333;
@@ -2595,4 +2603,44 @@ footer {
     background: #E28058;
     border: 1px solid #E28058;
     color: white;
+}
+
+.card.card-nfts {
+    border: none;
+    border-radius: 10px;
+    background-color: #1d2333;
+
+    .card-img-top {
+        background-color: #252c3e;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .creator-img {
+        width: 18px;
+        height: 18px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .creator-name {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px 10px;
+    }
+
+    .nfts-price {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .collection-name {
+        color: #9aa4bf;
+        font-weight: 500;
+        font-size: 12px;
+    }
 }

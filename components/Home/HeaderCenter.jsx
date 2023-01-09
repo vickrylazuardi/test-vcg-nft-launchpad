@@ -84,7 +84,7 @@ export default function HeaderCenter(props) {
             {props.totalProject ? (
               <p className="font-bold text-lg">{props.totalProject}</p>
             ) : (
-              <div class="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full" />
+              <div className="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full" />
             )}
             <p className="small-semibold" style={{ color: "#9aa4bf" }}>
               Projects Funded
@@ -97,7 +97,7 @@ export default function HeaderCenter(props) {
             {props.totalFunded ? (
               <p className="font-bold text-lg">${props.totalFunded}</p>
             ) : (
-              <div class="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full" />
+              <div className="spinner-border animate-spin inline-block w-5 h-5 border-t-4 border-l-4 rounded-full" />
             )}
             <p
               className="small-semibold text-center"

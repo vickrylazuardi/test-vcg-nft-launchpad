@@ -5,7 +5,7 @@ export default function NavigationBottomMobile(props) {
   return (
     <div className="navigation-bottom-mobile hidden md:block fixed bottom-0 w-full">
       <div className="flex justify-between">
-        <Link href="/index-revamp">
+        <Link href="/">
           <a className="text-center px-3">
             <img
               className="m-auto"
