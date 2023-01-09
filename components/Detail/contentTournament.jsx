@@ -16,6 +16,10 @@ export default function ContentTournament(props) {
               className="creator-img inline mr-2"
               src="/images/Prod.png"
               alt=""
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/Broken-Image.png";
+              }}
             />
             Mobile Legends: Bang Bang
           </p>
@@ -111,6 +115,10 @@ export default function ContentTournament(props) {
               className="creator-img inline mr-2"
               src="/images/Prod.png"
               alt=""
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/Broken-Image.png";
+              }}
             />
             Mobile Legends: Bang Bang
           </p>
@@ -206,6 +214,10 @@ export default function ContentTournament(props) {
               className="creator-img inline mr-2"
               src="/images/Prod.png"
               alt=""
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/Broken-Image.png";
+              }}
             />
             Mobile Legends: Bang Bang
           </p>

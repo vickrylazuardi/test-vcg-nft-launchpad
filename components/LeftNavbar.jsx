@@ -129,7 +129,7 @@ export default function LeftNavbar() {
       </div>
       <ul className="flex items-center ml-7">
         <li>
-          <a href="/index-revamp" className="text-link semibold flex">
+          <a href="/" className="text-link semibold flex">
             Home
           </a>
         </li>
