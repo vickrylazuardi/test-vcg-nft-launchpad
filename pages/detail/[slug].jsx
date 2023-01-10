@@ -136,7 +136,7 @@ export default function _slug() {
   ];
 
   const [activeContent, setActiveContent] = useState(listContent[0]);
-  const [newestListing, setNewestListing] = useState(null);
+  const [itemList, setItemList] = useState(null);
   const [project, setProject] = useState({});
   const [balance, setBalance] = useState(null);
   const [ownedBox, setOwnedBox] = useState({});
@@ -145,6 +145,11 @@ export default function _slug() {
   const [claimReward, setClaimReward] = useState([]);
   const [itemURI, setItemURI] = useState({});
   const [isShowMoreDesc, setisShowMoreDesc] = useState(false);
+  const [page, setPage] = useState({});
+  const [filter, setFilter] = useState({
+    attributes: {},
+  });
+  const [emblemKYC, setEmblemKYC] = useState("/images/KYC-Default.png");
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -172,6 +177,7 @@ export default function _slug() {
         .then((res) => {
           if (res.status === 204) return;
           setProject(res.data.data);
+          getItems(res.data.data.address);
         });
     } catch (error) {
       console.log(error);
@@ -527,18 +533,82 @@ export default function _slug() {
     }
   };
 
-  const getNewestListing = async () => {
+  const getItems = async (nftAddress) => {
     try {
-      axios
-        .post("https://api-marketplace.vcg.asia/mp" + API.land.list, {
-          listed: true,
-          sort: { listingDate: -1 },
-          limit: 8,
-        })
-        .then((res) => {
-          if (res.status == 204) return;
-          setNewestListing(res.data.data);
-        });
+      if (!nftAddress) {
+        return;
+      }
+      const { data } = await axios.post(API.marketplace + API.land.list, {
+        nftAddress,
+        page: 1,
+        limit: 12,
+      });
+      if (data.data) {
+        setItemList(data.data?.items);
+        paginate(data, page, setPage);
+      } else {
+        setItemList([]);
+        setPage({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFilterItems = async (page) => {
+    try {
+      if (page) {
+        filter.page = page;
+        (filter.limit = 12), (filter.nftAddress = project.address);
+        setFilter({ ...filter });
+      }
+      const { data } = await axios.post(
+        API.marketplace + API.land.list,
+        filter
+      );
+      if (data) {
+        setItemList(data.data?.items);
+        paginate(data, page, setPage);
+      } else {
+        setItemList([]);
+        setPage({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const paginate = async (data, getter, setter) => {
+    try {
+      let page = {};
+      page.currentPage = data.data.page;
+      page.maxPage = data.data.totalPage;
+      if (page.currentPage < 4 && page.maxPage > 5) {
+        page.listPage = [1, 2, 3, 4, 5];
+      } else if (
+        page.currentPage >= 4 &&
+        page.currentPage + 2 <= page.maxPage
+      ) {
+        let list = [];
+        for (let i = page.currentPage - 2; i <= page.currentPage + 2; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      } else if (page.maxPage > 5) {
+        let list = [];
+        for (let i = page.maxPage - 4; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      } else {
+        let list = [];
+        for (let i = 1; i <= page.maxPage; i++) {
+          list.push(i);
+        }
+        page.listPage = list;
+      }
+      getter = page;
+      setter({ ...getter });
     } catch (error) {
       console.log(error);
     }
@@ -547,7 +617,6 @@ export default function _slug() {
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
-      getNewestListing();
     }
   }, [data]);
 
@@ -578,22 +647,37 @@ export default function _slug() {
         {/* HEADER */}
         <div className="content-header gap-x-4 flex items-start md:items-center justify-between mt-10 mb-5 lg:mt-0 lg:flex-col">
           <div className="left flex items-start lg:flex-col lg:items-center">
-            <div className="mask mask-hexagon profile-pict-container relative">
-              <div
-                className="mask mask-hexagon profile-wrap"
-                style={{ background: "#3f485f" }}
-              >
-                <img
-                  src={project?.icon}
-                  alt={project?.name}
-                  className="mask mask-hexagon object-contain h-full w-full"
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = "/images/Broken-Image.png";
-                  }}
-                />
+            <div className="relative">
+              <img
+                className="absolute right-0 w-8 z-10"
+                style={{
+                  marginRight: "-5px",
+                }}
+                src={emblemKYC}
+                alt=""
+                onMouseEnter={() =>
+                  setEmblemKYC("/images/KYC-Default-white.png")
+                }
+                onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
+              />
+              <div className="mask mask-hexagon profile-pict-container relative">
+                <div
+                  className="mask mask-hexagon profile-wrap"
+                  style={{ background: "#3f485f" }}
+                >
+                  <img
+                    src={project?.icon}
+                    alt={project?.name}
+                    className="mask mask-hexagon object-contain h-full w-full"
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "/images/Broken-Image.png";
+                    }}
+                  />
+                </div>
               </div>
             </div>
+
             <div className="content-text ml-3 lg:ml-0">
               <h2 className="text-2xl font-bold lg:text-center lg:text-lg">
                 {project?.name}
@@ -622,13 +706,15 @@ export default function _slug() {
                 >
                   {project?.desc}
                 </p>
-                <p
-                  className="text-sm font-bold cursor-pointer"
-                  style={{ color: "#E28058" }}
-                  onClick={() => setisShowMoreDesc(!isShowMoreDesc)}
-                >
-                  {isShowMoreDesc ? "See Less" : "See More"}
-                </p>
+                {project?.desc?.length > 237 && (
+                  <p
+                    className="text-sm font-bold cursor-pointer"
+                    style={{ color: "#E28058" }}
+                    onClick={() => setisShowMoreDesc(!isShowMoreDesc)}
+                  >
+                    {isShowMoreDesc ? "See Less" : "See More"}
+                  </p>
+                )}
               </div>
 
               <p className="font-bold text-left md:text-center">
@@ -811,7 +897,11 @@ export default function _slug() {
 
         {/* Items Content */}
         {activeContent == listContent[2] && (
-          <ContentItems dataItems={newestListing} />
+          <ContentItems
+            dataItems={itemList}
+            page={page}
+            getFilterItems={getFilterItems}
+          />
         )}
         {/* /items Content */}
 

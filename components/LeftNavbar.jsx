@@ -72,7 +72,7 @@ export default function LeftNavbar() {
                 </li>
                 <li className="arena">
                   <a
-                    href="https://app.vcgamers.com/coming-soon-arena"
+                    href="https://arena.vcgamers.com"
                     className="flex items-center"
                   >
                     <img
@@ -111,7 +111,7 @@ export default function LeftNavbar() {
                 </li>
                 <li className="merch">
                   <a
-                    href="https://lynk.id/vcgoods"
+                    href="https://vcgamers.com/goods"
                     className="flex items-center"
                   >
                     <img
@@ -139,7 +139,7 @@ export default function LeftNavbar() {
           </a>
         </li>
         <li>
-          <a href="#" className="text-link semibold flex">
+          <a href="https://vcgamers.com/news/help/faq-launchpad/" target="_blank" className="text-link semibold flex">
             FAQ
           </a>
         </li>

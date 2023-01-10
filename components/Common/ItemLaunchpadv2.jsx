@@ -102,7 +102,8 @@ export default function ItemLaunchpadv2(props) {
             {props?.data?.sold}/{props?.data?.stock} Boxes
           </p>
         </div>
-        <div className="py-2 mt-2" style={{ borderTop: "1px solid #2A334B" }}>
+        {/* TODO NEW PRICE */}
+        {/* <div className="py-2 mt-2" style={{ borderTop: "1px solid #2A334B" }}>
           <p className="text-sm font-semibold text-color-grey mb-2">Price</p>
           <div className="flex justify-between">
             <p className="text-sm font-bold">
@@ -115,6 +116,18 @@ export default function ItemLaunchpadv2(props) {
             </p>
             <p className="text-sm font-bold">
               ~<strong style={{ color: "#40D04F" }}>Rp</strong> 1.125.998
+            </p>
+          </div>
+        </div> */}
+        {/* /NEW PRICE */}
+        <div
+          className="price-wrap mt-3"
+          style={{ borderTop: "1px solid #2A334B" }}
+        >
+          <div className="price flex items-center justify-between mt-2">
+            <p className="title font-semibold text-sm">Price</p>
+            <p className="font-semibold text-sm">
+              {props?.data?.price} VCG
             </p>
           </div>
         </div>
@@ -150,7 +163,7 @@ export default function ItemLaunchpadv2(props) {
               </button>
             ) : props?.data?.finalize ? (
               <div className="wrap-input flex-1">
-                {/* <input
+                <input
                   type="text"
                   className="w-full mb-3"
                   style={{ padding: "8px 12px" }}
@@ -163,7 +176,7 @@ export default function ItemLaunchpadv2(props) {
                       e.target.value = props?.owned;
                     setAmount(e.target.value);
                   }}
-                /> */}
+                />
                 <button
                   className={
                     amount < 1
@@ -187,7 +200,7 @@ export default function ItemLaunchpadv2(props) {
               </div>
             ) : (
               <div className="wrap-input flex-1">
-                {/* <input
+                <input
                   type="text"
                   className="w-full mb-3"
                   style={{ padding: "8px 12px" }}
@@ -200,7 +213,7 @@ export default function ItemLaunchpadv2(props) {
                       e.target.value = props?.data?.stock - props?.data?.sold;
                     setAmount(e.target.value);
                   }}
-                /> */}
+                />
                 <button
                   className={
                     new Date() < new Date(props.project.startedAt)

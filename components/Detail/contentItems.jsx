@@ -1,19 +1,24 @@
 import React from "react";
+import { domainMp } from "../../utils/globalConstant";
 import CardNfts from "../Common/CardNfts";
+import { PaginationMp } from "../Common/PaginationMp";
 
 export default function ContentItems(props) {
   return (
     <>
       {props.dataItems ? (
-        <div className="grid grid-cols-6 gap-5 md:grid-cols-4 sm:grid-cols-2">
-          {props.dataItems.items.map((item, idx) => {
-            return (
-              <div key={idx} className="list-card-items">
-                <CardNfts item={item} showCreator={true} />
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <div className="grid grid-cols-6 gap-5 md:grid-cols-4 sm:grid-cols-2">
+            {props.dataItems.map((item, idx) => {
+              return (
+                <div key={idx} className="list-card-items">
+                  <CardNfts item={item} showCreator={true} />
+                </div>
+              );
+            })}
+          </div>
+          <PaginationMp page={props.page} pageAction={props.getFilterItems} />
+        </>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-1">
           <img className="w-full" src="/images/banner-crossout-1.png" alt="" />
@@ -22,12 +27,14 @@ export default function ContentItems(props) {
               Get these items and trade them with other players on VCGamers NFT
               Marketplace
             </p>
-            <button
-              className="btn btn-orange-light md:text-sm"
-              style={{ padding: "10px 16px" }}
-            >
-              Visit NFT Marketplace
-            </button>
+            <a href={domainMp.pro}>
+              <button
+                className="btn btn-orange-light md:text-sm"
+                style={{ padding: "10px 16px" }}
+              >
+                Visit NFT Marketplace
+              </button>
+            </a>
           </div>
         </div>
       )}

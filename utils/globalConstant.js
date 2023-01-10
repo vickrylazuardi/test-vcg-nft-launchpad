@@ -61,7 +61,7 @@ export const fcmScope = {
 //TODO : API
 export const API = {
   ransverse: "https://api.vcgamers.io/ransverse",
-  marketplace: "https://api.vcgamers.io/mp",
+  marketplace: "https://api-marketplace.vcg.asia/mp",
   domain: "https://api.vcgamers.io/mp",
   local: "https://api.vcgamers.io/mp",
   land: {

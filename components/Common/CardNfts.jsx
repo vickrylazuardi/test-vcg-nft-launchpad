@@ -16,12 +16,12 @@ export default function CardNfts(props) {
                       7
                     )}`
                   : props.item.images.nft.url
-                : "/assets/img/mascot-to-moon.png"
+                : "/images/Broken-Image.png"
             }
             className="card-img-top"
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/assets/img/Broken-Image.png";
+              currentTarget.src = "/images/Broken-Image.png";
             }}
           />
         </a>

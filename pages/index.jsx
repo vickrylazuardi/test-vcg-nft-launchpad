@@ -19,13 +19,27 @@ const settings = {
   infinite: false,
   speed: 500,
   slidesToShow: 5,
-  slidesToScroll: 5,
+  slidesToScroll: 1,
   responsive: [
     {
-      breakpoint: 620,
+      breakpoint: 640,
       settings: {
-        slidesToShow: 2.5,
-        slidesToScroll: 3,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1,
       },
     },
   ],
@@ -35,6 +49,7 @@ export default function Home() {
   const [totalFunded, setTotalFunded] = useState(null);
   const [totalProject, setTotalProject] = useState(null);
   const [trending, setTrending] = useState(null);
+  const [listProject, setListProject] = useState(null);
   const [ongoing, setOngoing] = useState([]);
   const [soon, setSoon] = useState([]);
   const [finish, setFinish] = useState([]);
@@ -88,6 +103,22 @@ export default function Home() {
         .then((res) => {
           if (res.status === 204) return;
           setTrending(res.data.data.items);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getListProject = () => {
+    try {
+      axios
+        .post(API.launchpad.local + API.launchpad.project.filter, {
+          limit: 10,
+          status: 1
+        })
+        .then((res) => {
+          if (res.status === 204) return;
+          setListProject(res.data.data.items);
         });
     } catch (error) {
       console.log(error);
@@ -162,6 +193,7 @@ export default function Home() {
   useEffect(() => {
     launchpadInfo();
     getTrending();
+    getListProject()
     // getOngoing();
     // getSoon();
     // getFinish();
@@ -210,9 +242,9 @@ export default function Home() {
         <div className="mt-10">
           <p className="text-lg font-bold pb-5">Project List</p>
           <div className="item-tab-container mt-5">
-            {trending?.length ? (
+            {listProject?.length ? (
               <StyledSlider {...settings}>
-                {trending?.map((item, idx) => (
+                {listProject?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
                       img={item.banner}
