@@ -614,6 +614,12 @@ export default function _slug() {
     }
   };
 
+  function handleGetEndDate(duration) {
+    let startDate = new Date(project?.startedAt);
+    let endDate = startDate.setTime(startDate.getTime() + duration * 86400000);
+    return new Date(endDate).toLocaleString();
+  }
+
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
@@ -726,12 +732,13 @@ export default function _slug() {
               <p className="font-bold text-left md:text-center mt-2">
                 Finish at :{" "}
                 <span className="font-semibold">
-                  {new Date(project?.startedAt).toLocaleString()}
+                  {/* {new Date(project?.startedAt).toLocaleString()} */}
+                  {handleGetEndDate(project?.duration)}
                 </span>
               </p>
               <div
                 style={{ borderTop: "1px solid #3F485F" }}
-                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2"
+                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2 gap-3"
               >
                 <p className="font-semibold text-color-grey lg:text-sm text-left md:text-center">
                   Find out more about this project
