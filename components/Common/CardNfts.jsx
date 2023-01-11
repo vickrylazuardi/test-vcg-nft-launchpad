@@ -61,6 +61,12 @@ export default function CardNfts(props) {
         {props.showCreator && (
           <a
             href={`${domainMp.dev}/profile/${props.item?.creator?.walletAddress}`}
+            onClick={(e) => {
+              e.preventDefault();
+              if (props.item?.creator) {
+                window.location.href = `${domainMp.dev}/profile/${props.item?.creator?.walletAddress}`;
+              }
+            }}
           >
             <div className="flex mb-2">
               <div>

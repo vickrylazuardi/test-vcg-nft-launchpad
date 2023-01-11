@@ -131,7 +131,7 @@ export default function _slug() {
     "Activity",
     "Items",
     "Tournament",
-    "Plat Now",
+    "Play Now",
     "Teams",
   ];
 
