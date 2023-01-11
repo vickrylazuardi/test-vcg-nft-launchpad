@@ -70,7 +70,7 @@ export default function NewProject(props) {
     },
   });
   const [list, setList] = useState({
-    features: [],
+    // features: [],
     member: [],
     items: [],
     boxes: [],
@@ -114,7 +114,7 @@ export default function NewProject(props) {
       const team = {};
       const boxes = {};
       const items = [];
-      const features = [];
+      // const features = [];
 
       // append information from data var to form data
       for (const key in data) {
@@ -161,27 +161,27 @@ export default function NewProject(props) {
       formData.append("boxes", JSON.stringify(boxes));
 
       // append feature info and feature image to form data
-      list.features.map((item) => {
-        const image = new File(
-          [item.images],
-          `${item.title}.${item.images.type.split("/")[1]}`,
-          {
-            type: item.images.type,
-            lastModified: item.images.lastModified,
-          }
-        );
+      // list.features.map((item) => {
+      //   const image = new File(
+      //     [item.images],
+      //     `${item.title}.${item.images.type.split("/")[1]}`,
+      //     {
+      //       type: item.images.type,
+      //       lastModified: item.images.lastModified,
+      //     }
+      //   );
 
-        const feature = {
-          title: item.title,
-          text: item.description,
-          image: "",
-        };
+      //   const feature = {
+      //     title: item.title,
+      //     text: item.description,
+      //     image: "",
+      //   };
 
-        features.push(feature);
-        formData.append("featureImage", image);
-      });
+      //   features.push(feature);
+      //   formData.append("featureImage", image);
+      // });
 
-      formData.append("additionalInfo", JSON.stringify(features));
+      // formData.append("additionalInfo", JSON.stringify(features));
 
       // append team member info and team member image to form data
       list.member.map((item) => {
@@ -342,15 +342,15 @@ export default function NewProject(props) {
                   data.desc &&
                   data.startedAt &&
                   list.member.length &&
-                  list.features.length &&
+                  // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
                   list.member.find((item) => {
                     return !item.completed;
                   }) == undefined &&
-                  list.features.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.features.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   list.boxes.find((item) => {
                     return !item.completed;
                   }) == undefined &&
@@ -374,15 +374,15 @@ export default function NewProject(props) {
                   data.desc &&
                   data.startedAt &&
                   list.member.length &&
-                  list.features.length &&
+                  // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
                   list.member.find((item) => {
                     return !item.completed;
                   }) == undefined &&
-                  list.features.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.features.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   list.boxes.find((item) => {
                     return !item.completed;
                   }) == undefined &&

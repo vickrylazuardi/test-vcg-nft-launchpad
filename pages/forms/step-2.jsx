@@ -259,7 +259,6 @@ export default function Step2(props) {
                 result={handleInputBannerItem}
               />
               <div className="wrap-input mt-6">
-                <label className="label-input">Link Banner Item</label>
                 <input
                   type="text"
                   maxLength={100}
@@ -283,7 +282,6 @@ export default function Step2(props) {
                 result={handleInputBannerPlayNow}
               />
               <div className="wrap-input mt-6">
-                <label className="label-input">Link Banner Play Now</label>
                 <input
                   type="text"
                   maxLength={100}
