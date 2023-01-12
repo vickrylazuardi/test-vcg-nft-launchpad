@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Header from "../components/Home/Header";
+// import Header from "../components/Home/Header";
 import { API } from "../utils/globalConstant";
 import CardItem from "../components/Common/CardItem";
 import styled from "styled-components";
@@ -114,7 +114,7 @@ export default function Home() {
       axios
         .post(API.launchpad.local + API.launchpad.project.filter, {
           limit: 10,
-          status: 1
+          status: 1,
         })
         .then((res) => {
           if (res.status === 204) return;
@@ -193,7 +193,7 @@ export default function Home() {
   useEffect(() => {
     launchpadInfo();
     getTrending();
-    getListProject()
+    getListProject();
     // getOngoing();
     // getSoon();
     // getFinish();
@@ -218,7 +218,7 @@ export default function Home() {
                 {trending?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
-                      img={item.banner}
+                      img={item.banner ? item.banner : item.icon}
                       title={item.name}
                       desc={item.desc}
                       slug={item._id}
@@ -247,7 +247,7 @@ export default function Home() {
                 {listProject?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
-                      img={item.banner}
+                      img={item.banner ? item.banner : item.icon}
                       title={item.name}
                       desc={item.desc}
                       slug={item._id}

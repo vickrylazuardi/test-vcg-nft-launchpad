@@ -302,11 +302,9 @@ export default function FooterTop() {
           <div className="img-wrap">
             <img src="/images/vicimon-piala.png" alt="trophy" />
           </div>
-          {isMobile && (
-            <p className="text-center text-sm font-bold my-2">
-              Download Our Apps
-            </p>
-          )}
+          <p className="text-center text-sm font-bold my-2">
+            Download Our Apps
+          </p>
           <p
             className="text-center text-sm font-bold my-2 lg:hidden"
             style={{ color: "#9AA4BF" }}

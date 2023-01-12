@@ -19,7 +19,7 @@ export default function Step3(props) {
         >
           Team Member
         </button>
-        <button
+        {/* <button
           style={{ padding: "10px 30px", whiteSpace: "nowrap" }}
           className={`btn ${
             props.selected == 2 ? "btn-orange-light" : "btn-gray"
@@ -27,7 +27,7 @@ export default function Step3(props) {
           onClick={() => props.setSelected(2)}
         >
           Features
-        </button>
+        </button> */}
         <button
           style={{ padding: "10px 30px", whiteSpace: "nowrap" }}
           className={`btn ${
@@ -40,7 +40,7 @@ export default function Step3(props) {
       </div>
       <div className="mt-10 py-3" style={{ overflowX: "auto" }}>
         {props.selected == 1 && <Table1 list={props.list} setList={props.setList} />}
-        {props.selected == 2 && <Table2 list={props.list} setList={props.setList} />}
+        {/* {props.selected == 2 && <Table2 list={props.list} setList={props.setList} />} */}
         {props.selected == 3 && (
           <>
             <div>

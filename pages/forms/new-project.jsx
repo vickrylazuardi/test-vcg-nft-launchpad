@@ -9,33 +9,33 @@ import Step2 from "./step-2";
 import Step3 from "./step-3";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import {toggleModalConfirmation} from "../../redux/modalReducer";
+import { toggleModalConfirmation } from "../../redux/modalReducer";
 
 export default function NewProject(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
 
   const modalConfirmationWhenSuccess = {
-		loading: false,
-		isOpen: true,
-		isPlain: false,
-		isSuccess: true,
-		isFailed: false,
-		title: {
-			en: "Confirmation",
-		}
-	};
+    loading: false,
+    isOpen: true,
+    isPlain: false,
+    isSuccess: true,
+    isFailed: false,
+    title: {
+      en: "Confirmation",
+    },
+  };
 
   const modalConfirmationWhenFailed = {
-		loading: false,
-		isOpen: true,
-		isPlain: false,
-		isSuccess: false,
-		isFailed: true,
-		title: {
-			en: "Confirmation",
-		}
-	};
+    loading: false,
+    isOpen: true,
+    isPlain: false,
+    isSuccess: false,
+    isFailed: true,
+    title: {
+      en: "Confirmation",
+    },
+  };
 
   const modalConfirmation = {
     loading: false,
@@ -45,13 +45,36 @@ export default function NewProject(props) {
     isFailed: false,
     title: {
       en: "Confirmation",
-    }
-  }
+    },
+  };
 
   const [step, setStep] = useState(1);
   const [selected, setSelected] = useState(1);
-  const [data, setData] = useState({ socialMedia: {website: "", medium: "", discord: "", telegram: "", youtube: ""} });
-  const [list, setList] = useState({ features: [], member: [], items: [], boxes: [] });
+  const [data, setData] = useState({
+    socialMedia: {
+      website: "",
+      medium: "",
+      discord: "",
+      telegram: "",
+      youtube: "",
+    },
+    banner: {
+      items: {
+        images: "",
+        url: "",
+      },
+      playNow: {
+        images: "",
+        url: "",
+      },
+    },
+  });
+  const [list, setList] = useState({
+    // features: [],
+    member: [],
+    items: [],
+    boxes: [],
+  });
 
   const getData = (key, value, status) => {
     try {
@@ -59,23 +82,27 @@ export default function NewProject(props) {
       switch (keys[0]) {
         case "socialMedia":
           if (value.length) data.socialMedia[keys[1]] = value;
-          else delete(data.socialMedia[keys[1]]);
+          else delete data.socialMedia[keys[1]];
           break;
         case "contactEmail":
           if (value.length) {
             data[key] = value;
             data.validEmail = status;
           } else {
-            delete(data[key]);
-            delete(data.validEmail);
+            delete data[key];
+            delete data.validEmail;
           }
+          break;
+        case "banner":
+          if (value) data.banner[keys[1]] = value;
+          console.log("??",data);
           break;
         default:
           if (value) data[key] = value;
-          else delete(data[key]);
+          else delete data[key];
           break;
       }
-      setData({...data});
+      setData({ ...data });
     } catch (error) {
       console.log(error);
     }
@@ -87,7 +114,7 @@ export default function NewProject(props) {
       const team = {};
       const boxes = {};
       const items = [];
-      const features = [];
+      // const features = [];
 
       // append information from data var to form data
       for (const key in data) {
@@ -100,15 +127,19 @@ export default function NewProject(props) {
             formData.append(key, value);
             break;
         }
-      };
+      }
 
       // append box info and box image to form data
       list.boxes.map((item) => {
         const items = {};
-        const image = new File([item.images], `${item.boxName}.${item.images.type.split("/")[1]}`, {
-          type: item.images.type,
-          lastModified: item.images.lastModified,
-        });
+        const image = new File(
+          [item.images],
+          `${item.boxName}.${item.images.type.split("/")[1]}`,
+          {
+            type: item.images.type,
+            lastModified: item.images.lastModified,
+          }
+        );
 
         item.items.map((el) => {
           items[el.category] = el.qty;
@@ -121,44 +152,52 @@ export default function NewProject(props) {
           image: "",
           items,
           sell: false,
-          finalize: false
+          finalize: false,
         };
 
         formData.append("boxImage", image);
       });
 
       formData.append("boxes", JSON.stringify(boxes));
-      
+
       // append feature info and feature image to form data
-      list.features.map((item) => {
-        const image = new File([item.images], `${item.title}.${item.images.type.split("/")[1]}`, {
-          type: item.images.type,
-          lastModified: item.images.lastModified,
-        });
+      // list.features.map((item) => {
+      //   const image = new File(
+      //     [item.images],
+      //     `${item.title}.${item.images.type.split("/")[1]}`,
+      //     {
+      //       type: item.images.type,
+      //       lastModified: item.images.lastModified,
+      //     }
+      //   );
 
-        const feature = {
-          title: item.title,
-          text: item.description,
-          image: ""
-        };
+      //   const feature = {
+      //     title: item.title,
+      //     text: item.description,
+      //     image: "",
+      //   };
 
-        features.push(feature);
-        formData.append("featureImage", image);
-      });
+      //   features.push(feature);
+      //   formData.append("featureImage", image);
+      // });
 
-      formData.append("additionalInfo", JSON.stringify(features));
+      // formData.append("additionalInfo", JSON.stringify(features));
 
       // append team member info and team member image to form data
       list.member.map((item) => {
         const items = {};
-        const image = new File([item.images], `${item.name}.${item.images.type.split("/")[1]}`, {
-          type: item.images.type,
-          lastModified: item.images.lastModified,
-        });
+        const image = new File(
+          [item.images],
+          `${item.name}.${item.images.type.split("/")[1]}`,
+          {
+            type: item.images.type,
+            lastModified: item.images.lastModified,
+          }
+        );
 
         team[item.name] = {
           position: item.title,
-          image: ""
+          image: "",
         };
 
         formData.append("teamImage", image);
@@ -169,10 +208,14 @@ export default function NewProject(props) {
       // append team member info and team member image to form data
       list.items.map((item, idx) => {
         const attr = [];
-        const image = new File([item.images], `${idx + 1}.${item.images.type.split("/")[1]}`, {
-          type: item.images.type,
-          lastModified: item.images.lastModified,
-        });
+        const image = new File(
+          [item.images],
+          `${idx + 1}.${item.images.type.split("/")[1]}`,
+          {
+            type: item.images.type,
+            lastModified: item.images.lastModified,
+          }
+        );
 
         Object.keys(item.attribute).map((e) => {
           const value = item.attribute[e];
@@ -189,7 +232,7 @@ export default function NewProject(props) {
           description: "",
           attributes: attr,
           nftAddress: "",
-          projectName: data.name
+          projectName: data.name,
         };
 
         items.push(nft);
@@ -197,17 +240,20 @@ export default function NewProject(props) {
       });
 
       formData.append("items", JSON.stringify(items));
-      
+
       // send to api
-      axios.post(API.launchpad.domain + API.launchpad.project.add, formData, {
-        headers : {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then((res) => {
-        dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
-      }).catch((error) => {
-        dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-      });
+      axios
+        .post(API.launchpad.domain + API.launchpad.project.add, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
+        })
+        .catch((error) => {
+          dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+        });
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
@@ -260,31 +306,18 @@ export default function NewProject(props) {
             </div>
           </div>
 
-          {
-            step == 1 && 
-            <Step1 
-              data={data}
-              getData={getData} 
-            />
-          }
+          {step == 1 && <Step1 data={data} getData={getData} />}
 
-          {
-            step == 2 && 
-            <Step2 
-              data={data}
-              getData={getData} 
-            />
-          }
+          {step == 2 && <Step2 data={data} getData={getData} />}
 
-          {
-            step == 3 && 
-            <Step3 
+          {step == 3 && (
+            <Step3
               list={list}
               setList={setList}
               selected={selected}
-              setSelected={setSelected} 
+              setSelected={setSelected}
             />
-          }
+          )}
 
           <div className="mt-8 text-right">
             <button
@@ -295,38 +328,74 @@ export default function NewProject(props) {
             >
               Back
             </button>
-            {
-              step == 3 ?
+            {step == 3 ? (
               <button
                 style={{ padding: "10px 30px" }}
                 className={
-                  data.contactName && data.contactEmail && data.duration && 
-                  data.validEmail && data.owner && data.icon && 
-                  data.name && data.desc && data.startedAt && list.member.length &&
-                  list.features.length && list.boxes.length && list.items.length &&
-                  list.member.find((item) => {return !item.completed}) == undefined &&
-                  list.features.find((item) => {return !item.completed}) == undefined &&
-                  list.boxes.find((item) => {return !item.completed}) == undefined &&
-                  list.items.find((item) => {return !item.completed}) == undefined ?
-                  "btn btn-orange-light text-sm" : "btn btn-disabled text-sm"
+                  data.contactName &&
+                  data.contactEmail &&
+                  data.duration &&
+                  data.validEmail &&
+                  data.owner &&
+                  data.icon &&
+                  data.name &&
+                  data.desc &&
+                  data.startedAt &&
+                  list.member.length &&
+                  // list.features.length &&
+                  list.boxes.length &&
+                  list.items.length &&
+                  list.member.find((item) => {
+                    return !item.completed;
+                  }) == undefined &&
+                  // list.features.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
+                  list.boxes.find((item) => {
+                    return !item.completed;
+                  }) == undefined &&
+                  list.items.find((item) => {
+                    return !item.completed;
+                  }) == undefined
+                    ? "btn btn-orange-light text-sm"
+                    : "btn btn-disabled text-sm"
                 }
                 onClick={() => {
-                  dispatch(toggleModalConfirmation(modalConfirmation))
+                  dispatch(toggleModalConfirmation(modalConfirmation));
                 }}
                 disabled={
-                  data.contactName && data.contactEmail && data.duration && 
-                  data.validEmail && data.owner && data.icon && 
-                  data.name && data.desc && data.startedAt && list.member.length &&
-                  list.features.length && list.boxes.length && list.items.length &&
-                  list.member.find((item) => {return !item.completed}) == undefined &&
-                  list.features.find((item) => {return !item.completed}) == undefined &&
-                  list.boxes.find((item) => {return !item.completed}) == undefined &&
-                  list.items.find((item) => {return !item.completed}) == undefined ?
-                  false : true
+                  data.contactName &&
+                  data.contactEmail &&
+                  data.duration &&
+                  data.validEmail &&
+                  data.owner &&
+                  data.icon &&
+                  data.name &&
+                  data.desc &&
+                  data.startedAt &&
+                  list.member.length &&
+                  // list.features.length &&
+                  list.boxes.length &&
+                  list.items.length &&
+                  list.member.find((item) => {
+                    return !item.completed;
+                  }) == undefined &&
+                  // list.features.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
+                  list.boxes.find((item) => {
+                    return !item.completed;
+                  }) == undefined &&
+                  list.items.find((item) => {
+                    return !item.completed;
+                  }) == undefined
+                    ? false
+                    : true
                 }
               >
                 Submit
-              </button> :
+              </button>
+            ) : (
               <button
                 style={{ padding: "10px 30px" }}
                 className="btn btn-orange-light text-sm"
@@ -335,12 +404,11 @@ export default function NewProject(props) {
               >
                 Next
               </button>
-            }
+            )}
           </div>
         </div>
       </div>
-      {
-        modal.modalConfirmation.isOpen && 
+      {modal.modalConfirmation.isOpen && (
         <DialogConfirmation
           type="Submit"
           message="submit this project?"
@@ -349,7 +417,7 @@ export default function NewProject(props) {
           redirect="/"
           action={submitProject}
         />
-      }
+      )}
     </div>
   );
 }

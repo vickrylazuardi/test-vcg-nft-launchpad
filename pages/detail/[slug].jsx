@@ -131,7 +131,7 @@ export default function _slug() {
     "Activity",
     "Items",
     "Tournament",
-    "Plat Now",
+    "Play Now",
     "Teams",
   ];
 
@@ -150,6 +150,7 @@ export default function _slug() {
     attributes: {},
   });
   const [emblemKYC, setEmblemKYC] = useState("/images/KYC-Default.png");
+  const [isKYC,setIsKYC] = useState(false);
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -614,6 +615,12 @@ export default function _slug() {
     }
   };
 
+  function handleGetEndDate(duration) {
+    let startDate = new Date(project?.startedAt);
+    let endDate = startDate.setTime(startDate.getTime() + duration * 86400000);
+    return new Date(endDate).toLocaleString();
+  }
+
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
@@ -648,6 +655,7 @@ export default function _slug() {
         <div className="content-header gap-x-4 flex items-start md:items-center justify-between mt-10 mb-5 lg:mt-0 lg:flex-col">
           <div className="left flex items-start lg:flex-col lg:items-center">
             <div className="relative">
+              {isKYC &&
               <img
                 className="absolute right-0 w-8 z-10"
                 style={{
@@ -660,9 +668,10 @@ export default function _slug() {
                 }
                 onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
               />
+              }
               <div className="mask mask-hexagon profile-pict-container relative">
                 <div
-                  className="mask mask-hexagon profile-wrap"
+                  className="mask mask-hexagon profile-wrap"  
                   style={{ background: "#3f485f" }}
                 >
                   <img
@@ -726,12 +735,13 @@ export default function _slug() {
               <p className="font-bold text-left md:text-center mt-2">
                 Finish at :{" "}
                 <span className="font-semibold">
-                  {new Date(project?.startedAt).toLocaleString()}
+                  {/* {new Date(project?.startedAt).toLocaleString()} */}
+                  {handleGetEndDate(project?.duration)}
                 </span>
               </p>
               <div
                 style={{ borderTop: "1px solid #3F485F" }}
-                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2"
+                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2 gap-3"
               >
                 <p className="font-semibold text-color-grey lg:text-sm text-left md:text-center">
                   Find out more about this project
