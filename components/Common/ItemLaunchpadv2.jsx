@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModalConfirmation } from "../../redux/modalReducer";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
-export default function ItemLaunchpad(props) {
+export default function ItemLaunchpadv2(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
 
   const [amount, setAmount] = useState(0);
+  const [isCollepse, setIsCollepse] = useState(false);
 
   const dataModal = {
     modalConfirmation: {
@@ -23,7 +25,7 @@ export default function ItemLaunchpad(props) {
   };
 
   return (
-    <div id="item-launchpad">
+    <div id="item-launchpad" style={{ maxWidth: "100%" }}>
       <div className="img-wrap">
         <img
           src={props.data.image}
@@ -36,8 +38,15 @@ export default function ItemLaunchpad(props) {
         />
       </div>
       <div className="content-item p-4">
-        <h3 className="font-bold mb-1">{props?.name}</h3>
-        <div className="content-show">
+        <h3 className="font-bold mb-1 text-center">{props?.name}</h3>
+        <div
+          className={`${
+            isCollepse
+              ? "visible opacity-100 h-auto"
+              : "invisible opacity-0 h-0"
+          }`}
+          style={{ transition: "visibility 0s, opacity 0.5s linear" }}
+        >
           {props?.data?.items
             ? Object.keys(props.data.items).map((item, idx) => {
                 const value = props.data.items[item];
@@ -54,29 +63,31 @@ export default function ItemLaunchpad(props) {
             <p>{props?.owned}</p>
           </div>
         </div>
-        {/* <div className="see-btn flex items-center justify-center cursor-pointer">
-          <p
-            className="text-sm font-semibold mr-2"
-            style={{ color: "#9aa4bf" }}
-          >
-            See More
-          </p>
-          <img
-            src="/images/svg/arrow-small.svg"
-            alt="web vcgamers"
-            className="cursor-pointer"
-          />
-        </div> */}
+        <p
+          onClick={() => setIsCollepse(!isCollepse)}
+          className="text-sm font-semibold text-color-grey text-center cursor-pointer"
+        >
+          {isCollepse ? "See Less" : "See More"}
+          {isCollepse ? (
+            <FiChevronUp className="text-lg inline ml-1" />
+          ) : (
+            <FiChevronDown className="text-lg inline ml-1" />
+          )}
+        </p>
         <div className="price-wrap mt-3">
-          <div className="price flex items-center justify-between">
+          {/* <div className="price flex items-center justify-between">
             <p className="title font-semibold text-sm">Price</p>
             <p className="font-semibold text-sm" style={{ color: "#40d04f" }}>
               {props?.data?.price} VCG
             </p>
-          </div>
+          </div> */}
           <div className="price-bar">
             <div
-              className={"price-inner-bar"}
+              className={
+                (props?.data?.sold / props?.data?.stock) * 100 == 100
+                  ? "price-inner-bar full"
+                  : "price-inner-bar"
+              }
               style={{
                 width: `${(props?.data?.sold / props?.data?.stock) * 100}%`,
               }}
@@ -90,6 +101,35 @@ export default function ItemLaunchpad(props) {
           <p className="font-bold text-sm">
             {props?.data?.sold}/{props?.data?.stock} Boxes
           </p>
+        </div>
+        {/* TODO NEW PRICE */}
+        {/* <div className="py-2 mt-2" style={{ borderTop: "1px solid #2A334B" }}>
+          <p className="text-sm font-semibold text-color-grey mb-2">Price</p>
+          <div className="flex justify-between">
+            <p className="text-sm font-bold">
+              <img
+                className="inline mr-1"
+                src="/images/svg/icon-price.svg"
+                alt=""
+              />
+              1.010
+            </p>
+            <p className="text-sm font-bold">
+              ~<strong style={{ color: "#40D04F" }}>Rp</strong> 1.125.998
+            </p>
+          </div>
+        </div> */}
+        {/* /NEW PRICE */}
+        <div
+          className="price-wrap mt-3"
+          style={{ borderTop: "1px solid #2A334B" }}
+        >
+          <div className="price flex items-center justify-between mt-2">
+            <p className="title font-semibold text-sm">Price</p>
+            <p className="font-semibold text-sm">
+              {props?.data?.price} VCG
+            </p>
+          </div>
         </div>
         <div className="btn-wrap mt-3">
           {props?.account ? (

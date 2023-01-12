@@ -25,6 +25,10 @@ export const swap = {
   wBNBaddress: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
 };
 
+
+
+export const RPC={wss:'wss://indulgent-wispy-ensemble.bsc-testnet.discover.quiknode.pro/27ff2e5f1934c35deb420db46f3aa725095a10f9/',http:'https://indulgent-wispy-ensemble.bsc-testnet.discover.quiknode.pro/27ff2e5f1934c35deb420db46f3aa725095a10f9/'}
+
 export const firebaseConfig = {
   apiKey: "AIzaSyBUQG4WvvuZymoDOfSK6u0DP3-TnyNYNFg",
   authDomain: "vcg-blockchain.firebaseapp.com",
@@ -37,9 +41,9 @@ export const firebaseConfig = {
 
 //TODO : MAINNET
 export const tokenAddress = {
-  LAND_ADDRESS: "0xaF10C7233e84925898bCFF9139b0E942AF75c74E",
-  LAND_MARKETPLACE_ADDRESS: "0x32f98cF8955D70Ef6AEFe49A58D792904004f651",
-  TOKEN_CURRENCY: "0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9",
+  LAND_ADDRESS: "0xeb89E3EA534A727018b6a0BA5493050D877D8B87",
+  LAND_MARKETPLACE_ADDRESS: "0x47F23A148394e10008d4108ed6a12BcCC0F32b48",
+  TOKEN_CURRENCY: "0x33e9f1d1ad100CbBd7FF35BD3d8228A7ec52C224",
 };
 
 // 0xd4EdD685B25d6Fc6B00fed63F9aC6cBDDDDc7980
@@ -61,7 +65,7 @@ export const fcmScope = {
 //TODO : API
 export const API = {
   ransverse: "https://api.vcgamers.io/ransverse",
-  marketplace: "https://api.vcgamers.io/mp",
+  marketplace: "https://api-marketplace.vcg.asia/mp",
   domain: "https://api.vcgamers.io/mp",
   local: "https://api.vcgamers.io/mp",
   land: {
@@ -120,11 +124,6 @@ export const API = {
     // https://api-launchpad.vcgamers.com/launchpad
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:3700/launchpad
-    // domain: 'http://localhost:3700/launchpad',
-    // local: "http://localhost:3700/launchpad",
-    // domain: 'https://api-launchpad.vcgamers.com/launchpad',
-    // local: "https://api-launchpad.vcgamers.com/launchpad",
-
     domain: 'https://api-launchpad.vcg.asia/launchpad',
     local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
@@ -175,3 +174,9 @@ export const API = {
     }
   }
 };
+
+export const domainMp = {
+  dev :'https://nft.vcg.asia',
+  stg :'https://nft.vcgamers.io',
+  pro :'https://nft.vcgamers.com'
+}

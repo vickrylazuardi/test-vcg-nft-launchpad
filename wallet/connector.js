@@ -9,6 +9,7 @@ export const REACT_APP_API_URL = "https://api.vcgamers.io/";
 export const API_URL = REACT_APP_API_URL;
 export const API_KEY_BSC = "VHEB53E4Y115CT5ZPV1KUP6EKTC3CWFYAN";
 export const BSC_RPC = "https://bsc-dataseed1.binance.org/";
+
 export const API_BSC_SCAN =
   "https://apis.ankr.com/37d357f51dd54b2e92a99f19a5e036a8/e18df296a67dc5f3fdbfbc990c10bf76/binance/full/test";
 export const ETH_RPC =
@@ -19,11 +20,6 @@ export const walletConnect = new WalletConnectConnector({
   qrcode: true,
   pollingInterval: 12000,
 });
-
-export const REACT_APP_BSC_BRIDGE =
-  "0xd3432e42925DEF749909D55FDC149B48d94eA44d";
-export const REACT_APP_ETH_BRIDGE =
-  "0xd3432e42925DEF749909D55FDC149B48d94eA44d";
 
 export const REACT_APP_BSC_TOKEN = "0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9";
 export const REACT_APP_ETH_TOKEN = "0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9";
