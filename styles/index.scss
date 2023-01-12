@@ -6,6 +6,10 @@
     --gray-light: #9AA4BF;
 }
 
+body{
+    overflow-x : hidden !important;
+}
+
 body::-webkit-scrollbar {
     width: 4px;
 }
@@ -2456,6 +2460,7 @@ footer {
             border-radius: 10px 10px 0 0;
             aspect-ratio: 2/1;
             object-fit: cover;
+            width: 100%;
         }
 
         .label-status{

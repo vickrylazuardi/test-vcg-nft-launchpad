@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import Slider from "react-slick";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,11 +13,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
-import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from "../../abi/launchpad.json";
-import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 import ContentActivty from "../../components/Detail/contentActivty";
 import ContentTournament from "../../components/Detail/contentTournament";
@@ -73,59 +70,6 @@ export default function _slug() {
     },
   };
 
-  const bgPage = {
-    backgroundImage: `url('/images/bg.png')`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    paddingTop: "9rem",
-  };
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  const settingsItems = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    responsive: [
-      {
-        breakpoint: 620,
-        settings: {
-          slidesToShow: 2.2,
-          slidesToScroll: 2,
-        },
-      },
-    ],
-  };
-  const settingsTeams = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
-    responsive: [
-      {
-        breakpoint: 620,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-    ],
-  };
-
-  const StyledSlider = styled(Slider)`
-    .slick-track {
-      margin-left: 0;
-      margin-right: 0;
-    }
-  `;
-
   const listContent = [
     "Minting",
     "Activity",
@@ -137,6 +81,7 @@ export default function _slug() {
 
   const [activeContent, setActiveContent] = useState(listContent[0]);
   const [itemList, setItemList] = useState(null);
+  const [tournamentList, setTournamentList] = useState(null);
   const [project, setProject] = useState({});
   const [balance, setBalance] = useState(null);
   const [ownedBox, setOwnedBox] = useState({});
@@ -188,7 +133,7 @@ export default function _slug() {
     try {
       const boxIds = Object.keys(project.boxes);
       boxIds.forEach(async (box, idx) => {
-        if (account) {
+        if (account && project.address) {
           const launchpadContract = connectContract(
             project.address,
             abiLaunchpad
@@ -620,9 +565,27 @@ export default function _slug() {
     return new Date(endDate).toLocaleString();
   }
 
+  const getTournaments = async () => {
+    try {
+      const { data } = await axios.get(
+        API.tournament +
+          `/api/arena/tournamentdata?page=1&limit=20&game=1&owner&id`
+      );
+
+      if (data.status) {
+        setTournamentList(data.data);
+      }
+
+      console.log("DAta", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
+      getTournaments();
     }
   }, [data]);
 
@@ -913,7 +876,9 @@ export default function _slug() {
         {/* /items Content */}
 
         {/* Items Content */}
-        {activeContent == listContent[3] && <ContentTournament />}
+        {activeContent == listContent[3] && (
+          <ContentTournament tournamentList={tournamentList} />
+        )}
         {/* /items Content */}
 
         {/* Play Now Content */}

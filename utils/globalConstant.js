@@ -64,6 +64,7 @@ export const API = {
   marketplace: "https://api-marketplace.vcg.asia/mp",
   domain: "https://api.vcgamers.io/mp",
   local: "https://api.vcgamers.io/mp",
+  tournament: "https://v2-crm.vcg.asia/",
   land: {
     list: "/land/list",
     filter: "/land/filter",
