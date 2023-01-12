@@ -1,8 +1,14 @@
 import Link from "next/link";
 import React from "react";
 import { IoRocketOutline } from "react-icons/io5";
+import useMetaMask from "../wallet/hook";
+import { useRouter } from "next/router";
 
 export default function OurService(props) {
+  const router = useRouter();
+
+  const { account } = useMetaMask();
+
   return (
     <div className="global-container">
       <div className="container mx-auto">
@@ -242,15 +248,24 @@ export default function OurService(props) {
             gaming community
           </p>
           <div className="md:flex md:flex-wrap md:flex-col-reverse">
-            <button
-              className="btn btn-outline-orange-light mt-2 mr-3 md:w-full"
-              style={{ padding: "10px 16px" }}
-            >
-              Connect with Us
-            </button>
+            <a href="https://discord.com/invite/2ZCcTXx5Vr" target="_blank">
+              <button
+                className="btn btn-outline-orange-light mt-2 mr-3 md:w-full"
+                style={{ padding: "10px 16px" }}
+              >
+                Connect with Us
+              </button>
+            </a>
             <button
               className="btn btn-orange-light mt-2 md:w-full"
               style={{ padding: "10px 16px" }}
+              onClick={() => {
+                if (account) {
+                  router.push("/forms/new-project");
+                } else {
+                  router.push("/connect-wallet");
+                }
+              }}
             >
               <IoRocketOutline className="inline text-2xl mr-1" /> Launch
               Project Now

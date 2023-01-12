@@ -2,6 +2,7 @@ import vcgNFTJson from "./artifacts/vcgNFTJson.json";
 import vcgMpJson from "./artifacts/vcgMpJson.json";
 import marketplace from './artifacts/marketplace.json'
 import vcgEnableTokenJson from "./artifacts/vcgEnableTokenJson.json";
+import vcgTestnetAbi from "./artifacts/vcgTestnetAbi.json";
 import vcgSubscibeJson from "./artifacts/vcgSubscribe.json";
 import { testnetTokenAddress ,tokenAddress } from "./globalConstant";
 
@@ -39,7 +40,7 @@ export const vcgMpTestnet = {
 };
 
 export const vcgEnableTokenTestnet={
-  abi: vcgEnableTokenJson.abi,
+  abi: vcgTestnetAbi,
   address: testnetTokenAddress.TOKEN_CURRENCY,
 }
 

@@ -181,7 +181,7 @@ export default function _slug() {
           getItems(res.data.data.address);
         });
     } catch (error) {
-      console.log(error);
+      console.log("getDetailProject err->",error);
     }
   };
 
@@ -231,7 +231,7 @@ export default function _slug() {
       if (allowance > Number(price) * amount) buyBox(box, amount);
       else setAllowance(box, amount);
     } catch (error) {
-      console.log(error);
+      console.log("checkAllowance err->",error);
     }
   };
 

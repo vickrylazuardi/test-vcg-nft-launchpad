@@ -71,7 +71,13 @@ export default function HeaderCenter(props) {
         <button
           style={{ padding: "10px 16px", maxWidth: "560px" }}
           className="btn btn-orange-light text-xs relative mt-5 md:w-full lg:w-auto"
-          onClick={() => router.push("/forms/new-project")}
+          onClick={() => {
+            if (props.account) {
+              router.push("/forms/new-project");
+            } else {
+              router.push("/connect-wallet");
+            }
+          }}
         >
           <IoRocketOutline className="inline text-2xl mr-1" /> Launch Your
           Project Now

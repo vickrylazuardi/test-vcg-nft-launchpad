@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { API } from "../../utils/globalConstant";
 import { useEffect } from "react";
@@ -10,10 +11,15 @@ import Step3 from "./step-3";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModalConfirmation } from "../../redux/modalReducer";
+import useMetaMask from "../../wallet/hook";
+import { FiInfo } from "react-icons/fi";
 
 export default function NewProject(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
+  const { account, switchActive } = useMetaMask();
+
+  const router = useRouter();
 
   const modalConfirmationWhenSuccess = {
     loading: false,
@@ -95,7 +101,7 @@ export default function NewProject(props) {
           break;
         case "banner":
           if (value) data.banner[keys[1]] = value;
-          console.log("??",data);
+          console.log("??", data);
           break;
         default:
           if (value) data[key] = value;
@@ -260,6 +266,12 @@ export default function NewProject(props) {
     }
   };
 
+  useEffect(() => {
+    if (!account) {
+      router.push("/");
+    }
+  }, [account]);
+
   return (
     <div style={{ padding: "9rem 0", background: "#1E1E1E" }}>
       <div className="container">
@@ -276,32 +288,40 @@ export default function NewProject(props) {
           </p>
         </div>
 
-        <div className="card-form-launchpad mt-9">
+        <p className="info-yellow mt-9">
+          <FiInfo className="inline mr-1" />
+          VCGamers Launchpad currently support BSC Only
+        </p>
+
+        <div className="card-form-launchpad mt-4">
           <div style={{ maxWidth: "400px" }} className="m-auto">
             <div className="stepper-wrapper">
               <div
                 className={`stepper-item ${step > 1 ? "completed" : ""} ${
                   step == 1 ? "active" : ""
                 }`}
-                onClick={() => setStep(1)}
               >
-                <div className="step-counter">1</div>
+                <div className="step-counter" onClick={() => setStep(1)}>
+                  1
+                </div>
               </div>
               <div
                 className={`stepper-item ${step > 2 ? "completed" : ""} ${
                   step == 2 ? "active" : ""
                 }`}
-                onClick={() => setStep(2)}
               >
-                <div className="step-counter">2</div>
+                <div className="step-counter" onClick={() => setStep(2)}>
+                  2
+                </div>
               </div>
               <div
                 className={`stepper-item ${step > 3 ? "completed" : ""} ${
                   step == 3 ? "active" : ""
                 }`}
-                onClick={() => setStep(3)}
               >
-                <div className="step-counter">3</div>
+                <div className="step-counter" onClick={() => setStep(3)}>
+                  3
+                </div>
               </div>
             </div>
           </div>

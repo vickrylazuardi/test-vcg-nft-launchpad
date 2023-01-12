@@ -6,6 +6,7 @@ import CardItem from "../components/Common/CardItem";
 import styled from "styled-components";
 import Slider from "react-slick";
 import HeaderCenter from "../components/Home/HeaderCenter";
+import useMetaMask from "../wallet/hook";
 
 const StyledSlider = styled(Slider)`
   .slick-track {
@@ -54,6 +55,8 @@ export default function Home() {
   const [soon, setSoon] = useState([]);
   const [finish, setFinish] = useState([]);
   const [faq, setFaq] = useState(null);
+
+  const { account, switchActive } = useMetaMask();
 
   const launchpadInfo = () => {
     try {
@@ -208,7 +211,7 @@ export default function Home() {
 
   return (
     <div id="home" className="global-container">
-      <HeaderCenter totalProject={totalProject} totalFunded={totalFunded} />
+      <HeaderCenter account={account} totalProject={totalProject} totalFunded={totalFunded} />
       <div id="launchpad-tab" className="container mt-14 md:pb-10">
         <div>
           <p className="text-lg font-bold pb-5">Featured Projects</p>
