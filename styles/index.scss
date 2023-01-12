@@ -644,13 +644,13 @@ footer {
                 }
             }
 
-            .item-tab-container {
-                .slick-slider {
-                    .slick-arrow {
-                        display: none !important;
-                    }
-                }
-            }
+            // .item-tab-container {
+            //     .slick-slider {
+            //         .slick-arrow {
+            //             display: none !important;
+            //         }
+            //     }
+            // }
         }
 
         #launchpad-market {
@@ -2729,4 +2729,13 @@ footer {
             border-right: none;
         }
     }
+}
+
+.info-yellow {
+    background: #ffeaaa;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #d17e00;
 }
