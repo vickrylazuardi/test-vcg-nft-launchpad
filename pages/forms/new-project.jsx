@@ -129,6 +129,9 @@ export default function NewProject(props) {
           case "socialMedia":
             formData.append(key, JSON.stringify(value));
             break;
+          case "banner":
+            formData.append(key, JSON.stringify(value));
+            break;
           default:
             formData.append(key, value);
             break;
@@ -247,19 +250,19 @@ export default function NewProject(props) {
 
       formData.append("items", JSON.stringify(items));
 
-      // send to api
-      axios
-        .post(API.launchpad.domain + API.launchpad.project.add, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
-        })
-        .catch((error) => {
-          dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
-        });
+      // // send to api
+      // axios
+      //   .post(API.launchpad.domain + API.launchpad.project.add, formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((res) => {
+      //     dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
+      //   })
+      //   .catch((error) => {
+      //     dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+      //   });
     } catch (error) {
       console.log(error);
       dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));

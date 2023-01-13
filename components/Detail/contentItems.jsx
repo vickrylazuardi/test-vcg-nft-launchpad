@@ -21,7 +21,9 @@ export default function ContentItems(props) {
         </>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-1">
-          <img className="w-full" src="/images/banner-crossout-1.png" alt="" />
+          <a href={domainMp.pro}>
+            <img className="w-full" src="/images/Default_Item.png" alt="" />
+          </a>
           <div className="p-4 self-center text-left md:text-center">
             <p className="mb-2 text-2xl font-bold md:text-sm">
               Get these items and trade them with other players on VCGamers NFT

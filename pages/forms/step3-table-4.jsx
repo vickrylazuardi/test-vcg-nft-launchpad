@@ -59,8 +59,8 @@ export default function Table4(props) {
         category.push(categoryName);
         setCategory([...category]);
       }
-    })
-  }, [props])
+    });
+  }, [props]);
 
   return (
     <table className="table-flexible">
@@ -160,7 +160,8 @@ export default function Table4(props) {
                             placeholder="Box Price"
                             value={props.list.boxes[idx].price}
                             onChange={(e) => {
-                              if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                              if (!/[0-9]/i.test(e.nativeEvent.data))
+                                e.target.value = e.target.value.slice(0, -1);
                               if (e.target.value <= 0) e.target.value = "";
                               props.list.boxes[idx].price = e.target.value;
                               props.setList({ ...props.list });
@@ -182,7 +183,8 @@ export default function Table4(props) {
                             placeholder="Box Supply"
                             value={props.list.boxes[idx].supply}
                             onChange={(e) => {
-                              if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                              if (!/[0-9]/i.test(e.nativeEvent.data))
+                                e.target.value = e.target.value.slice(0, -1);
                               if (e.target.value <= 0) e.target.value = "";
                               props.list.boxes[idx].supply = e.target.value;
                               props.setList({ ...props.list });
@@ -222,25 +224,37 @@ export default function Table4(props) {
                                   props.list.boxes[idx].items[index].category
                                 }
                                 onChange={(e) => {
-                                  if (e.target.value == "new-items") handleAddItems();
+                                  if (e.target.value == "new-items")
+                                    handleAddItems();
                                   else {
-                                    props.list.boxes[idx].items[index].category =
-                                      e.target.value;
+                                    props.list.boxes[idx].items[
+                                      index
+                                    ].category = e.target.value;
                                     props.setList({ ...props.list });
                                   }
                                 }}
                               >
-                                <option selected hidden>Select Category</option>
-                                {
-                                  category.length ?
+                                <option selected hidden>
+                                  Select Category
+                                </option>
+                                {category.length ? (
                                   category.map((item) => (
-                                    <option key={item} value={item} className="text-black">{item}</option>
-                                  )) :
-                                  <option 
-                                    value="new-items" 
+                                    <option
+                                      key={item}
+                                      value={item}
+                                      className="text-black"
+                                    >
+                                      {item}
+                                    </option>
+                                  ))
+                                ) : (
+                                  <option
+                                    value="new-items"
                                     className="text-black"
-                                  >Add New Item</option>
-                                }
+                                  >
+                                    Add New Item
+                                  </option>
+                                )}
                               </select>
                             </div>
                             <div className="wrap-input input-qty border-dark mx-3">
@@ -259,11 +273,23 @@ export default function Table4(props) {
                                 type="number"
                                 min={0}
                                 value={props.list.boxes[idx].items[index].qty}
+                                placeholder="0"
                                 onChange={(e) => {
-                                  if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
-                                  if (e.target.value <= 0) e.target.value = "";
+                                  const val = e.target.value.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+                                  if (e.target.value) {
+                                    if (e.target.value === "0") {
+                                      e.target.value = "";
+                                    } else {
+                                      e.target.value = val;
+                                    }
+                                  }
+                                  // if (!/[0-9]/i.test(e.nativeEvent.data)) e.target.value = e.target.value.slice(0, -1);
+                                  // if (e.target.value <= 0) e.target.value = "";
                                   props.list.boxes[idx].items[index].qty =
-                                    Number(e.target.value);
+                                    e.target.value;
                                   props.setList({ ...props.list });
                                 }}
                               />
@@ -349,22 +375,38 @@ export default function Table4(props) {
                           props.setList({ ...props.list });
                         }}
                         disabled={
-                          item.images && item.boxName && item.price && 
-                          item.supply && item.items.length &&
-                          item.items?.find((item) => {return !item?.category}) == undefined &&
-                          item.items?.find((item) => {return item?.qty < 1}) == undefined ? 
-                          false : true
+                          item.images &&
+                          item.boxName &&
+                          item.price &&
+                          item.supply &&
+                          item.items.length &&
+                          item.items?.find((item) => {
+                            return !item?.category;
+                          }) == undefined &&
+                          item.items?.find((item) => {
+                            return item?.qty < 1;
+                          }) == undefined
+                            ? false
+                            : true
                         }
                       >
-                        <img 
-                          src="/images/svg/icon-check.svg" 
-                          alt="" 
+                        <img
+                          src="/images/svg/icon-check.svg"
+                          alt=""
                           style={
-                            item.images && item.boxName && item.price && 
-                            item.supply && item.items.length &&
-                            item.items?.find((item) => {return !item?.category}) == undefined &&
-                            item.items?.find((item) => {return item?.qty < 1}) == undefined ?
-                            {} : {filter: "brightness(0.5)"}
+                            item.images &&
+                            item.boxName &&
+                            item.price &&
+                            item.supply &&
+                            item.items.length &&
+                            item.items?.find((item) => {
+                              return !item?.category;
+                            }) == undefined &&
+                            item.items?.find((item) => {
+                              return item?.qty < 1;
+                            }) == undefined
+                              ? {}
+                              : { filter: "brightness(0.5)" }
                           }
                         />
                       </button>

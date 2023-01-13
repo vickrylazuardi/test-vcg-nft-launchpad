@@ -29,8 +29,8 @@ export default function Table3(props) {
         <tr>
           <th>No</th>
           <th style={{ minWidth: "110px" }}>Image Item</th>
-          <th style={{ minWidth: "350px" }}>Item Name</th>
-          <th style={{ minWidth: "150px" }}>Supply</th>
+          <th style={{ minWidth: "350px" }}>Item Name & Supply</th>
+          {/* <th style={{ minWidth: "150px" }}>Supply</th> */}
           <th style={{ minWidth: "150px" }}>Attribute</th>
           <th style={{ textAlign: "center", minWidth: "100px" }}>
             <button
@@ -63,27 +63,74 @@ export default function Table3(props) {
                     preview={item.images}
                   />
                 </td>
-                <td>
+                <td style={{ width: "200px" }}>
                   <div className="wrap-input border-dark flex-1">
                     {item.completed ? (
-                      <p className="text-sm font-semibold">
-                        {item.itemName}
-                      </p>
+                      <>
+                        <p className="text-sm font-semibold">{item.itemName}</p>
+                        <p className="text-sm font-semibold text-color-grey mt-1">
+                          Supply: {item.supply}
+                        </p>
+                      </>
                     ) : (
-                      <input
-                        type="text"
-                        className="w-full"
-                        placeholder="Input full name"
-                        value={item.itemName}
-                        onChange={(e) => {
-                          props.list.items[idx].itemName = e.target.value;
-                          props.setList({ ...props.list });
-                        }}
-                      ></input>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full"
+                          placeholder="Input full name"
+                          value={item.itemName}
+                          onChange={(e) => {
+                            props.list.items[idx].itemName = e.target.value;
+                            props.setList({ ...props.list });
+                          }}
+                        ></input>
+                        <div className="wrap-input input-qty border-dark mt-3">
+                          <button
+                            onClick={() => {
+                              item.supply -= 1;
+                              props.setList({ ...props.list });
+                            }}
+                            disabled={item.supply == 0}
+                          >
+                            -
+                          </button>
+                          <input
+                            type="number"
+                            min={0}
+                            value={item.supply}
+                            placeholder="0"
+                            onChange={(e) => {
+                              const val = e.target.value.replace(/[^0-9]/g, "");
+                              if (e.target.value) {
+                                if (e.target.value === "0") {
+                                  e.target.value = "";
+                                } else {
+                                  e.target.value = val;
+                                }
+                              }
+                              item.supply = e.target.value;
+                              props.setList({ ...props.list });
+                            }}
+                          />
+                          <button
+                            onClick={() => {
+                              if (!item.supply) {
+                                item.supply = 0;
+                              }
+
+                              let val = parseInt(item.supply) + 1;
+                              item.supply = val;
+                              props.setList({ ...props.list });
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </td>
-                <td>
+                {/* <td>
                   <div className="wrap-input border-dark flex-1">
                     {item.completed ? (
                       <p className="text-sm font-semibold">
@@ -105,7 +152,7 @@ export default function Table3(props) {
                       />
                     )}
                   </div>
-                </td>
+                </td> */}
                 <td>
                   <div className="wrap-input border-dark flex-1">
                     {item.completed ? (
@@ -115,35 +162,70 @@ export default function Table3(props) {
                       </p>
                     ) : (
                       <>
-                        <input
-                          style={{ minWidth: "150px" }}
-                          type="text"
-                          className="w-full"
-                          placeholder="Input Category"
-                          rows={3}
-                          value={item.attribute.category}
-                          onChange={(e) => {
-                            props.list.items[idx].attribute.category =
-                              e.target.value;
-                            props.setList({ ...props.list });
-                          }}
-                        />
-                        <select
-                          style={{ minWidth: "150px" }}
-                          className="w-full mt-3"
-                          value={item.attribute.rarity}
-                          onChange={(e) => {
-                            props.list.items[idx].attribute.rarity =
-                              e.target.value;
-                            props.setList({ ...props.list });
-                          }}
+                        <div className="grid grid-cols-2">
+                          <input
+                            style={{ minWidth: "150px" }}
+                            type="text"
+                            className="w-full"
+                            placeholder="Input Category"
+                            rows={3}
+                            defaultValue={"Rarity"}
+                            onChange={(e) => {
+                              props.list.items[idx].attribute.category =
+                                e.target.value;
+                              props.setList({ ...props.list });
+                            }}
+                            disabled
+                          />
+                          <select
+                            style={{ minWidth: "150px" }}
+                            className="w-full"
+                            value={item.attribute.rarity}
+                            onChange={(e) => {
+                              props.list.items[idx].attribute.category =
+                                "Rarity";
+                              props.list.items[idx].attribute.rarity =
+                                e.target.value;
+                              props.setList({ ...props.list });
+                            }}
+                          >
+                            <option className="text-black" selected hidden>
+                              Select Rarity
+                            </option>
+                            <option className="text-black" value="common">
+                              Common
+                            </option>
+                            <option className="text-black" value="uncommon">
+                              Uncommon
+                            </option>
+                            <option className="text-black" value="rare">
+                              Rare
+                            </option>
+                            <option className="text-black" value="special">
+                              Special
+                            </option>
+                          </select>
+                        </div>
+                        <div className="grid grid-cols-2 mt-3">
+                          <input
+                            style={{ minWidth: "150px" }}
+                            type="text"
+                            className="w-full"
+                            placeholder="Input"
+                          />
+                          <input
+                            style={{ minWidth: "150px" }}
+                            type="text"
+                            className="w-full"
+                            placeholder="Input "
+                          />
+                        </div>
+                        <button
+                          style={{ padding: "10px" }}
+                          className="btn btn-gray text-sm mt-3"
                         >
-                          <option className="text-black" selected hidden>Select Rarity</option>
-                          <option className="text-black" value="common">Common</option>
-                          <option className="text-black" value="uncommon">Uncommon</option>
-                          <option className="text-black" value="rare">Rare</option>
-                          <option className="text-black" value="special">Special</option>
-                        </select>
+                          + Add Item
+                        </button>
                       </>
                     )}
                   </div>
@@ -195,18 +277,26 @@ export default function Table3(props) {
                           props.setList({ ...props.list });
                         }}
                         disabled={
-                          item.images && item.itemName && item.supply && 
-                          item.attribute.category && item.attribute.rarity ? 
-                          false : true
+                          item.images &&
+                          item.itemName &&
+                          item.supply &&
+                          item.attribute.category &&
+                          item.attribute.rarity
+                            ? false
+                            : true
                         }
                       >
-                        <img 
-                          src="/images/svg/icon-check.svg" 
-                          alt="" 
+                        <img
+                          src="/images/svg/icon-check.svg"
+                          alt=""
                           style={
-                            item.images && item.itemName && item.supply && 
-                            item.attribute.category && item.attribute.rarity ? 
-                            {} : {filter: "brightness(0.5)"}
+                            item.images &&
+                            item.itemName &&
+                            item.supply &&
+                            item.attribute.category &&
+                            item.attribute.rarity
+                              ? {}
+                              : { filter: "brightness(0.5)" }
                           }
                         />
                       </button>
