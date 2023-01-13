@@ -116,8 +116,10 @@ export default function Home() {
     try {
       axios
         .post(API.launchpad.local + API.launchpad.project.filter, {
+          finishedAt: { $lte: new Date() },
           limit: 10,
-          status: 1,
+          status: 2,
+          approved: 1,
         })
         .then((res) => {
           if (res.status === 204) return;
