@@ -699,7 +699,7 @@ export default function _slug() {
                 Finish at :{" "}
                 <span className="font-semibold">
                   {/* {new Date(project?.startedAt).toLocaleString()} */}
-                  {handleGetEndDate(project?.duration)}
+                  {new Date(project?.finishedAt).toLocaleString()}
                 </span>
               </p>
               <div

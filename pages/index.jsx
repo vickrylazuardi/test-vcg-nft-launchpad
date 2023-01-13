@@ -101,6 +101,7 @@ export default function Home() {
         .post(API.launchpad.local + API.launchpad.project.filter, {
           limit: 10,
           status: 1,
+          approved: true,
           sort: { trending: -1 },
         })
         .then((res) => {
@@ -118,6 +119,7 @@ export default function Home() {
         .post(API.launchpad.local + API.launchpad.project.filter, {
           limit: 20,
           status: 1,
+          approved: true,
           sort: {}
         })
         .then((res) => {
@@ -136,6 +138,7 @@ export default function Home() {
           startedAt: { $lte: new Date() },
           limit: 10,
           status: 1,
+          approved: true,
           approved: 1,
         })
         .then((res) => {
@@ -154,7 +157,7 @@ export default function Home() {
           startedAt: { $gt: new Date() },
           limit: 10,
           status: 0,
-          approved: 1,
+          approved: true,
         })
         .then((res) => {
           if (res.status === 204) return;
@@ -172,7 +175,7 @@ export default function Home() {
           finishedAt: { $lte: new Date() },
           limit: 10,
           status: 2,
-          approved: 1,
+          approved: true,
         })
         .then((res) => {
           if (res.status === 204) return;
