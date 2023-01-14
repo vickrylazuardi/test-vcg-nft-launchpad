@@ -11,6 +11,7 @@ export default function Table3(props) {
         category: "",
         rarity: "",
       },
+      attributes: [],
       completed: false,
     };
 
@@ -20,6 +21,16 @@ export default function Table3(props) {
 
   function handleInputMemberImage(file, idx) {
     props.list.items[idx].images = file;
+    props.setList({ ...props.list });
+  }
+
+  function handleAttributesItems(idx) {
+    let objectDefault = {
+      trait_type: "",
+      value: "",
+    };
+
+    props.list.items[idx].attributes.push(objectDefault);
     props.setList({ ...props.list });
   }
 
@@ -156,13 +167,60 @@ export default function Table3(props) {
                 <td>
                   <div className="wrap-input border-dark flex-1">
                     {item.completed ? (
-                      <p className="text-sm font-semibold">
-                        {item.attribute.category + ","}
-                        {item.attribute.rarity}
-                      </p>
+                      <>
+                        <p className="text-sm font-semibold inline mx-1">
+                          Category{" "}
+                          <span className="text-color-grey">
+                            ({item.attribute.category})
+                          </span>
+                        </p>
+                        <p className="text-sm font-semibold inline mx-1">
+                          Rarity{" "}
+                          <span className="text-color-grey">
+                            ({item.attribute.rarity})
+                          </span>
+                        </p>
+                        {item.attributes
+                          ? item.attributes.map((val, idxx) => {
+                              return (
+                                <p
+                                  key={idxx}
+                                  className="text-sm font-semibold inline mx-1"
+                                >
+                                  {val.trait_type}{" "}
+                                  <span className="text-color-grey">
+                                    ({val.value})
+                                  </span>
+                                </p>
+                              );
+                            })
+                          : ""}
+                      </>
                     ) : (
                       <>
-                        <div className="grid grid-cols-2">
+                        <div className="grid grid-cols-2 mr-7">
+                          <input
+                            style={{ minWidth: "150px" }}
+                            type="text"
+                            className="w-full"
+                            rows={3}
+                            defaultValue={"Category"}
+                            disabled
+                          />
+                          <input
+                            style={{ minWidth: "150px" }}
+                            type="text"
+                            className="w-full"
+                            placeholder="Input Category"
+                            value={item.attribute.category}
+                            onChange={(e) => {
+                              props.list.items[idx].attribute.category =
+                                e.target.value;
+                              props.setList({ ...props.list });
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 mr-7 mt-3">
                           <input
                             style={{ minWidth: "150px" }}
                             type="text"
@@ -170,11 +228,6 @@ export default function Table3(props) {
                             placeholder="Input Category"
                             rows={3}
                             defaultValue={"Rarity"}
-                            onChange={(e) => {
-                              props.list.items[idx].attribute.category =
-                                e.target.value;
-                              props.setList({ ...props.list });
-                            }}
                             disabled
                           />
                           <select
@@ -182,8 +235,6 @@ export default function Table3(props) {
                             className="w-full"
                             value={item.attribute.rarity}
                             onChange={(e) => {
-                              props.list.items[idx].attribute.category =
-                                "Rarity";
                               props.list.items[idx].attribute.rarity =
                                 e.target.value;
                               props.setList({ ...props.list });
@@ -206,23 +257,72 @@ export default function Table3(props) {
                             </option>
                           </select>
                         </div>
-                        <div className="grid grid-cols-2 mt-3">
-                          <input
-                            style={{ minWidth: "150px" }}
-                            type="text"
-                            className="w-full"
-                            placeholder="Input"
-                          />
-                          <input
-                            style={{ minWidth: "150px" }}
-                            type="text"
-                            className="w-full"
-                            placeholder="Input "
-                          />
-                        </div>
+                        {props.list.items[idx].attributes
+                          ? props.list.items[idx].attributes.map(
+                              (itemAttr, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="flex items-center mt-3"
+                                  >
+                                    <div
+                                      className="grid grid-cols-2"
+                                      style={{ flex: "1" }}
+                                    >
+                                      <input
+                                        style={{ minWidth: "150px" }}
+                                        type="text"
+                                        className="w-full"
+                                        value={itemAttr.trait_type}
+                                        placeholder={`Input Stats${index + 2}`}
+                                        onChange={(e) => {
+                                          props.list.items[idx].attributes[
+                                            index
+                                          ].trait_type = e.target.value;
+                                          props.setList({ ...props.list });
+                                        }}
+                                      />
+                                      <input
+                                        style={{ minWidth: "150px" }}
+                                        type="text"
+                                        className="w-full"
+                                        value={itemAttr.value}
+                                        placeholder={`Input Value of Stats${
+                                          index + 2
+                                        }`}
+                                        onChange={(e) => {
+                                          props.list.items[idx].attributes[
+                                            index
+                                          ].value = e.target.value;
+                                          props.setList({ ...props.list });
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="pl-2">
+                                      <button
+                                        onClick={() => {
+                                          props.list.items[
+                                            idx
+                                          ].attributes.splice(index, 1);
+                                          props.setList({ ...props.list });
+                                        }}
+                                      >
+                                        <img
+                                          src="/images/svg/icon-trash.svg"
+                                          alt=""
+                                        />
+                                      </button>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            )
+                          : ""}
+
                         <button
                           style={{ padding: "10px" }}
                           className="btn btn-gray text-sm mt-3"
+                          onClick={() => handleAttributesItems(idx)}
                         >
                           + Add Item
                         </button>
@@ -281,7 +381,13 @@ export default function Table3(props) {
                           item.itemName &&
                           item.supply &&
                           item.attribute.category &&
-                          item.attribute.rarity
+                          item.attribute.rarity &&
+                          item.attributes?.find((item) => {
+                            return !item?.trait_type;
+                          }) == undefined &&
+                          item.attributes?.find((item) => {
+                            return !item?.value;
+                          }) == undefined
                             ? false
                             : true
                         }
@@ -294,7 +400,13 @@ export default function Table3(props) {
                             item.itemName &&
                             item.supply &&
                             item.attribute.category &&
-                            item.attribute.rarity
+                            item.attribute.rarity &&
+                            item.attributes?.find((item) => {
+                              return !item?.trait_type;
+                            }) == undefined &&
+                            item.attributes?.find((item) => {
+                              return !item?.value;
+                            }) == undefined
                               ? {}
                               : { filter: "brightness(0.5)" }
                           }

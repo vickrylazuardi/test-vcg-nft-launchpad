@@ -234,6 +234,10 @@ export default function NewProject(props) {
           attr.push(el);
         });
 
+        item.attributes.forEach(item => {
+          attr.push(item);
+        });
+
         const nft = {
           name: item.itemName,
           image: "",
@@ -431,6 +435,7 @@ export default function NewProject(props) {
           </div>
         </div>
       </div>
+      <button onClick={()=>submitProject() }>xxxxx</button>
       {modal.modalConfirmation.isOpen && (
         <DialogConfirmation
           type="Submit"
