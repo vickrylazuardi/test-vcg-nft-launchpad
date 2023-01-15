@@ -23,16 +23,25 @@ export default function FooterTop() {
         <div className="left flex items-start justify-between flex-wrap w-1/3 lg:w-full">
           <div className="link-wrapper">
             <p className="link-title font-bold mt-2">Company</p>
-            <a href="https://app.vcgamers.com/about-us" className="link-text text-sm mt-2">
+            <a
+              href="https://app.vcgamers.com/about-us"
+              className="link-text text-sm mt-2"
+            >
               About Us
             </a>
-            <a href="https://career.vcgamers.com/" className="link-text text-sm mt-2">
+            <a
+              href="https://career.vcgamers.com/"
+              className="link-text text-sm mt-2"
+            >
               Career
             </a>
             {/* <a href="/" className="link-text text-sm mt-2">
               Legal
             </a> */}
-            <a href="https://whitepaper.vcgamers.com/roadmap" className="link-text text-sm mt-2">
+            <a
+              href="https://whitepaper.vcgamers.com/roadmap"
+              className="link-text text-sm mt-2"
+            >
               Roadmap
             </a>
             {/* <a href="/" className="link-text text-sm mt-2">
@@ -41,62 +50,128 @@ export default function FooterTop() {
           </div>
           <div className="link-wrapper">
             <p className="link-title font-bold mt-2">Product</p>
-            <a href="https://vcgamers.com/market" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://vcgamers.com/market"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Marketplace
             </a>
-            <a href="https://vcgamers.com/token" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://vcgamers.com/token"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               $VCG Token
             </a>
-            <a href="https://vcgamers.com/arena" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://arena.vcgamers.com"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Arena
             </a>
-            <a href="https://vcgamers.com/goods" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://vcgamers.com/goods"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Merchandise
             </a>
-            <a href="https://vcgamers.com/news-landing" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://vcgamers.com/news-landing"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               News
             </a>
             <a href="/" className="link-text text-sm mt-2">
               Launchpad
             </a>
-            <a href="https://hub.vcgamers.com/" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://hub.vcgamers.com/"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Social Hub
             </a>
           </div>
           <div className="link-wrapper mt-7">
             <p className="link-title font-bold mt-2">Help</p>
-            <a href="#" className="link-text text-sm mt-2">
-              <div className="flex gap-1" >
+            <a
+              href="https://vcgamers.com/news/help/faq-launchpad/"
+              target="_blank"
+              className="link-text text-sm mt-2"
+            >
+              <div className="flex gap-1">
                 <span> Terms Condition </span>
-                <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
+                {/* <img
+                  style={{ height: "24px", width: "auto", marginTop: "-4px" }}
+                  src="/images/soon.gif"
+                ></img> */}
               </div>
             </a>
-            <a href="#" className="link-text text-sm mt-2">
-              <div className="flex gap-1" >
+            <a
+              href="https://vcgamers.com/news/help/faq-launchpad/"
+              target="_blank"
+              className="link-text text-sm mt-2"
+            >
+              <div className="flex gap-1">
                 <span>Privacy </span>
-                <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
+                {/* <img
+                  style={{ height: "24px", width: "auto", marginTop: "-4px" }}
+                  src="/images/soon.gif"
+                ></img> */}
               </div>
             </a>
-            <a href="#" className="link-text text-sm mt-2" >
-            <div className="flex gap-1" >
-              <span>FAQ </span>
-              <img style={{height:'24px',width:'auto', marginTop:'-4px'}} src="/images/soon.gif"></img>
-            </div>
+            <a
+              href="https://vcgamers.com/news/help/faq-launchpad/"
+              target="_blank"
+              className="link-text text-sm mt-2"
+            >
+              <div className="flex gap-1">
+                <span>FAQ </span>
+                {/* <img
+                  style={{ height: "24px", width: "auto", marginTop: "-4px" }}
+                  src="/images/soon.gif"
+                ></img> */}
+              </div>
             </a>
-          
+
             {/* <a href="/" className="link-text text-sm mt-2">
               Seller Center
             </a> */}
           </div>
           <div className="link-wrapper mt-7">
             <p className="link-title font-bold mt-2">Others</p>
-            <a href="https://ransverse.vcgamers.com/" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://ransverse.vcgamers.com/"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Ransverse
             </a>
-            <a href="https://whitepaper.vcgamers.com/" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://whitepaper.vcgamers.com/"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Whitepaper
             </a>
-            <a href="https://vcgamers.com/news/" target="_blank" rel="nofollow" className="link-text text-sm mt-2">
+            <a
+              href="https://vcgamers.com/news/"
+              target="_blank"
+              rel="nofollow"
+              className="link-text text-sm mt-2"
+            >
               Blog
             </a>
           </div>
@@ -106,27 +181,35 @@ export default function FooterTop() {
             Join Our Community
           </p>
           <div className="social-container flex items-center mt-3 lg:justify-center">
-            <a href="https://twitter.com/vcgamers_io"  
-                target="_blank" 
-                rel="nofollow" 
-                className="mr-5">
+            <a
+              href="https://twitter.com/vcgamers_io"
+              target="_blank"
+              rel="nofollow"
+              className="mr-5"
+            >
               <img src="/images/svg/twitter-fill.svg" alt="twitter" />
             </a>
-            <a href="https://www.instagram.com/vcgamers.id/"  
-                target="_blank" 
-                rel="nofollow" 
-                className="mr-5">
+            <a
+              href="https://www.instagram.com/vcgamers.id/"
+              target="_blank"
+              rel="nofollow"
+              className="mr-5"
+            >
               <img src="/images/svg/instagram-fill.svg" alt="instagram" />
             </a>
-            <a href="https://www.youtube.com/channel/UC2B68_8tR2lXW8BJxqNXAMA"  
-                target="_blank" 
-                rel="nofollow" 
-                className="mr-5">
+            <a
+              href="https://www.youtube.com/channel/UC2B68_8tR2lXW8BJxqNXAMA"
+              target="_blank"
+              rel="nofollow"
+              className="mr-5"
+            >
               <img src="/images/svg/youtube-fill.svg" alt="youtube" />
             </a>
-            <a href="https://discord.com/invite/2ZCcTXx5Vr" 
-                target="_blank" 
-                rel="nofollow">
+            <a
+              href="https://discord.com/invite/2ZCcTXx5Vr"
+              target="_blank"
+              rel="nofollow"
+            >
               <img src="/images/svg/discord-fill.svg" alt="discord" />
             </a>
           </div>
@@ -134,14 +217,28 @@ export default function FooterTop() {
             Supported by
           </p>
           <div className="supported-container flex items-center mt-3 lg:justify-center">
-            <a href="https://www.bappebti.go.id/" target="_blank" rel="nofollow" className="mr-2">
-              <img src="/images/bappebti.png" alt="bappepti"/>
+            <a
+              href="https://www.bappebti.go.id/"
+              target="_blank"
+              rel="nofollow"
+              className="mr-2"
+            >
+              <img src="/images/bappebti.png" alt="bappepti" />
             </a>
-            <a href="https://www.kominfo.go.id/" target="_blank" rel="nofollow" className="mr-2">
-              <img src="/images/kominfo.png" alt="kominfo"/>
+            <a
+              href="https://www.kominfo.go.id/"
+              target="_blank"
+              rel="nofollow"
+              className="mr-2"
+            >
+              <img src="/images/kominfo.png" alt="kominfo" />
             </a>
-            <a href="https://www.certik.com/projects/vcgamers" target="_blank" rel="nofollow">
-              <img src="/images/certik.png" alt="certik"/>
+            <a
+              href="https://www.certik.com/projects/vcgamers"
+              target="_blank"
+              rel="nofollow"
+            >
+              <img src="/images/certik.png" alt="certik" />
             </a>
           </div>
           <p className="link-title font-bold mt-7 lg:text-center">
@@ -151,22 +248,52 @@ export default function FooterTop() {
             className="payment-container flex items-center flex-wrap mt-3 lg:justify-center lg:mx-auto"
             style={{ maxWidth: 284 }}
           >
-            <a href="https://alfamart.co.id/" rel="nofollow" target="_blank" className="mr-2">
+            <a
+              href="https://alfamart.co.id/"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2"
+            >
               <img src="/images/payment/alfamart.png" alt="alfamart" />
             </a>
-            <a href="https://alfamidiku.com/" rel="nofollow" target="_blank" className="mr-2">
+            <a
+              href="https://alfamidiku.com/"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2"
+            >
               <img src="/images/payment/alfamidi.png" alt="alfamidi" />
             </a>
-            <a href="https://www.bni.co.id/id-id/" rel="nofollow" target="_blank" className="mr-2">
+            <a
+              href="https://www.bni.co.id/id-id/"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2"
+            >
               <img src="/images/payment/bni.png" alt="bni" />
             </a>
-            <a href="https://bankmandiri.co.id/" rel="nofollow" target="_blank" className="mr-2 mt-2">
+            <a
+              href="https://bankmandiri.co.id/"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2 mt-2"
+            >
               <img src="/images/payment/mandiri.png" alt="mandiri" />
             </a>
-            <a href="https://www.bca.co.id/id/individu" rel="nofollow" target="_blank" className="mr-2 mt-2">
+            <a
+              href="https://www.bca.co.id/id/individu"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2 mt-2"
+            >
               <img src="/images/payment/bca.png" alt="bca" />
             </a>
-            <a href="https://gopay.co.id/" rel="nofollow" target="_blank" className="mr-2 mt-2">
+            <a
+              href="https://gopay.co.id/"
+              rel="nofollow"
+              target="_blank"
+              className="mr-2 mt-2"
+            >
               <img src="/images/payment/gopay.png" alt="gopay" />
             </a>
           </div>

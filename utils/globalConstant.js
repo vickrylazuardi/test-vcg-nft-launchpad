@@ -61,7 +61,7 @@ export const fcmScope = {
 //TODO : API
 export const API = {
   ransverse: "https://api.vcgamers.io/ransverse",
-  marketplace: "https://api.vcgamers.io/mp",
+  marketplace: "https://api-marketplace.vcg.asia/mp",
   domain: "https://api.vcgamers.io/mp",
   local: "https://api.vcgamers.io/mp",
   land: {
@@ -120,11 +120,6 @@ export const API = {
     // https://api-launchpad.vcgamers.com/launchpad
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:3700/launchpad
-    // domain: 'http://localhost:3700/launchpad',
-    // local: "http://localhost:3700/launchpad",
-    // domain: 'https://api-launchpad.vcgamers.com/launchpad',
-    // local: "https://api-launchpad.vcgamers.com/launchpad",
-
     domain: 'https://api-launchpad.vcg.asia/launchpad',
     local: "https://api-launchpad.vcg.asia/launchpad",
     info: {
@@ -175,3 +170,9 @@ export const API = {
     }
   }
 };
+
+export const domainMp = {
+  dev :'https://nft.vcg.asia',
+  stg :'https://nft.vcgamers.io',
+  pro :'https://nft.vcgamers.com'
+}
