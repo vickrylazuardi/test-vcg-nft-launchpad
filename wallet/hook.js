@@ -66,19 +66,19 @@ export const MetaMaskProvider = ({ children }) => {
       // document.getElementById("loading-vcg").classList.add("show");
       sign(messageTemplate).then((res) => {
         if (res.error == undefined) {
-          // axios
-          //   .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
-          //   .then((resp) => {
+          axios
+            .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
+            .then((resp) => {
               setSignature(res);
               setCookie(walletId, res, 1);
               setCookie(walletId + "-msg", messageTemplate, 1);
-              // setCookie(walletId + "-profile", resp.data.data, 1);
-              // getCreator(walletId);
+              setCookie(walletId + "-profile", resp.data.data, 1);
+              getCreator(walletId);
               switchActive(true);
               setIsLoading(false);
               setIsSigned(true);
               // document.getElementById("loading-vcg").classList.remove("show");
-            // });
+            });
         } else {
           disconnect();
           setIsLoading(false);
