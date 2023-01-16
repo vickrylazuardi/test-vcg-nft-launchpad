@@ -301,6 +301,27 @@ export default function _slug() {
     }
   };
 
+  const sellBox = async (box) => {
+    try {
+      const boxIds = Object.keys(project.boxes);
+      const boxId = boxIds.indexOf(box) + 1;
+      axios
+        .post(API.launchpad.local + API.launchpad.project.sellBox, {
+          id: project._id,
+          box,
+        })
+        .then((res) => {
+          if (res.status === 204) return;
+          setProject(res.data.data);
+          reload();
+          dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
+        });
+    } catch (error) {
+      console.log(error);
+      dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
+    }
+  };
+
   const claimBox = async (box, amount) => {
     try {
       claimReward.splice(0);
@@ -441,6 +462,14 @@ export default function _slug() {
           modalMessage.failedMessage = "Failed to finalize this box";
           setModalMessage({ ...modalMessage });
           break;
+        case "sellBox":
+          modalMessage.type = "SellBox";
+          modalMessage.message = "Start sell this box?";
+          modalMessage.successMessage =
+            "You have successfully sell this box";
+          modalMessage.failedMessage = "Failed to sell this box";
+          setModalMessage({ ...modalMessage });
+          break;
         default:
           break;
       }
@@ -464,6 +493,9 @@ export default function _slug() {
           break;
         case "finalize":
           finalizeBox(dataModal.name);
+          break;
+        case "sellBox":
+          sellBox(dataModal.name);
           break;
         default:
           break;

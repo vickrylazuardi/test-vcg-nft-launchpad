@@ -131,6 +131,8 @@ export const API = {
     // http://localhost:3700/launchpad
     domain: 'https://api-launchpad.vcg.asia/launchpad',
     local: 'https://api-launchpad.vcg.asia/launchpad',
+    // domain: 'https://api-launchpad.vcg.asia/launchpad',
+    // local: 'https://api-launchpad.vcg.asia/launchpad',
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",
@@ -156,6 +158,7 @@ export const API = {
       start: "/project/start",
       finish: "/project/finish",
       buy: "/project/buy",
+      sellBox:"/project/sellBox",
       finalizeBox: "/project/finalizeBox",
       finalizeProject: "/project/finalizeProject",
     },

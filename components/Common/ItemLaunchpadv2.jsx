@@ -24,6 +24,8 @@ export default function ItemLaunchpadv2(props) {
     },
   };
 
+  console.log('props',props);
+
   return (
     <div id="item-launchpad" style={{ maxWidth: "100%" }}>
       <div className="img-wrap">
@@ -132,6 +134,24 @@ export default function ItemLaunchpadv2(props) {
         <div className="btn-wrap mt-3">
           {props?.account ? (
             props?.account == props?.project?.owner ? (
+              !props?.data?.sell ?
+              <button
+                className= "btn btn-orange-light w-full"
+                // disabled={amount < 1 ? true : false}
+                onClick={() => {
+                  dispatch(
+                    toggleModalConfirmation(dataModal.modalConfirmation)
+                  );
+                  props.action({
+                    type: "sellBox",
+                    name: props.name,
+                    amount,
+                  });
+                }}
+              >
+                Sell Box
+              </button>
+             :
               <button
                 className={
                   new Date() < new Date(props.project.startedAt)
@@ -159,6 +179,8 @@ export default function ItemLaunchpadv2(props) {
               >
                 Finalize
               </button>
+
+
             ) : props?.data?.finalize ? (
               <div className="wrap-input flex-1">
                 <input
