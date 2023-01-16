@@ -92,7 +92,7 @@ export default function RightNavbar(props) {
                 </button>
               </a>
             </Link>
-            <Link href="">
+            {/* <Link href="#">
               <a>
                 <button
                   className="btn btn-light-green text-sm font-semibold"
@@ -105,7 +105,7 @@ export default function RightNavbar(props) {
                   Login
                 </button>
               </a>
-            </Link>
+            </Link> */}
           </>
         )}
       </div>

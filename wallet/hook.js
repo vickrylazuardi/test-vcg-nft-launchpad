@@ -5,7 +5,7 @@ import { getSigner, sign } from "../utils/ethersjs";
 import { ethers, utils } from "ethers";
 import Cookies from "universal-cookie";
 import axios from "axios";
-import { API } from "../utils/globalConstant";
+import { API, RPC } from "../utils/globalConstant";
 
 export const MetaMaskContext = React.createContext(null);
 
@@ -141,7 +141,7 @@ export const MetaMaskProvider = ({ children }) => {
                   symbol: "tBNB",
                   decimals: 18,
                 },
-                rpcUrls: ["https://rpc.ankr.com/bsc_testnet_chapel"] /* ... */,
+                rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"] /* ... */,
                 blockExplorerUrls: ["https://testnet.bscscan.com/"],
               },
             ],
@@ -232,7 +232,7 @@ export const MetaMaskProvider = ({ children }) => {
 
   const connectContract = (contractAddress, ABI) => {
     
-    return new ethers.Contract(contractAddress, ABI, new ethers.providers.JsonRpcProvider("https://apis.ankr.com/1d773c13580146fb9c5419ee763d2543/9deca392b81a904bd9568c58d3f47228/binance/full/test")
+    return new ethers.Contract(contractAddress, ABI, new ethers.providers.JsonRpcProvider(RPC.http)
     );
   };
 

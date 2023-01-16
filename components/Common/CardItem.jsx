@@ -5,33 +5,38 @@ import { isDesktop, isMobile } from "react-device-detect";
 
 export default function CardItem({ img, title, desc, slug, socmed }) {
   const [emblemKYC, setEmblemKYC] = useState("/images/KYC-Default.png");
+  const [isKYC, setIsKYC ] =useState(false);
 
   return (
     <>
       {/* {isDesktop && ( */}
       <div id="card-item-container">
-        <div className="img-wrap">
-          <img
-            className="absolute mt-2 ml-2 hover:w-14"
-            src={emblemKYC}
-            alt=""
-            onMouseEnter={() => setEmblemKYC("/images/KYC-Default-white.png")}
-            onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
-          />
-          <img
-            src={img}
-            alt={title}
-            className="object-cover rounded-t-xl w-full"
-            style={{
-              aspectRatio: "1/1",
-              objectFit: "cover",
-            }}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/images/Broken-Image.png";
-            }}
-          />
-        </div>
+        <Link href={`/detail/${slug}`}>
+          <div className="img-wrap cursor-pointer">
+            {isKYC &&
+            <img
+              className="absolute mt-2 ml-2 hover:w-14"
+              src={emblemKYC}
+              alt=""
+              onMouseEnter={() => setEmblemKYC("/images/KYC-Default-white.png")}
+              onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
+            />
+            }
+            <img
+              src={img}
+              alt={title}
+              className="object-cover rounded-t-xl w-full"
+              style={{
+                aspectRatio: "1/1",
+                objectFit: "cover",
+              }}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/images/Broken-Image.png";
+              }}
+            />
+          </div>
+        </Link>
         <div className="content-container p-4 lg:p-2">
           <h3 className="font-bold lg:text-xs max-1-line">{title}</h3>
           <p

@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import useMetaMask from "../../wallet/hook";
-import { API } from "../../utils/globalConstant";
+import { API, CONTRACT_LAUNCHPAD_FACTORY} from "../../utils/globalConstant";
 import { BigNumber } from "ethers";
 import abiLaunchpadFactory from '../../abi/launchpad_factory.json';
 import {isDesktop, isMobile} from "react-device-detect";
@@ -88,40 +88,64 @@ export default function Index() {
   };
 
 	const approve = async (item, id, approved) => {
+		// return;
 		try {
 			const launchpadContract = connectContract(
-				"0x6583590D6ad0feAFFE811E801a54fCe1d10c259c",
+				CONTRACT_LAUNCHPAD_FACTORY,
+				// "0x6583590D6ad0feAFFE811E801a54fCe1d10c259c",
 				abiLaunchpadFactory
 			);
 
 			const startDate = new Date(item.startedAt).getTime() / 1000;
+			var boxIds =[];
+			var boxStock = [];
+			var boxPrice = [];
+			
+			var idbox =1;
+
+			for (const [key, value] of Object.entries(item.boxes)) {
+				console.log(`${key}: ${value}`);
+				boxIds.push(Number(idbox));
+				boxStock.push(Number(value.stock));
+				boxPrice.push(Number(value.price) * (10**9));
+				idbox++;
+			}
 
 			const create = await launchpadContract
 				.connect(signer)
 				.createProject(
-					item.name, 
-					item.name.slice(-3), 
-					"https://tes.uri",
-					vcgEnableTokenTestnet.address,
-					startDate,
-					[1],
-					[1],
-					[100000000],
-					"https://tes.uri",
+					item.name, // name
+					item.name.slice(-3),  // symbol
+					"https://tes.uri", // nft uri
+					vcgEnableTokenTestnet.address, // currency
+					startDate, // start date
+					boxIds, //box ids
+					boxStock, //box stok
+					boxPrice, // item price
+					"https://tes.uri", // item uri
 					item.owner
 				);
 
 			create.hash;
-			create.wait().then((res) => isProjectApprove(id, approved))
+			create.wait().then((res) => 
+			{
+				console.log(res);
+				console.log(res.events[0].address);
+				isProjectApprove(id, approved, res.events[0].address);
+			}
+			
+			)
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	const isProjectApprove = (id, approved) => {
+	const isProjectApprove = (id, approved, address) => {
 		try {
 			axios.post(API.launchpad.local + API.launchpad.project.approve, {
-				id, approved
+				id, 
+				approved,
+				address: address
 			}).then((res) => getProjectList())
 		} catch (error) {
 			console.log(error);

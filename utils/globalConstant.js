@@ -25,6 +25,11 @@ export const swap = {
   wBNBaddress: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
 };
 
+
+
+export const RPC={wss:'wss://side-yolo-paper.bsc-testnet.discover.quiknode.pro/127c9fd16a70a47ae09b429320ac0a224daa602e/',
+http:'https://side-yolo-paper.bsc-testnet.discover.quiknode.pro/127c9fd16a70a47ae09b429320ac0a224daa602e/'}
+
 export const firebaseConfig = {
   apiKey: "AIzaSyBUQG4WvvuZymoDOfSK6u0DP3-TnyNYNFg",
   authDomain: "vcg-blockchain.firebaseapp.com",
@@ -37,9 +42,9 @@ export const firebaseConfig = {
 
 //TODO : MAINNET
 export const tokenAddress = {
-  LAND_ADDRESS: "0xaF10C7233e84925898bCFF9139b0E942AF75c74E",
-  LAND_MARKETPLACE_ADDRESS: "0x32f98cF8955D70Ef6AEFe49A58D792904004f651",
-  TOKEN_CURRENCY: "0x1F36FB2D91d9951Cf58aE4c1956C0b77e224F1E9",
+  LAND_ADDRESS: "0xeb89E3EA534A727018b6a0BA5493050D877D8B87",
+  LAND_MARKETPLACE_ADDRESS: "0x47F23A148394e10008d4108ed6a12BcCC0F32b48",
+  TOKEN_CURRENCY: "0x33e9f1d1ad100CbBd7FF35BD3d8228A7ec52C224",
 };
 
 // 0xd4EdD685B25d6Fc6B00fed63F9aC6cBDDDDc7980
@@ -50,6 +55,9 @@ export const testnetTokenAddress = {
   TOKEN_CURRENCY: "0x33e9f1d1ad100CbBd7FF35BD3d8228A7ec52C224",
   SIGNAL_SUBSCRIBE: "0x843385BdeC67aE66474E18D63aCb62d44A657e77",
 };
+
+export const CONTRACT_LAUNCHPAD_FACTORY="0x6583590D6ad0feAFFE811E801a54fCe1d10c259c";
+export const CHAIN_ID =97;//56 for mainet
 
 //TODO : FCM Scope
 export const fcmScope = {
@@ -64,6 +72,7 @@ export const API = {
   marketplace: "https://api-marketplace.vcg.asia/mp",
   domain: "https://api.vcgamers.io/mp",
   local: "https://api.vcgamers.io/mp",
+  tournament: "https://v2-crm.vcg.asia/",
   land: {
     list: "/land/list",
     filter: "/land/filter",
@@ -121,7 +130,7 @@ export const API = {
     // https://api-launchpad.vcg.asia/launchpad
     // http://localhost:3700/launchpad
     domain: 'https://api-launchpad.vcg.asia/launchpad',
-    local: "https://api-launchpad.vcg.asia/launchpad",
+    local: 'https://api-launchpad.vcg.asia/launchpad',
     info: {
       totalProject: "/info/totalProject",
       totalFunded: "/info/totalFunded",

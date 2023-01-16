@@ -30,7 +30,7 @@ export default function ItemLaunchpadv2(props) {
         <img
           src={props.data.image}
           alt="web vcgamers"
-          style={{ aspectRatio: "1/1", objectFit: "contain" }}
+          style={{ aspectRatio: "1/1", objectFit: "cover", width: "100%" }}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = "/images/Broken-Image.png";
@@ -126,9 +126,7 @@ export default function ItemLaunchpadv2(props) {
         >
           <div className="price flex items-center justify-between mt-2">
             <p className="title font-semibold text-sm">Price</p>
-            <p className="font-semibold text-sm">
-              {props?.data?.price} VCG
-            </p>
+            <p className="font-semibold text-sm">{props?.data?.price} VCG</p>
           </div>
         </div>
         <div className="btn-wrap mt-3">

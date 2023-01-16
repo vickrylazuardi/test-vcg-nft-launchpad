@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
-import Slider from "react-slick";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,16 +8,14 @@ import {
   toggleModalConfirmation,
   toggleModalClaimable,
 } from "../../redux/modalReducer";
-import { API } from "../../utils/globalConstant";
+import { API, CHAIN_ID } from "../../utils/globalConstant";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isDesktop, isMobile } from "react-device-detect";
 import useMetaMask, { MetaMaskProvider } from "../../wallet/hook";
-import ItemLaunchpad from "../../components/Common/ItemLaunchpad";
 import DialogConfirmation from "../../components/Common/DialogConfirmation";
 import { vcgEnableToken } from "../../utils/contractConfig";
 import abiLaunchpad from "../../abi/launchpad.json";
-import styled from "styled-components";
 import DialogClaimable from "../../components/Common/DialogClaimable";
 import ContentActivty from "../../components/Detail/contentActivty";
 import ContentTournament from "../../components/Detail/contentTournament";
@@ -73,70 +70,18 @@ export default function _slug() {
     },
   };
 
-  const bgPage = {
-    backgroundImage: `url('/images/bg.png')`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    paddingTop: "9rem",
-  };
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  const settingsItems = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    responsive: [
-      {
-        breakpoint: 620,
-        settings: {
-          slidesToShow: 2.2,
-          slidesToScroll: 2,
-        },
-      },
-    ],
-  };
-  const settingsTeams = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
-    responsive: [
-      {
-        breakpoint: 620,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-    ],
-  };
-
-  const StyledSlider = styled(Slider)`
-    .slick-track {
-      margin-left: 0;
-      margin-right: 0;
-    }
-  `;
-
   const listContent = [
     "Minting",
     "Activity",
     "Items",
     "Tournament",
-    "Plat Now",
+    "Play Now",
     "Teams",
   ];
 
   const [activeContent, setActiveContent] = useState(listContent[0]);
   const [itemList, setItemList] = useState(null);
+  const [tournamentList, setTournamentList] = useState(null);
   const [project, setProject] = useState({});
   const [balance, setBalance] = useState(null);
   const [ownedBox, setOwnedBox] = useState({});
@@ -150,6 +95,8 @@ export default function _slug() {
     attributes: {},
   });
   const [emblemKYC, setEmblemKYC] = useState("/images/KYC-Default.png");
+  const [isKYC, setIsKYC] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const router = useRouter();
@@ -164,11 +111,12 @@ export default function _slug() {
       const bal = await tokenContract.connect(signer).balanceOf(account);
       setBalance(Number(ethers.utils.formatEther(bal)));
     } catch (error) {
-      console.log(error);
+      console.log("getTokenBalance err->", error);
     }
   };
 
   const getDetailProject = (id) => {
+    setIsLoading(true);
     try {
       axios
         .get(API.launchpad.local + API.launchpad.project.detail, {
@@ -178,9 +126,10 @@ export default function _slug() {
           if (res.status === 204) return;
           setProject(res.data.data);
           getItems(res.data.data.address);
+          setIsLoading(false);
         });
     } catch (error) {
-      console.log(error);
+      console.log("getDetailProject err->", error);
     }
   };
 
@@ -188,7 +137,7 @@ export default function _slug() {
     try {
       const boxIds = Object.keys(project.boxes);
       boxIds.forEach(async (box, idx) => {
-        if (account) {
+        if (account && project.address) {
           const launchpadContract = connectContract(
             project.address,
             abiLaunchpad
@@ -207,21 +156,24 @@ export default function _slug() {
         }
       });
     } catch (error) {
-      console.log(error);
+      console.log("getOwnedBox err->", error);
     }
   };
 
   const checkAllowance = async (box, amount, price) => {
+    console.log(box,amount,price);
     try {
-      if (chainId != 56) {
+      if (chainId != CHAIN_ID) {
         dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
         return;
       }
+      // GET token currency contract
       const tokenContract = connectContract(
         vcgEnableToken.address,
         vcgEnableToken.abi
       );
-
+      
+      // Check allowance of token currency
       const getAllowance = await tokenContract
         .connect(signer)
         .allowance(account, project.address);
@@ -230,7 +182,7 @@ export default function _slug() {
       if (allowance > Number(price) * amount) buyBox(box, amount);
       else setAllowance(box, amount);
     } catch (error) {
-      console.log(error);
+      console.log("checkAllowance err->", error);
     }
   };
 
@@ -614,9 +566,33 @@ export default function _slug() {
     }
   };
 
+  function handleGetEndDate(duration) {
+    let startDate = new Date(project?.startedAt);
+    let endDate = startDate.setTime(startDate.getTime() + duration * 86400000);
+    return new Date(endDate).toLocaleString();
+  }
+
+  const getTournaments = async () => {
+    try {
+      const { data } = await axios.get(
+        API.tournament +
+          `/api/arena/tournamentdata?page=1&limit=20&game=1&owner&id`
+      );
+
+      if (data.status) {
+        setTournamentList(data.data);
+      }
+
+      console.log("DAta", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
+      getTournaments();
     }
   }, [data]);
 
@@ -632,173 +608,184 @@ export default function _slug() {
 
   return (
     <div id="detailPage" className="global-container">
-      <div className="container mx-auto">
-        <div className="navigation-container flex items-center">
-          <Link href="/">
-            <a className="flex items-center">
-              <img src="/images/icon-home.png" alt="" />
-              <p className="mx-3 text-sm font-semibold">Launchpad</p>
-            </a>
-          </Link>
-          <img src="/images/svg/arrow-gray.svg" alt="" />
-          <p className="ml-3 text-sm font-bold">{project?.name}</p>
-        </div>
+      {!isLoading ? (
+        <div className="container mx-auto">
+          <div className="navigation-container flex items-center">
+            <Link href="/">
+              <a className="flex items-center">
+                <img src="/images/icon-home.png" alt="" />
+                <p className="mx-3 text-sm font-semibold">Launchpad</p>
+              </a>
+            </Link>
+            <img src="/images/svg/arrow-gray.svg" alt="" />
+            <p className="ml-3 text-sm font-bold">{project?.name}</p>
+          </div>
 
-        {/* HEADER */}
-        <div className="content-header gap-x-4 flex items-start md:items-center justify-between mt-10 mb-5 lg:mt-0 lg:flex-col">
-          <div className="left flex items-start lg:flex-col lg:items-center">
-            <div className="relative">
-              <img
-                className="absolute right-0 w-8 z-10"
-                style={{
-                  marginRight: "-5px",
-                }}
-                src={emblemKYC}
-                alt=""
-                onMouseEnter={() =>
-                  setEmblemKYC("/images/KYC-Default-white.png")
-                }
-                onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
-              />
-              <div className="mask mask-hexagon profile-pict-container relative">
-                <div
-                  className="mask mask-hexagon profile-wrap"
-                  style={{ background: "#3f485f" }}
-                >
+          {/* HEADER */}
+          <div className="content-header gap-x-4 flex items-start md:items-center justify-between mt-10 mb-5 lg:mt-0 lg:flex-col">
+            <div className="left flex items-start lg:flex-col lg:items-center">
+              <div className="relative">
+                {isKYC && (
                   <img
-                    src={project?.icon}
-                    alt={project?.name}
-                    className="mask mask-hexagon object-contain h-full w-full"
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null; // prevents looping
-                      currentTarget.src = "/images/Broken-Image.png";
+                    className="absolute right-0 w-8 z-10"
+                    style={{
+                      marginRight: "-5px",
                     }}
+                    src={emblemKYC}
+                    alt=""
+                    onMouseEnter={() =>
+                      setEmblemKYC("/images/KYC-Default-white.png")
+                    }
+                    onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
                   />
+                )}
+                <div className="mask mask-hexagon profile-pict-container relative">
+                  <div
+                    className="mask mask-hexagon profile-wrap"
+                    style={{ background: "#3f485f" }}
+                  >
+                    <img
+                      src={project?.icon}
+                      alt={project?.name}
+                      className="mask mask-hexagon object-contain h-full w-full"
+                      onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src = "/images/Broken-Image.png";
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="content-text ml-3 lg:ml-0">
-              <h2 className="text-2xl font-bold lg:text-center lg:text-lg">
-                {project?.name}
-              </h2>
-              <div className="hidden md:block text-center my-3">
-                <button
-                  className="btn btn-outline-orange-light mr-2 text-sm"
-                  style={{ padding: "10px 16px" }}
-                >
-                  Watch Trailer
-                </button>
-                <button
-                  className="btn btn-orange-light text-sm"
-                  style={{ padding: "10px 16px" }}
-                >
-                  <FiPlay className="inline mr-1 text-base" />
-                  Play Now
-                </button>
-              </div>
-              <div className="my-3 text-left md:text-center">
-                <p
-                  style={{ maxWidth: 492 }}
-                  className={`text-sm text-color-grey font-semibold ${
-                    isShowMoreDesc ? "" : "max-3-line"
-                  }`}
-                >
-                  {project?.desc}
-                </p>
-                {project?.desc?.length > 237 && (
-                  <p
-                    className="text-sm font-bold cursor-pointer"
-                    style={{ color: "#E28058" }}
-                    onClick={() => setisShowMoreDesc(!isShowMoreDesc)}
+              <div className="content-text ml-3 lg:ml-0">
+                <h2 className="text-2xl font-bold lg:text-center lg:text-lg">
+                  {project?.name}
+                </h2>
+                <div className="hidden md:block text-center my-3">
+                  <button
+                    className="btn btn-outline-orange-light mr-2 text-sm"
+                    style={{ padding: "10px 16px" }}
                   >
-                    {isShowMoreDesc ? "See Less" : "See More"}
+                    Watch Trailer
+                  </button>
+                  {project?.banners?.playNow?.url &&
+                  <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow">
+                    <button
+                      className="btn btn-orange-light text-sm"
+                      style={{ padding: "10px 16px" }}
+                    >
+                      <FiPlay className="inline mr-1 text-base" />
+                      Play Now
+                    </button>
+                  </a>
+                  } 
+                </div>
+                <div className="my-3 text-left md:text-center">
+                  <p
+                    style={{ maxWidth: 492 }}
+                    className={`text-sm text-color-grey font-semibold ${
+                      isShowMoreDesc ? "" : "max-3-line"
+                    }`}
+                  >
+                    {project?.desc}
+                  </p>
+                  {project?.desc?.length > 237 && (
+                    <p
+                      className="text-sm font-bold cursor-pointer"
+                      style={{ color: "#E28058" }}
+                      onClick={() => setisShowMoreDesc(!isShowMoreDesc)}
+                    >
+                      {isShowMoreDesc ? "See Less" : "See More"}
+                    </p>
+                  )}
+                </div>
+
+                <p className="font-bold text-left md:text-center">
+                  Start at :{" "}
+                  <span className="font-semibold">
+                    {new Date(project?.startedAt).toLocaleString()}
+                  </span>
+                </p>
+                {project?.finishedAt && (
+                  <p className="font-bold text-left md:text-center mt-2">
+                    Finish at :{" "}
+                    <span className="font-semibold">
+                      {/* {new Date(project?.startedAt).toLocaleString()} */}
+                      {new Date(project?.finishedAt).toLocaleString()}
+                    </span>
                   </p>
                 )}
-              </div>
 
-              <p className="font-bold text-left md:text-center">
-                Start at :{" "}
-                <span className="font-semibold">
-                  {new Date(project?.startedAt).toLocaleString()}
-                </span>
-              </p>
-              <p className="font-bold text-left md:text-center mt-2">
-                Finish at :{" "}
-                <span className="font-semibold">
-                  {new Date(project?.startedAt).toLocaleString()}
-                </span>
-              </p>
-              <div
-                style={{ borderTop: "1px solid #3F485F" }}
-                className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2"
-              >
-                <p className="font-semibold text-color-grey lg:text-sm text-left md:text-center">
-                  Find out more about this project
-                </p>
-                <div className="social flex items-center justify-left md:justify-center gap-4">
-                  {project?.socialMedia?.website ? (
-                    <a
-                      href={project?.socialMedia?.website}
-                      rel="nofollow"
-                      target="_blank"
-                    >
-                      <img
-                        src="/images/svg/icon-gray-web.svg"
-                        alt="web vcgamers"
-                        className="cursor-pointer"
-                      />
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                  {project?.socialMedia?.discord ? (
-                    <a
-                      href={project?.socialMedia?.discord}
-                      rel="nofollow"
-                      target="_blank"
-                    >
-                      <img
-                        src="/images/svg/icon-gray-discord.svg"
-                        alt="web vcgamers"
-                        className="cursor-pointer"
-                      />
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                  {project?.socialMedia?.telegram ? (
-                    <a
-                      href={project?.socialMedia?.telegram}
-                      rel="nofollow"
-                      target="_blank"
-                    >
-                      <img
-                        src="/images/svg/icon-gray-tele.svg"
-                        alt="web vcgamers"
-                        className="cursor-pointer"
-                      />
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                  {project?.socialMedia?.youtube ? (
-                    <a
-                      href={project?.socialMedia?.youtube}
-                      rel="nofollow"
-                      target="_blank"
-                    >
-                      <img
-                        src="/images/svg/youtube-fill.svg"
-                        alt="web vcgamers"
-                        className="cursor-pointer"
-                        style={{ width: "22px" }}
-                      />
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                  {/* {
+                <div
+                  style={{ borderTop: "1px solid #3F485F" }}
+                  className="social-container mt-3 grid grid-cols-2 md:grid-cols-1 lg:my-3 py-2 gap-3"
+                >
+                  <p className="font-semibold text-color-grey lg:text-sm text-left md:text-center">
+                    Find out more about this project
+                  </p>
+                  <div className="social flex items-center justify-left md:justify-center gap-4">
+                    {project?.socialMedia?.website ? (
+                      <a
+                        href={project?.socialMedia?.website}
+                        rel="nofollow"
+                        target="_blank"
+                      >
+                        <img
+                          src="/images/svg/icon-gray-web.svg"
+                          alt="web vcgamers"
+                          className="cursor-pointer"
+                        />
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                    {project?.socialMedia?.discord ? (
+                      <a
+                        href={project?.socialMedia?.discord}
+                        rel="nofollow"
+                        target="_blank"
+                      >
+                        <img
+                          src="/images/svg/icon-gray-discord.svg"
+                          alt="web vcgamers"
+                          className="cursor-pointer"
+                        />
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                    {project?.socialMedia?.telegram ? (
+                      <a
+                        href={project?.socialMedia?.telegram}
+                        rel="nofollow"
+                        target="_blank"
+                      >
+                        <img
+                          src="/images/svg/icon-gray-tele.svg"
+                          alt="web vcgamers"
+                          className="cursor-pointer"
+                        />
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                    {project?.socialMedia?.youtube ? (
+                      <a
+                        href={project?.socialMedia?.youtube}
+                        rel="nofollow"
+                        target="_blank"
+                      >
+                        <img
+                          src="/images/svg/youtube-fill.svg"
+                          alt="web vcgamers"
+                          className="cursor-pointer"
+                          style={{ width: "22px" }}
+                        />
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                    {/* {
                     project?.socialMedia?.medium ?
                     <a href={project?.socialMedia?.medium} rel="nofollow" target="_blank">
                       <img
@@ -808,119 +795,157 @@ export default function _slug() {
                       />
                     </a> : ""
                   } */}
+                  </div>
                 </div>
+                {project?.banners?.playNow?.url &&
+                <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow">
+                  <button
+                    className="btn btn-orange-light mt-3 block md:hidden"
+                    style={{ padding: "10px 16px" }}
+                  >
+                    <FiPlay className="inline mr-1 text-base" />
+                    Play Now
+                  </button>
+                </a>
+                }
               </div>
-              <button
-                className="btn btn-orange-light mt-3 block md:hidden"
-                style={{ padding: "10px 16px" }}
-              >
-                <FiPlay className="inline mr-1 text-base" />
-                Play Now
-              </button>
+            </div>
+            <div
+              className="right youtube-container overflow-hidden lg:hidden"
+              style={{ borderRadius: 10, flex: "1" }}
+            >
+              {project?.video ? (
+                <iframe
+                  style={{ aspectRatio: "2/1" }}
+                  className="w-full"
+                  src={`https://www.youtube.com/embed/${project?.video
+                    ?.split("/")
+                    .at(-1)}`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                ""
+              )}
             </div>
           </div>
-          <div
-            className="right youtube-container overflow-hidden lg:hidden"
-            style={{ borderRadius: 10, flex: "1" }}
-          >
-            {project?.socialMedia?.youtube ? (
-              <iframe
-                style={{ aspectRatio: "2/1" }}
-                className="w-full"
-                src={`https://www.youtube.com/embed/${project?.video
-                  ?.split("/")
-                  .at(-1)}`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            ) : (
-              ""
-            )}
-          </div>
+          {/* /HEADER */}
+
+          <nav className="navigation-tabs-content mt-3 mb-10">
+            <div className="nav nav-tabs" role="tablist">
+              {listContent.map((item, idx) => {
+                if (item == "Teams" && !project.team) {
+                  return;
+                }
+                return (
+                  <div
+                    key={idx}
+                    className={`nav-link text-center ${
+                      activeContent == item ? "active" : ""
+                    }`}
+                    type="button"
+                    onClick={() => setActiveContent(item)}
+                  >
+                    <p className="mb-0 font-bold">{item}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </nav>
+
+          {/* Minting Content */}
+          {activeContent == listContent[0] && (
+            <div className="item-launchpad">
+              <div className="item-wrapper grid gap-x-6 gap-y-6 grid-cols-5 md:grid-cols-3 sm:grid-cols-2">
+                {project.boxes
+                  ? Object.keys(project.boxes).map((item, idx) => {
+                      const value = project.boxes[item];
+                      const owned = ownedBox[item];
+                      return (
+                        <div key={idx} className="">
+                          <ItemLaunchpadv2
+                            name={item}
+                            data={value}
+                            owned={owned}
+                            project={project}
+                            account={account}
+                            action={setModal}
+                          />
+                        </div>
+                      );
+                    })
+                  : ""}
+              </div>
+            </div>
+          )}
+          {/* /Minting Content */}
+
+          {/* Activty Content */}
+          {activeContent == listContent[1] && <ContentActivty 
+          project ={project} />}
+          {/* /Activty Content */}
+
+          {/* Items Content */}
+          {activeContent == listContent[2] && (
+            <ContentItems
+              dataItems={itemList}
+              page={page}
+              getFilterItems={getFilterItems}
+            />
+          )}
+          {/* /items Content */}
+
+          {/* Items Content */}
+          {activeContent == listContent[3] && (
+            <ContentTournament tournamentList={tournamentList} />
+          )}
+          {/* /items Content */}
+
+          {/* Play Now Content */}
+          {activeContent == listContent[4] && (
+            project?.banners?.playNow?.url &&
+            (
+              <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow"> 
+                { project?.banners?.playNow?.images!='' ?
+                  <img
+                    className="w-full"
+                    src={project?.banners?.playNow?.images}
+                    alt=""
+                    />
+                  :
+                  <img
+                      className="w-full"
+                      src="/images/Default_Play_Now.png"
+                      alt=""
+                    />
+                }
+               
+              </a>
+            )
+           
+          )}
+          {/* /Play Now Content */}
+
+          {/* Teams Content */}
+          {activeContent == listContent[5] && project.team && (
+            <ContentTeams project={project} />
+          )}
+          {/* /Teams Content */}
         </div>
-        {/* /HEADER */}
-
-        <nav className="navigation-tabs-content mt-3 mb-10">
-          <div className="nav nav-tabs" role="tablist">
-            {listContent.map((item, idx) => {
-              if (item == "Teams" && !project.team) {
-                return;
-              }
-              return (
-                <div
-                  key={idx}
-                  className={`nav-link text-center ${
-                    activeContent == item ? "active" : ""
-                  }`}
-                  type="button"
-                  onClick={() => setActiveContent(item)}
-                >
-                  <p className="mb-0 font-bold">{item}</p>
-                </div>
-              );
-            })}
-          </div>
-        </nav>
-
-        {/* Minting Content */}
-        {activeContent == listContent[0] && (
-          <div className="item-launchpad">
-            <div className="item-wrapper grid gap-x-6 gap-y-6 grid-cols-5 md:grid-cols-3 sm:grid-cols-2">
-              {project.boxes
-                ? Object.keys(project.boxes).map((item, idx) => {
-                    const value = project.boxes[item];
-                    const owned = ownedBox[item];
-                    return (
-                      <div key={idx} className="">
-                        <ItemLaunchpadv2
-                          name={item}
-                          data={value}
-                          owned={owned}
-                          project={project}
-                          account={account}
-                          action={setModal}
-                        />
-                      </div>
-                    );
-                  })
-                : ""}
-            </div>
-          </div>
-        )}
-        {/* /Minting Content */}
-
-        {/* Activty Content */}
-        {activeContent == listContent[1] && <ContentActivty />}
-        {/* /Activty Content */}
-
-        {/* Items Content */}
-        {activeContent == listContent[2] && (
-          <ContentItems
-            dataItems={itemList}
-            page={page}
-            getFilterItems={getFilterItems}
+      ) : (
+        <div className="container mx-auto">
+          <img
+            width={200}
+            height={200}
+            src="/loaders/loaders.gif"
+            className="m-auto"
+            alt=""
           />
-        )}
-        {/* /items Content */}
+        </div>
+      )}
 
-        {/* Items Content */}
-        {activeContent == listContent[3] && <ContentTournament />}
-        {/* /items Content */}
-
-        {/* Play Now Content */}
-        {activeContent == listContent[4] && (
-          <img className="w-full" src="/images/banner-crossout-2.png" alt="" />
-        )}
-        {/* /Play Now Content */}
-
-        {/* Teams Content */}
-        {activeContent == listContent[5] && project.team && (
-          <ContentTeams project={project} />
-        )}
-        {/* /Teams Content */}
-      </div>
       {modal.modalConfirmation.isOpen && (
         <DialogConfirmation
           type={modalMessage.type}

@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Header from "../components/Home/Header";
+// import Header from "../components/Home/Header";
 import { API } from "../utils/globalConstant";
 import CardItem from "../components/Common/CardItem";
 import styled from "styled-components";
 import Slider from "react-slick";
 import HeaderCenter from "../components/Home/HeaderCenter";
+import useMetaMask from "../wallet/hook";
 
 const StyledSlider = styled(Slider)`
   .slick-track {
@@ -55,6 +56,8 @@ export default function Home() {
   const [finish, setFinish] = useState([]);
   const [faq, setFaq] = useState(null);
 
+  const { account, switchActive } = useMetaMask();
+
   const launchpadInfo = () => {
     try {
       axios
@@ -98,6 +101,7 @@ export default function Home() {
         .post(API.launchpad.local + API.launchpad.project.filter, {
           limit: 10,
           status: 1,
+          approved: true,
           sort: { trending: -1 },
         })
         .then((res) => {
@@ -113,8 +117,10 @@ export default function Home() {
     try {
       axios
         .post(API.launchpad.local + API.launchpad.project.filter, {
-          limit: 10,
-          status: 1
+          limit: 20,
+          status: 1,
+          approved: true,
+          sort: {}
         })
         .then((res) => {
           if (res.status === 204) return;
@@ -132,6 +138,7 @@ export default function Home() {
           startedAt: { $lte: new Date() },
           limit: 10,
           status: 1,
+          approved: true,
           approved: 1,
         })
         .then((res) => {
@@ -150,7 +157,7 @@ export default function Home() {
           startedAt: { $gt: new Date() },
           limit: 10,
           status: 0,
-          approved: 1,
+          approved: true,
         })
         .then((res) => {
           if (res.status === 204) return;
@@ -168,7 +175,7 @@ export default function Home() {
           finishedAt: { $lte: new Date() },
           limit: 10,
           status: 2,
-          approved: 1,
+          approved: true,
         })
         .then((res) => {
           if (res.status === 204) return;
@@ -193,7 +200,7 @@ export default function Home() {
   useEffect(() => {
     launchpadInfo();
     getTrending();
-    getListProject()
+    getListProject();
     // getOngoing();
     // getSoon();
     // getFinish();
@@ -208,7 +215,7 @@ export default function Home() {
 
   return (
     <div id="home" className="global-container">
-      <HeaderCenter totalProject={totalProject} totalFunded={totalFunded} />
+      <HeaderCenter account={account} totalProject={totalProject} totalFunded={totalFunded} />
       <div id="launchpad-tab" className="container mt-14 md:pb-10">
         <div>
           <p className="text-lg font-bold pb-5">Featured Projects</p>
@@ -218,7 +225,7 @@ export default function Home() {
                 {trending?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
-                      img={item.banner}
+                      img={item.banner ? item.banner : item.icon}
                       title={item.name}
                       desc={item.desc}
                       slug={item._id}
@@ -247,7 +254,7 @@ export default function Home() {
                 {listProject?.map((item, idx) => (
                   <div key={idx} className="card-wrap">
                     <CardItem
-                      img={item.banner}
+                      img={item.banner ? item.banner : item.icon}
                       title={item.name}
                       desc={item.desc}
                       slug={item._id}
