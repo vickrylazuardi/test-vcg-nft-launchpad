@@ -73,7 +73,7 @@ export const MetaMaskProvider = ({ children }) => {
               setCookie(walletId, res, 1);
               setCookie(walletId + "-msg", messageTemplate, 1);
               setCookie(walletId + "-profile", resp.data.data, 1);
-              getCreator(walletId);
+              // getCreator(walletId);
               switchActive(true);
               setIsLoading(false);
               setIsSigned(true);

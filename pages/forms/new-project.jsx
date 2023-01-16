@@ -103,7 +103,6 @@ export default function NewProject(props) {
           break;
         case "banner":
           if (value) data.banner[keys[1]] = value;
-          console.log("??", data);
           break;
         default:
           if (value) data[key] = value;

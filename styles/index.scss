@@ -1204,6 +1204,68 @@ footer {
 
 }
 
+// Start Dialog
+.dialog-dark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9997;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+    padding: 0px 20px 80px 20px;
+
+    .dialog-dark-content {
+        background-color: #1D2333;
+        padding: 2.5rem 1.5rem;
+        max-width: 800px;
+        margin-inline: auto;
+
+        // .dialog-dark-head {
+        //     display: flex;
+        //     align-items: center;
+
+        //     .dbh-left {
+        //         width: 50%;
+        //         font-size: 16px;
+        //         font-weight: 700;
+        //     }
+
+        //     .dbh-right {
+        //         display: flex;
+        //         justify-content: right;
+        //         width: 50%;
+        //     }
+        // }
+
+        // .dialog-dark-body {
+        //     font-size: 14px;
+        //     font-weight: 600;
+        //     color: #858fa9;
+
+        //     .dib-title {
+        //         font-size: 16px;
+        //         font-weight: 700;
+        //         color: white;
+        //     }
+
+        //     .dib-img {
+        //         height: 450px;
+        //         width: 500px;
+        //     }
+        // }
+    }
+}
+
+.dialog-dark::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dialog-dark::-webkit-scrollbar-thumb {
+    background-color: #7750f8;
+}
+
 // Start Dialog Detail Transaction
 #dialog-detail-transaction-overlay {
     position: fixed;
@@ -2206,7 +2268,7 @@ footer {
     }
 
     input, textarea, select{
-        border: 1px solid #9AA4BF;
+        border: 1px solid #3f485f;
         border-radius: 5px;
         background-color: transparent;
         padding: 10px 16px;
@@ -2224,7 +2286,7 @@ footer {
 
         .input-label{
             background: #2A334B;
-            border: 1px solid #9AA4BF;
+            border: 1px solid #3f485f;
             padding: 10px 16px;
             border-radius: 5px 0px 0px 5px;
             border-right: none;
@@ -2232,7 +2294,7 @@ footer {
         }
 
         .input-label-icon{
-            border: 1px solid #9AA4BF;
+            border: 1px solid #3f485f;
             padding: 11px 0px 11px 16px;
             border-radius: 5px 0px 0px 5px;
             border-right: none;
@@ -2743,4 +2805,41 @@ footer {
     font-weight: 500;
     font-size: 14px;
     color: #d17e00;
+}
+
+#toast {
+    background: white;
+    border-radius: 5px;
+    position: fixed;
+    top: 115px;
+    color: black;
+    padding: 10px 20px;
+    max-width: 350px;
+    color: black;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 130%;
+    z-index: 9999;
+    visibility: hidden;
+    transition: all 0.5s ease-in-out;
+    transform-origin: left top;
+    transform: scaleY(0);
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+#toast.success {
+    background: #ceecd1;
+    color: #00870e;
+}
+#toast.failed {
+    background: #ffdbdb;
+    color: #ff3333;
+}
+
+#toast.show {
+    visibility: visible;
+    transform: scaleY(1);
 }
