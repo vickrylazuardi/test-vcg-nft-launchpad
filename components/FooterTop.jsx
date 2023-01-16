@@ -5,18 +5,17 @@ export default function FooterTop() {
   return (
     <div className="footer-top">
       <h4 className="font-bold lg:text-sm">
-        VCGamers - Jualan & Belanja Produk Game Online Serta Berbagai Produk
-        Digital Terlengkap, Termurah, Aman, dan Cepat!
+        VCGamers Launchpad connects exciting games to the community. A place for
+        innovative and rewarding gaming experience.
       </h4>
       <p className="text-sm mt-2 lg:text-xs" style={{ color: "#9AA4BF" }}>
-        VCGamers Marketplace merupakan sebuah tempat jual-beli online murah dan
-        juga terpercaya yang dapat memenuhi segala kebutuhan gamers di seluruh
-        Indonesia. Lakukan transaksi trading atau jual-beli akun, currency,
-        e-wallet, game key & gift, item, jasa/joki game, pulsa, skin,
-        topup/top-up, dan voucher dengan lebih aman dan nyaman hanya di
-        vcgamers.com. Daftar dan buka toko kamu sekarang juga, nikmati berbagai
-        keuntungan berjualan produk games dan produk digital lainnya yang hanya
-        bisa kamu dapatkan di VCGamers, all about games.
+        The VCGamers Launchpad is a platform that enables game developers to
+        list and showcase their creations to a global audience. Our platform
+        provides a seamless integration of games with the blockchain ecosystem,
+        allowing players to access unique NFTs and participate in Web3
+        tournaments. By utilizing the VCGamers Launchpad, developers have the
+        opportunity to connect with a community of players and elevate their
+        game to new heights.
       </p>
       <hr className="my-3" />
       <div className="top-wrapper flex items-start justify-between lg:flex-col">

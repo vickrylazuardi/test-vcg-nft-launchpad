@@ -161,7 +161,7 @@ export default function _slug() {
   };
 
   const checkAllowance = async (box, amount, price) => {
-    console.log(box,amount,price);
+    console.log(box, amount, price);
     try {
       if (chainId != CHAIN_ID) {
         dispatch(toggleModalConfirmation(modalConfirmationWhenFailed));
@@ -172,7 +172,7 @@ export default function _slug() {
         vcgEnableToken.address,
         vcgEnableToken.abi
       );
-      
+
       // Check allowance of token currency
       const getAllowance = await tokenContract
         .connect(signer)
@@ -668,17 +668,21 @@ export default function _slug() {
                   >
                     Watch Trailer
                   </button>
-                  {project?.banners?.playNow?.url &&
-                  <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow">
-                    <button
-                      className="btn btn-orange-light text-sm"
-                      style={{ padding: "10px 16px" }}
+                  {project?.banners?.playNow?.url && (
+                    <a
+                      href={project?.banners?.playNow?.url}
+                      target="_blank"
+                      rel="nofollow"
                     >
-                      <FiPlay className="inline mr-1 text-base" />
-                      Play Now
-                    </button>
-                  </a>
-                  } 
+                      <button
+                        className="btn btn-orange-light text-sm"
+                        style={{ padding: "10px 16px" }}
+                      >
+                        <FiPlay className="inline mr-1 text-base" />
+                        Play Now
+                      </button>
+                    </a>
+                  )}
                 </div>
                 <div className="my-3 text-left md:text-center">
                   <p
@@ -797,17 +801,21 @@ export default function _slug() {
                   } */}
                   </div>
                 </div>
-                {project?.banners?.playNow?.url &&
-                <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow">
-                  <button
-                    className="btn btn-orange-light mt-3 block md:hidden"
-                    style={{ padding: "10px 16px" }}
+                {project?.banners?.playNow?.url && (
+                  <a
+                    href={project?.banners?.playNow?.url}
+                    target="_blank"
+                    rel="nofollow"
                   >
-                    <FiPlay className="inline mr-1 text-base" />
-                    Play Now
-                  </button>
-                </a>
-                }
+                    <button
+                      className="btn btn-orange-light mt-3 block md:hidden"
+                      style={{ padding: "10px 16px" }}
+                    >
+                      <FiPlay className="inline mr-1 text-base" />
+                      Play Now
+                    </button>
+                  </a>
+                )}
               </div>
             </div>
             <div
@@ -883,13 +891,15 @@ export default function _slug() {
           {/* /Minting Content */}
 
           {/* Activty Content */}
-          {activeContent == listContent[1] && <ContentActivty 
-          project ={project} />}
+          {activeContent == listContent[1] && (
+            <ContentActivty project={project} />
+          )}
           {/* /Activty Content */}
 
           {/* Items Content */}
           {activeContent == listContent[2] && (
             <ContentItems
+              project={project}
               dataItems={itemList}
               page={page}
               getFilterItems={getFilterItems}
@@ -905,26 +915,35 @@ export default function _slug() {
 
           {/* Play Now Content */}
           {activeContent == listContent[4] && (
-            project?.banners?.playNow?.url &&
-            (
-              <a href={project?.banners?.playNow?.url} target="_blank" rel="nofollow"> 
-                { project?.banners?.playNow?.images!='' ?
-                  <img
-                    className="w-full"
-                    src={project?.banners?.playNow?.images}
-                    alt=""
+            <>
+              {project?.banners?.playNow?.url ? (
+                <a
+                  href={project?.banners?.playNow?.url}
+                  target="_blank"
+                  rel="nofollow"
+                >
+                  {project?.banners?.playNow?.images != "" ? (
+                    <img
+                      className="w-full"
+                      src={project?.banners?.playNow?.images}
+                      alt=""
                     />
-                  :
-                  <img
+                  ) : (
+                    <img
                       className="w-full"
                       src="/images/Default_Play_Now.png"
                       alt=""
                     />
-                }
-               
-              </a>
-            )
-           
+                  )}
+                </a>
+              ) : (
+                <img
+                  className="w-full"
+                  src="/images/Default_Play_Now.png"
+                  alt=""
+                />
+              )}
+            </>
           )}
           {/* /Play Now Content */}
 

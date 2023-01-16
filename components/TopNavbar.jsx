@@ -24,7 +24,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link ml-8"
           >
-            Komunitas
+            Community
           </a>
           <a
             href="https://career.vcgamers.com/"
@@ -32,7 +32,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link ml-8"
           >
-            Karir
+            Career
           </a>
         </div>
         <div className="right flex items-center">
@@ -42,7 +42,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link mr-8"
           >
-            Tentang Kami
+            About Us
           </a>
           <a
             href="https://app.vcgamers.com/about-us"
@@ -50,7 +50,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link mr-8"
           >
-            Kebijakan Privacy
+            Privacy Policy
           </a>
           <a
             href="https://app.vcgamers.com/terms-conditions"
@@ -58,7 +58,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link mr-8"
           >
-            Syarat Ketentuan
+            Terms & Condition
           </a>
           <a
             href="https://app.vcgamers.com/contact-us"
@@ -66,7 +66,7 @@ export default function TopNavbar() {
             target="_blank"
             className="flex items-center text-link"
           >
-            Hubungi Kami
+            Contact Us
           </a>
         </div>
       </div>

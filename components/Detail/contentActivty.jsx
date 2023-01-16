@@ -13,6 +13,7 @@ const listTable = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 export default function ContentActivty(props) {
   const [activeContent, setActiveContent] = useState("sales");
 
+  const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
   const [historyPage, setHistoryPage] = useState({});
   const [historyFilter, setHistoryFilter] = useState({
@@ -24,6 +25,7 @@ export default function ContentActivty(props) {
   const { account, signer, connectContract } = useMetaMask();
 
   const getHistoryList = () => {
+    setLoading(true);
     try {
       axios
         .post(API.launchpad.local + API.launchpad.history.filter, historyFilter)
@@ -31,11 +33,13 @@ export default function ContentActivty(props) {
           if (res.status === 204) {
             setHistory([]);
             setHistoryPage({});
+            setLoading(false);
             return;
           }
           // console.log("history",res);
           setHistory(res.data.data.items);
           paginate(res, historyPage, setHistoryPage);
+          setLoading(false);
         });
     } catch (error) {
       console.log(error);
@@ -88,13 +92,19 @@ export default function ContentActivty(props) {
     }
   };
 
+  // useEffect(() => {
+  //   if (account) {
+  //     // historyFilter.owner = account;
+  //     setHistoryFilter({ ...historyFilter });
+  //     getHistoryList();
+  //   }
+  // }, [account]);
+
   useEffect(() => {
-    if (account) {
-      // historyFilter.owner = account;
-      setHistoryFilter({ ...historyFilter });
-      getHistoryList();
-    }
-  }, [account]);
+    // historyFilter.owner = account;
+    setHistoryFilter({ ...historyFilter });
+    getHistoryList();
+  }, []);
 
   return (
     <>
@@ -120,6 +130,7 @@ export default function ContentActivty(props) {
       {activeContent == "sales" ? (
         <>
           <TableWeb
+            loading={loading}
             history={history}
             page={historyPage}
             pageAction={changePage}
@@ -165,51 +176,82 @@ function TableWeb(props) {
           </tr>
         </thead>
         <tbody>
-          {props.history.map((item, idx) => {
-            return (
-              <tr key={idx} className={idx % 2 ? "row-light" : "row-dark"}>
-                <td>
-                  <img
-                    className="inline"
-                    width={30}
-                    style={{
-                      objectFit: "contain",
-                      aspectRatio: "1/1",
-                      borderRadius: "50%",
-                    }}
-                    src={item.image}
-                    alt=""
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null; // prevents looping
-                      currentTarget.src = "/images/Broken-Image.png";
-                    }}
-                  />{" "}
-                  {item.name}
-                </td>
-                <td>
-                  <a
-                    href={"https://testnet.bscscan.com/tx/" + item.txHash}
-                    target="_blank"
-                    rel="nofollow"
-                  >
-                    Sold
-                  </a>
-                </td>
-                <td>
-                  <strong>{item.price} VCG</strong>
-                </td>
-                <td className="text-color-grey">
-                  {item?.projectDetail?.address?.slice(0, 7)} ...{" "}
-                  {item?.projectDetail?.address?.slice(-7)}
-                  <FiChevronRight className="inline text-white" />{" "}
-                  {item?.owner?.slice(0, 7)} ... {item?.owner?.slice(-7)}
-                </td>
-                <td className="text-color-grey">
-                  {moment(item.date).local().format("DD MMM YYYY HH:mm")}
+          {!props.loading ? (
+            props.history.length > 0 ? (
+              props.history.map((item, idx) => {
+                return (
+                  <tr key={idx} className={idx % 2 ? "row-light" : "row-dark"}>
+                    <td>
+                      <img
+                        className="inline"
+                        width={30}
+                        style={{
+                          objectFit: "contain",
+                          aspectRatio: "1/1",
+                          borderRadius: "50%",
+                        }}
+                        src={item.image}
+                        alt=""
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null; // prevents looping
+                          currentTarget.src = "/images/Broken-Image.png";
+                        }}
+                      />{" "}
+                      {item.name}
+                    </td>
+                    <td>
+                      <a
+                        href={"https://testnet.bscscan.com/tx/" + item.txHash}
+                        target="_blank"
+                        rel="nofollow"
+                      >
+                        Sold
+                      </a>
+                    </td>
+                    <td>
+                      <strong>{item.price} VCG</strong>
+                    </td>
+                    <td className="text-color-grey">
+                      {item?.projectDetail?.address?.slice(0, 7)} ...{" "}
+                      {item?.projectDetail?.address?.slice(-7)}
+                      <FiChevronRight className="inline text-white" />{" "}
+                      {item?.owner?.slice(0, 7)} ... {item?.owner?.slice(-7)}
+                    </td>
+                    <td className="text-color-grey">
+                      {moment(item.date).local().format("DD MMM YYYY HH:mm")}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className="row-dark">
+                <td colSpan={6}>
+                  <div className="mx-auto my-20 flex flex-col items-center">
+                    <img
+                      className="mb-5 w-64"
+                      src="/images/data-not-found.png"
+                      alt=""
+                    />
+                    <p className="pnd-title font-semibold">No Data Found</p>
+                  </div>
                 </td>
               </tr>
-            );
-          })}
+            )
+          ) : (
+            <tr className="row-dark">
+              <td colSpan={6}>
+                <div className="mx-auto my-20 flex flex-col items-center">
+                  <img
+                    width={150}
+                    height={150}
+                    className="mb-5"
+                    src="/loaders/loaders.gif"
+                    alt=""
+                  />
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

@@ -75,6 +75,25 @@ export default function RightNavbar(props) {
                 </p>
               </div>
             </div>
+            <div
+              className="mask mask-hexagon profile-pict-container relative m-auto"
+              style={{ width: "30px", height: "30px" }}
+            >
+              <div
+                className="mask mask-hexagon profile-wrap"
+                style={{ background: "#3f485f" }}
+              >
+                <img
+                  width={10}
+                  src={
+                    props?.creatorImage?.length
+                      ? props?.creatorImage
+                      : "/images/default-avatar.png"
+                  }
+                  className="mask mask-hexagon object-contain h-full w-full"
+                />
+              </div>
+            </div>
             <p className="font-semibold text-sm ml-1">
               {props.account.slice(0, 7) + "..." + props.account.slice(-7)}
             </p>
