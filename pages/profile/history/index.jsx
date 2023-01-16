@@ -100,7 +100,7 @@ export default function Index() {
 
   useEffect(() => {
     if (account) {
-    //   historyFilter.owner = account;
+      historyFilter.owner = account;
       setHistoryFilter({ ...historyFilter });
       getHistoryList();
     }
@@ -139,13 +139,17 @@ export default function Index() {
               >
                 <img
                   className="rounded-md mr-3"
-                  src={item.image}
+                  src={item.image ? item.image : "/images/Broken-Image.png"}
                   alt=""
                   style={{
                     width: "50px",
                     height: "50px",
                     aspectRatio: "1/1",
                     objectFit: "contain",
+                  }}
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = "/images/Broken-Image.png";
                   }}
                 />
                 <div className="obi-list-detailed">
