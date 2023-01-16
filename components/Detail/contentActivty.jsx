@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import moment from "moment";
@@ -6,7 +6,7 @@ import moment from "moment";
 import axios from "axios";
 import { API } from "../../utils/globalConstant";
 import useMetaMask from "../../wallet/hook";
-import Pagination from "../../components/Common/Pagination"
+import Pagination from "../../components/Common/Pagination";
 
 const listTable = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
@@ -14,55 +14,59 @@ export default function ContentActivty(props) {
   const [activeContent, setActiveContent] = useState("sales");
 
   const [history, setHistory] = useState([]);
-	const [historyPage, setHistoryPage] = useState({});
-	const [historyFilter, setHistoryFilter] = useState({
-		sort: {date: -1},
-		limit: 5,
-		page: 1,
-    address: props.project.address
-	})
+  const [historyPage, setHistoryPage] = useState({});
+  const [historyFilter, setHistoryFilter] = useState({
+    sort: { date: -1 },
+    limit: 5,
+    page: 1,
+    address: props.project.address,
+  });
   const { account, signer, connectContract } = useMetaMask();
 
-	const getHistoryList = () => {
-		try {
-			axios.post(API.launchpad.local + API.launchpad.history.filter, historyFilter)
-      .then(res => {
-        if (res.status === 204) {
-					setHistory([]);
-					setHistoryPage({});
-					return;
-				}
-        // console.log("history",res);
-        setHistory(res.data.data.items);
-				paginate(res, historyPage, setHistoryPage);
-      })
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const getHistoryList = () => {
+    try {
+      axios
+        .post(API.launchpad.local + API.launchpad.history.filter, historyFilter)
+        .then((res) => {
+          if (res.status === 204) {
+            setHistory([]);
+            setHistoryPage({});
+            return;
+          }
+          // console.log("history",res);
+          setHistory(res.data.data.items);
+          paginate(res, historyPage, setHistoryPage);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-	const changePage = (page) => {
-		try {
-			historyFilter.page = page;
-			setHistoryFilter({...historyFilter});
-			getHistoryList();
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const changePage = (page) => {
+    try {
+      historyFilter.page = page;
+      setHistoryFilter({ ...historyFilter });
+      getHistoryList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-	const paginate = async (res, getter, setter) => {
+  const paginate = async (res, getter, setter) => {
     try {
       let page = {};
       page.currentPage = res.data.data.page;
       page.maxPage = res.data.data.totalPage;
       if (page.currentPage < 4 && page.maxPage > 5) {
-        page.listPage = [1, 2, 3, 4, 5]
-      } else if (page.currentPage >= 4 && page.currentPage + 2 <= page.maxPage) {
+        page.listPage = [1, 2, 3, 4, 5];
+      } else if (
+        page.currentPage >= 4 &&
+        page.currentPage + 2 <= page.maxPage
+      ) {
         let list = [];
         for (let i = page.currentPage - 2; i <= page.currentPage + 2; i++) {
           list.push(i);
-        };
+        }
         page.listPage = list;
       } else if (page.maxPage > 5) {
         let list = [];
@@ -78,20 +82,19 @@ export default function ContentActivty(props) {
         page.listPage = list;
       }
       getter = page;
-      setter({...getter});
+      setter({ ...getter });
     } catch (error) {
       console.log(error);
     }
   };
 
-	useEffect(() => {
-		if (account) {
-			// historyFilter.owner = account;
-			setHistoryFilter({...historyFilter});
-			getHistoryList();
-		}
-	}, [account]);
-
+  useEffect(() => {
+    if (account) {
+      // historyFilter.owner = account;
+      setHistoryFilter({ ...historyFilter });
+      getHistoryList();
+    }
+  }, [account]);
 
   return (
     <>
@@ -116,28 +119,37 @@ export default function ContentActivty(props) {
 
       {activeContent == "sales" ? (
         <>
-          <TableWeb 
-          history={history}
-          page={historyPage}
-          pageAction={changePage}
+          <TableWeb
+            history={history}
+            page={historyPage}
+            pageAction={changePage}
           />
-          <TableMobile />
+          <TableMobile
+            history={history}
+            page={historyPage}
+            pageAction={changePage}
+          />
+          {history.length > 0 ? (
+            <div className="mt-8">
+              <Pagination page={historyPage} pageAction={changePage} />
+            </div>
+          ) : (
+            ""
+          )}
         </>
       ) : (
-        <ContentTimeline 
-         project = {props.project} />
+        <ContentTimeline project={props.project} />
       )}
     </>
   );
 }
 
 function TableWeb(props) {
-  useEffect(() => {
-		if (props.history) {
-		
-      console.log('table desktop',props.history);
-		}
-	}, [props.history]);
+  // useEffect(() => {
+  //   if (props.history) {
+  //     console.log("table desktop", props.history);
+  //   }
+  // }, [props.history]);
   return (
     <div className="block md:hidden">
       <table className="table-dark-light w-full">
@@ -167,20 +179,34 @@ function TableWeb(props) {
                     }}
                     src={item.image}
                     alt=""
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "/images/Broken-Image.png";
+                    }}
                   />{" "}
-                  
                   {item.name}
                 </td>
-                <td><a href={'https://testnet.bscscan.com/tx/'+item.txHash } target="_blank" rel="nofollow">Sold</a></td>
+                <td>
+                  <a
+                    href={"https://testnet.bscscan.com/tx/" + item.txHash}
+                    target="_blank"
+                    rel="nofollow"
+                  >
+                    Sold
+                  </a>
+                </td>
                 <td>
                   <strong>{item.price} VCG</strong>
                 </td>
                 <td className="text-color-grey">
-                 {item?.projectDetail?.address?.slice(0, 7) } ... {item?.projectDetail?.address?.slice(-7)} 
-                 <FiChevronRight className="inline text-white" />{" "}
-                  {item?.owner?.slice(0, 7) } ... {item?.owner?.slice(-7) } 
+                  {item?.projectDetail?.address?.slice(0, 7)} ...{" "}
+                  {item?.projectDetail?.address?.slice(-7)}
+                  <FiChevronRight className="inline text-white" />{" "}
+                  {item?.owner?.slice(0, 7)} ... {item?.owner?.slice(-7)}
                 </td>
-                <td className="text-color-grey">3 Mar 2022 12:03</td>
+                <td className="text-color-grey">
+                  {moment(item.date).local().format("DD MMM YYYY HH:mm")}
+                </td>
               </tr>
             );
           })}
@@ -197,7 +223,7 @@ function TableMobile(props) {
         className="table-mobile"
         style={{ marginLeft: "-20px", marginRight: "-20px" }}
       >
-        {listTable.map((item, idx) => {
+        {props.history.map((item, idx) => {
           return (
             <div
               key={idx}
@@ -219,17 +245,23 @@ function TableMobile(props) {
                     aspectRatio: "1/1",
                     borderRadius: "50%",
                   }}
-                  src="/images/Broken-Image.png"
+                  src={item.image}
                   alt=""
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = "/images/Broken-Image.png";
+                  }}
                 />{" "}
-                Item {item}
+                {item.name}
               </div>
               <div className="flex py-2">
                 <div className="w-1/2">
                   <p className="text-xs">Price</p>
                 </div>
                 <div className="w-1/2">
-                  <h6 className="text-xs text-end font-bold">20.000 VCG</h6>
+                  <h6 className="text-xs text-end font-bold">
+                    {item.price} VCG
+                  </h6>
                 </div>
               </div>
               <div className="flex py-2">
@@ -248,8 +280,10 @@ function TableMobile(props) {
                 </div>
                 <div className="w-1/2">
                   <h6 className="text-xs text-end text-color-grey">
-                    0x99...1232 <FiChevronRight className="inline text-white" />{" "}
-                    0x99...1222
+                    {item?.projectDetail?.address?.slice(0, 7)} ...{" "}
+                    {item?.projectDetail?.address?.slice(-7)}
+                    <FiChevronRight className="inline text-white" />{" "}
+                    {item?.owner?.slice(0, 7)} ... {item?.owner?.slice(-7)}
                   </h6>
                 </div>
               </div>
@@ -259,8 +293,12 @@ function TableMobile(props) {
                 </div>
                 <div className="w-1/2">
                   <h6 className="text-xs text-end text-color-grey">
-                    3 Mar 2022 12:03{" "}
-                    <a href="#">
+                    {moment(item.date).local().format("DD MMM YYYY HH:mm")}{" "}
+                    <a
+                      href={"https://testnet.bscscan.com/tx/" + item.txHash}
+                      target="_blank"
+                      rel="nofollow"
+                    >
                       <HiOutlineExternalLink
                         className="inline text-base"
                         style={{ color: "#8865FE" }}
@@ -282,7 +320,9 @@ function ContentTimeline(props) {
   return (
     <ul className="proses-listing list-unstyled">
       <li id="process-1" className="list-proses active">
-        <span className="date-timeline">{moment(props.project.createdAt).local().format("DD MMM YYYY")}</span>
+        <span className="date-timeline">
+          {moment(props.project.createdAt).local().format("DD MMM YYYY")}
+        </span>
         <div className="list-proses-content">
           <h6 className="fw-bold">Approve this item </h6>
           <p className="mb-0">
@@ -292,7 +332,9 @@ function ContentTimeline(props) {
         </div>
       </li>
       <li id="process-2" className="list-proses active">
-        <span className="date-timeline">{moment(props.project.approvedAt).local().format("DD MMM YYYY")}</span>
+        <span className="date-timeline">
+          {moment(props.project.approvedAt).local().format("DD MMM YYYY")}
+        </span>
         <div className="list-proses-content">
           <h6 className="fw-bold">Confirm Listing </h6>
           <p className="mb-0">

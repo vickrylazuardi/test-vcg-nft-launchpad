@@ -30,7 +30,7 @@ export default function ItemLaunchpadv2(props) {
         <img
           src={props.data.image}
           alt="web vcgamers"
-          style={{ aspectRatio: "1/1", objectFit: "cover", width: "100%" }}
+          style={{ aspectRatio: "1/1", objectFit: "contain", width: "100%" }}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = "/images/Broken-Image.png";
