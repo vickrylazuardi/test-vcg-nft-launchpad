@@ -58,6 +58,7 @@ export default function NewProject(props) {
 
   const [step, setStep] = useState(1);
   const [selected, setSelected] = useState(1);
+  const [isPermision, setIsPermision] = useState(false);
   const [data, setData] = useState({
     socialMedia: {
       website: "",
@@ -269,7 +270,7 @@ export default function NewProject(props) {
 
       // append items info and image to form data
       list.items.map((item, idx) => {
-        console.log('item nft',item);
+        console.log("item nft", item);
         const attr = [];
         const image = new File(
           [item.images],
@@ -299,7 +300,7 @@ export default function NewProject(props) {
           description: "",
           attributes: attr,
           nftAddress: "",
-          supply :item.supply,
+          supply: item.supply,
           projectName: data.name,
         };
 
@@ -310,7 +311,7 @@ export default function NewProject(props) {
       formData.append("items", JSON.stringify(items));
 
       // return;
-      // SEND TO API Create Project 
+      // SEND TO API Create Project
       axios
         .post(API.launchpad.domain + API.launchpad.project.add, formData, {
           headers: {
@@ -337,7 +338,14 @@ export default function NewProject(props) {
       if (cookieProfile) {
         getData("contactName", cookieProfile.name);
         getData("owner", account);
-        getData("contactEmail", cookieProfile.email);
+
+        const at = cookieProfile.email.indexOf("@");
+        const dot = cookieProfile.email.lastIndexOf(".");
+        if (at < 1 || dot < at + 2 || dot + 2 >= cookieProfile.email.length) {
+          getData("contactEmail", cookieProfile.email, false);
+        } else {
+          getData("contactEmail", cookieProfile.email, true);
+        }
       }
     }
   }, [account]);
@@ -409,39 +417,54 @@ export default function NewProject(props) {
             />
           )}
 
-          {
-              data.contactName &&
-              data.contactEmail &&
-              data.duration &&
-              data.validEmail &&
-              data.owner &&
-              data.icon &&
-              data.name &&
-              data.desc &&
-              data.startedAt &&
-              // list.member.length &&
-              // list.features.length &&
-              list.boxes.length &&
-              list.items.length &&
-              // list.member.find((item) => {
-              //   return !item.completed;
-              // }) == undefined &&
-              // list.features.find((item) => {
-              //   return !item.completed;
-              // }) == undefined &&
-              list.boxes.find((item) => {
-                return !item.completed;
-              }) == undefined &&
-              list.items.find((item) => {
-                return !item.completed;
-              }) == undefined
-              ?
-              <div  className="mt-8 text-left d-flex justify-content-left">
-                <input type="checkbox" className="mt-1"></input>
-                <span className="ml-2" style={{color:'#ffeaaa'}}>By submitting, you're agree with platform related fee of 2.5 %- 5% as withdrawal fee. Please contact our team [hyperlink to telegram VCG Admin] for more information</span>
-              </div>:""
-          }
-          
+          {data.contactName &&
+          data.contactEmail &&
+          data.duration &&
+          data.validEmail &&
+          data.owner &&
+          data.icon &&
+          data.name &&
+          data.desc &&
+          data.startedAt &&
+          // list.member.length &&
+          // list.features.length &&
+          list.boxes.length &&
+          list.items.length &&
+          // list.member.find((item) => {
+          //   return !item.completed;
+          // }) == undefined &&
+          // list.features.find((item) => {
+          //   return !item.completed;
+          // }) == undefined &&
+          list.boxes.find((item) => {
+            return !item.completed;
+          }) == undefined &&
+          list.items.find((item) => {
+            return !item.completed;
+          }) == undefined ? (
+            <div className="mt-8 flex items-center">
+              <input
+                type="checkbox"
+                style={{ width: "15px", height: "15px" }}
+                value={isPermision}
+                onChange={(e) => setIsPermision(e.target.checked)}
+              ></input>
+              <span className="ml-2 mt-1" style={{ color: "#ffeaaa" }}>
+                By submitting, you're agree with platform related fee of 2.5 %-
+                5% as withdrawal fee. Please contact our team{" "}
+                <a
+                  className="font-bold"
+                  href="https://t.me/vcglaunchpad"
+                  target="_blank"
+                >
+                  [hyperlink to telegram VCG Admin]
+                </a>{" "}
+                for more information
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
 
           <div className="mt-8 text-right">
             <button
@@ -456,6 +479,7 @@ export default function NewProject(props) {
               <button
                 style={{ padding: "10px 30px" }}
                 className={
+                  isPermision &&
                   data.contactName &&
                   data.contactEmail &&
                   data.duration &&
@@ -488,6 +512,7 @@ export default function NewProject(props) {
                   dispatch(toggleModalConfirmation(modalConfirmation));
                 }}
                 disabled={
+                  isPermision &&
                   data.contactName &&
                   data.contactEmail &&
                   data.duration &&
