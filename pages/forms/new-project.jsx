@@ -421,13 +421,13 @@ export default function NewProject(props) {
                   data.name &&
                   data.desc &&
                   data.startedAt &&
-                  list.member.length &&
+                  // list.member.length &&
                   // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
-                  list.member.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.member.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   // list.features.find((item) => {
                   //   return !item.completed;
                   // }) == undefined &&
@@ -453,13 +453,13 @@ export default function NewProject(props) {
                   data.name &&
                   data.desc &&
                   data.startedAt &&
-                  list.member.length &&
+                  // list.member.length &&
                   // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
-                  list.member.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.member.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   // list.features.find((item) => {
                   //   return !item.completed;
                   // }) == undefined &&
