@@ -13,11 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModalConfirmation } from "../../redux/modalReducer";
 import useMetaMask from "../../wallet/hook";
 import { FiInfo } from "react-icons/fi";
+import Cookies from "universal-cookie";
 
 export default function NewProject(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const { account, switchActive } = useMetaMask();
+  const cookies = new Cookies();
 
   const router = useRouter();
 
@@ -74,8 +76,8 @@ export default function NewProject(props) {
         url: "",
       },
     },
-    bannerItems:null,
-    bannerPlayNow:null
+    bannerItems: null,
+    bannerPlayNow: null,
   });
   const [list, setList] = useState({
     // features: [],
@@ -125,7 +127,7 @@ export default function NewProject(props) {
 
       // append information from data var to form data
       for (const key in data) {
-        console.log('disini',key,value);
+        console.log("disini", key, value);
         const value = data[key];
         switch (key) {
           case "socialMedia":
@@ -134,10 +136,10 @@ export default function NewProject(props) {
           case "banner":
             const bItems = "banner.items";
             const bPlayNow = "banner.playNow";
-            
+
             // banner Items
             try {
-              if(value?.items?.images){
+              if (value?.items?.images) {
                 const bItemsImage = new File(
                   [value.items.images],
                   `${bItems}.${value.items.images.type.split("/")[1]}`,
@@ -149,12 +151,12 @@ export default function NewProject(props) {
                 formData.append("boxImage", bItemsImage);
               }
             } catch (error) {
-              console.log('error parse bannerImage, ',error);
+              console.log("error parse bannerImage, ", error);
             }
-            
+
             // banner PlayNow
             try {
-              if(value?.playNow?.images){
+              if (value?.playNow?.images) {
                 const imagePlayNow = new File(
                   [value.playNow.images],
                   `${bPlayNow}.${value.playNow.images.type.split("/")[1]}`,
@@ -166,33 +168,31 @@ export default function NewProject(props) {
                 formData.append("boxImage", imagePlayNow);
               }
             } catch (error) {
-              console.log('error parse bannerPlayNow, ',error);
+              console.log("error parse bannerPlayNow, ", error);
             }
 
             const banner = {
-              'items':{
-                image:'',
-                url: value.items.url
+              items: {
+                image: "",
+                url: value.items.url,
               },
-              'playNow':{
-                image:'',
-                url: value.playNow.url
-              }
-            }
-            formData.append(key,JSON.stringify(banner));
+              playNow: {
+                image: "",
+                url: value.playNow.url,
+              },
+            };
+            formData.append(key, JSON.stringify(banner));
             break;
           default:
             formData.append(key, value);
             break;
         }
       }
-      
 
       // append box info and box image to form data
       list.boxes.map((item) => {
-      
         const items = {};
-        console.log('itemsimg',item.images);
+        console.log("itemsimg", item.images);
         const image = new File(
           [item.images],
           `${item.boxName}.${item.images.type.split("/")[1]}`,
@@ -216,7 +216,7 @@ export default function NewProject(props) {
           finalize: false,
         };
 
-        console.log('itemsimg fixed' ,image);
+        console.log("itemsimg fixed", image);
         formData.append("boxImage", image);
       });
 
@@ -287,7 +287,7 @@ export default function NewProject(props) {
           attr.push(el);
         });
 
-        item.attributes.forEach(item => {
+        item.attributes.forEach((item) => {
           attr.push(item);
         });
 
@@ -307,7 +307,7 @@ export default function NewProject(props) {
 
       formData.append("items", JSON.stringify(items));
 
-      // SEND TO API Create Project 
+      // SEND TO API Create Project
       axios
         .post(API.launchpad.domain + API.launchpad.project.add, formData, {
           headers: {
@@ -329,6 +329,13 @@ export default function NewProject(props) {
   useEffect(() => {
     if (!account) {
       router.push("/");
+    } else {
+      const cookieProfile = cookies.get(account + "-profile");
+      if (cookieProfile) {
+        getData("contactName", cookieProfile.name);
+        getData("owner", account);
+        getData("contactEmail", cookieProfile.email);
+      }
     }
   }, [account]);
 
