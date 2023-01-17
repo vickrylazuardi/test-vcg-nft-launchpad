@@ -200,6 +200,18 @@ button.claim {
         border: 1px solid #3f485f;
         overflow: hidden;
 
+        .dropdown-profile{
+            p,
+            a {
+                padding: 0 !important;
+
+                &:hover {
+                    background: transparent !important;
+                }
+            }
+            
+        }
+
         p,
         a {
             padding: 10px;

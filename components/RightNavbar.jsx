@@ -61,18 +61,70 @@ export default function RightNavbar(props) {
             </div> */}
             <div className="relative sub-menu-container sub-menu-4">
               <div className="sub-menu">
-                {
-                  // props?.router?.slice("/")[1] ?
-                  // <Link href="/">
-                  //   <a>Home</a>
-                  // </Link> :
-                  <Link href="/profile">
-                    <a>Profile</a>
-                  </Link>
-                }
-                <p className="not-enter" onClick={() => props.disconnect()}>
-                  Disconnect
-                </p>
+                <div className="dropdown-profile" style={{ cursor: "default" }}>
+                  <div
+                    className="p-4"
+                    style={{ borderBottom: "1px solid #3f485f" }}
+                  >
+                    <div className="flex">
+                      <Link href={"/profile"}>
+                        <a>
+                          <div
+                            className="mask mask-hexagon profile-pict-container relative m-auto mr-2"
+                            style={{ width: "30px", height: "30px" }}
+                          >
+                            <div
+                              className="mask mask-hexagon profile-wrap"
+                              style={{ background: "#3f485f" }}
+                            >
+                              <img
+                                width={10}
+                                src={"/images/default-avatar.png"}
+                                className="mask mask-hexagon object-contain h-full w-full"
+                              />
+                            </div>
+                          </div>
+                        </a>
+                      </Link>
+                      <div>
+                        <Link href={"/profile"}>
+                          <a>
+                            <p className="text-sm font-semibold">
+                              {props.detailProfile?.name}
+                            </p>
+                          </a>
+                        </Link>
+                        <p className="font-semibold text-sm text-color-grey">
+                          {props.account.slice(0, 7) +
+                            "..." +
+                            props.account.slice(-7)}
+                          <span
+                            className="font-medium text-sm text-red-600 ml-2 cursor-pointer"
+                            style={{ textDecoration: "underline" }}
+                            onClick={() => props.disconnect()}
+                          >
+                            Disconnect
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <Link href={"/profile"}>
+                      <a>
+                        <h6 className="text-sm font-semibold cursor-pointer mb-3 text-color-grey">
+                          My Profile
+                        </h6>
+                      </a>
+                    </Link>
+                    <h6
+                      className="text-sm font-semibold cursor-pointer text-red-600"
+                      onClick={() => props.disconnect()}
+                    >
+                      Disconnect
+                    </h6>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -85,11 +137,7 @@ export default function RightNavbar(props) {
               >
                 <img
                   width={10}
-                  src={
-                    props?.creatorImage?.length
-                      ? props?.creatorImage
-                      : "/images/default-avatar.png"
-                  }
+                  src={"/images/default-avatar.png"}
                   className="mask mask-hexagon object-contain h-full w-full"
                 />
               </div>

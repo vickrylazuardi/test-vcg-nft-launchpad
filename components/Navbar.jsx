@@ -21,7 +21,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const cookies = new Cookies();
 
-  // const [detailProfile, setDetailProfile] = useState();
+  const [detailProfile, setDetailProfile] = useState();
 
   const modalNewUser = {
     loading: false,
@@ -64,9 +64,8 @@ export default function Navbar() {
   useEffect(() => {
     if (account) {
       getCreator(account);
-      // const cookieProfile = cookies.get(account + "-profile");
-      // setDetailProfile(cookieProfile)
-      // console.log(">>", cookieProfile);
+      const cookieProfile = cookies.get(account + "-profile");
+      setDetailProfile(cookieProfile);
     }
   }, [account]);
 
@@ -89,7 +88,11 @@ export default function Navbar() {
               account={account}
               disconnect={handleDisconnect}
             /> */}
-              <RightNavbar account={account} disconnect={handleDisconnect} />
+              <RightNavbar
+                detailProfile={detailProfile}
+                account={account}
+                disconnect={handleDisconnect}
+              />
             </div>
           </div>
           {/* <div className="bottom-action-container hidden lg:block">
