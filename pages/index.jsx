@@ -282,48 +282,20 @@ export default function Home() {
         </div>
       </div>
       <div id="home-htb" className="container mt-14 lg:mt-6 lg:px-0">
-        <h2 className="font-bold text-2xl lg:text-sm mb-4 lg:px-5">
+        <h2 className="text-lg font-bold lg:text-sm mb-4 lg:px-5">
           How To Buy
         </h2>
         {/* <a href="https://vcgamers.com/news/crypto" target="_blank" rel='nofollow'> */}
-        <div
-          className="flex justify-center relative w-full"
-          style={{ minHeight: 150 }}
-        >
-          {isDesktop && (
-            // <img
-            //   src="/images/banner-htb.png"
-            //   alt=""
-            //   className="rounded-xl h-auto w-full"
-            // />
-            <iframe
-              width="100%"
-              height={700}
-              src="https://www.youtube.com/embed/YPXswO_yUBQ"
-              title="YouTube How To Buy"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          )}
-          {isMobile && (
-            <iframe
-              width="100%"
-              height={185}
-              src="https://www.youtube.com/embed/YPXswO_yUBQ"
-              title="YouTube How To Buy"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-            // <Image
-            //   src="/images/banner-htb-mob.png"
-            //   alt="banner how to buy"
-            //   layout="fill"
-            //   objectFit="cover"
-            //   loading="lazy"
-            // />
-          )}
+        <div className="flex justify-center relative w-full">
+          <iframe
+            width="100%"
+            style={{ aspectRatio: "2/1" }}
+            src="https://www.youtube.com/embed/YPXswO_yUBQ"
+            title="YouTube How To Buy"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
         {/* </a> */}
       </div>

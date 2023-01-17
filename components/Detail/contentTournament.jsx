@@ -19,7 +19,7 @@ export default function ContentTournament(props) {
                       currentTarget.src = "/images/Broken-Image.png";
                     }}
                   />
-                  <p className="label-status open">{item.status_text}</p>
+                  {/* <p className="label-status open">{item.status_text}</p> */}
                 </div>
                 <div className="card-detail py-4 px-5">
                   <h4 className="font-bold text-lg max-1-line">{item.name}</h4>
@@ -41,7 +41,7 @@ export default function ContentTournament(props) {
                   </p>
                   <div className="mt-4">
                     <div className="flex justify-between">
-                      <p className="font-bold">Slot Tim</p>
+                      <p className="font-bold">Team Slots</p>
                       <p className="font-bold">
                         {parseInt(item.number_participant_in)}/
                         <span className="text-color-grey">
@@ -78,7 +78,7 @@ export default function ContentTournament(props) {
                           borderRadius: "10px 0px 0px 10px",
                         }}
                       >
-                        <p className="text-xs font-bold mb-2">Pendaftaran</p>
+                        <p className="text-xs font-bold mb-2">Registration</p>
                         <p className="text-color-grey text-xs mb-1">
                           {moment(item.registration_date_from).format(
                             "MMMM DD, YYYY"
@@ -99,7 +99,7 @@ export default function ContentTournament(props) {
                         }}
                       >
                         <p className="text-xs font-bold mb-2">
-                          Jadwal Turnamen
+                          Tournament Schedule
                         </p>
                         <p className="text-color-grey text-xs mb-1">
                           {moment(item.tournament_date_from).format(
@@ -117,7 +117,7 @@ export default function ContentTournament(props) {
                   </div>
                   <div className="mt-4">
                     <div className="flex justify-between">
-                      <p className="text-xs font-bold">Biaya Pendaftaran</p>
+                      <p className="text-xs font-bold">Registration fee</p>
                       <p className="text-xs font-bold">
                         {item.registration_fee_text == "0"
                           ? "Gratis"
@@ -125,7 +125,7 @@ export default function ContentTournament(props) {
                       </p>
                     </div>
                     <div className="flex justify-between mt-2">
-                      <p className="text-xs font-bold">Total Hadiah</p>
+                      <p className="text-xs font-bold">Total prize</p>
                       <p className="text-xs font-bold">
                         Rp. {item.grandprize_text}
                       </p>
@@ -136,24 +136,26 @@ export default function ContentTournament(props) {
                       <div className="flex-none">
                         <a
                           href={`https://arena.vcg.asia/tournament/${item.url}`}
+                          target="_blank"
                         >
                           <button
                             className="btn btn-outline-white"
                             style={{ padding: "5px 20px" }}
                           >
-                            Detail
+                            Details
                           </button>
                         </a>
                       </div>
                       <div className="flex-1">
                         <a
                           href={`https://arena.vcg.asia/tournament/terms-conditions?tournament_id=${item.id}&game_id=${item.game_id}&game_name=${item.game_name}&slug=${item.url}`}
+                          target="_blank"
                         >
                           <button
                             className="btn btn-light-green w-full"
                             style={{ padding: "5px 20px" }}
                           >
-                            Ikut Turnamen
+                            Join the Tournament
                           </button>
                         </a>
                       </div>

@@ -241,7 +241,7 @@ export default function FooterTop() {
             </a>
           </div>
           <p className="link-title font-bold mt-7 lg:text-center">
-            Partner Pembayaran
+            Payment Partners
           </p>
           <div
             className="payment-container flex items-center flex-wrap mt-3 lg:justify-center lg:mx-auto"

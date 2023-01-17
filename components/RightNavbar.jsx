@@ -104,7 +104,7 @@ export default function RightNavbar(props) {
             <Link href="/connect-wallet">
               <a>
                 <button
-                  className="btn btn-connect-wallet-dark text-sm font-semibold mr-3"
+                  className="btn btn-light-green text-sm font-semibold mr-3"
                   style={{ padding: "10px 16px" }}
                 >
                   Connect Wallet

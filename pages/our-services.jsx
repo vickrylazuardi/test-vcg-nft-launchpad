@@ -248,7 +248,7 @@ export default function OurService(props) {
             gaming community
           </p>
           <div className="md:flex md:flex-wrap md:flex-col-reverse">
-            <a href="https://discord.com/invite/2ZCcTXx5Vr" target="_blank">
+            <a href="mailto:partner@vcgamers.com">
               <button
                 className="btn btn-outline-orange-light mt-2 mr-3 md:w-full"
                 style={{ padding: "10px 16px" }}
