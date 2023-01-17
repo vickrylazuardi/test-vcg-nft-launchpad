@@ -281,7 +281,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div id="home-htb" className="container mt-14 lg:mt-6 lg:px-0">
+      <div id="home-htb" className="container mt-14 lg:mt-6 lg:px-0 hidden">
         <h2 className="text-lg font-bold lg:text-sm mb-4 lg:px-5">
           How To Buy
         </h2>

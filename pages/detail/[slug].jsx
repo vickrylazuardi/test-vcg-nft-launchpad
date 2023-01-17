@@ -465,8 +465,7 @@ export default function _slug() {
         case "sellBox":
           modalMessage.type = "SellBox";
           modalMessage.message = "Start sell this box?";
-          modalMessage.successMessage =
-            "You have successfully sell this box";
+          modalMessage.successMessage = "You have successfully sell this box";
           modalMessage.failedMessage = "Failed to sell this box";
           setModalMessage({ ...modalMessage });
           break;
@@ -624,7 +623,7 @@ export default function _slug() {
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
-      getTournaments();
+      // getTournaments();
     }
   }, [data]);
 
@@ -879,6 +878,12 @@ export default function _slug() {
                 if (item == "Teams" && !project.team) {
                   return;
                 }
+                if (item == "Play Now" && !project?.banners?.playNow?.url) {
+                  return;
+                }
+                if (item == "Tournament") {
+                  return;
+                }
                 return (
                   <div
                     key={idx}
@@ -940,9 +945,9 @@ export default function _slug() {
           {/* /items Content */}
 
           {/* Items Content */}
-          {activeContent == listContent[3] && (
+          {/* {activeContent == listContent[3] && (
             <ContentTournament tournamentList={tournamentList} />
-          )}
+          )} */}
           {/* /items Content */}
 
           {/* Play Now Content */}

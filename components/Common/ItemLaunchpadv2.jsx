@@ -24,7 +24,7 @@ export default function ItemLaunchpadv2(props) {
     },
   };
 
-  console.log('props',props);
+  // console.log('props',props);
 
   return (
     <div id="item-launchpad" style={{ maxWidth: "100%" }}>
