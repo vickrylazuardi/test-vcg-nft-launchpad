@@ -127,7 +127,7 @@ export default function NewProject(props) {
 
       // append information from data var to form data
       for (const key in data) {
-        console.log("disini", key, value);
+        // console.log('disini',key,value);
         const value = data[key];
         switch (key) {
           case "socialMedia":
@@ -269,6 +269,7 @@ export default function NewProject(props) {
 
       // append items info and image to form data
       list.items.map((item, idx) => {
+        console.log('item nft',item);
         const attr = [];
         const image = new File(
           [item.images],
@@ -298,6 +299,7 @@ export default function NewProject(props) {
           description: "",
           attributes: attr,
           nftAddress: "",
+          supply :item.supply,
           projectName: data.name,
         };
 
@@ -307,7 +309,8 @@ export default function NewProject(props) {
 
       formData.append("items", JSON.stringify(items));
 
-      // SEND TO API Create Project
+      // return;
+      // SEND TO API Create Project 
       axios
         .post(API.launchpad.domain + API.launchpad.project.add, formData, {
           headers: {
@@ -406,6 +409,40 @@ export default function NewProject(props) {
             />
           )}
 
+          {
+              data.contactName &&
+              data.contactEmail &&
+              data.duration &&
+              data.validEmail &&
+              data.owner &&
+              data.icon &&
+              data.name &&
+              data.desc &&
+              data.startedAt &&
+              // list.member.length &&
+              // list.features.length &&
+              list.boxes.length &&
+              list.items.length &&
+              // list.member.find((item) => {
+              //   return !item.completed;
+              // }) == undefined &&
+              // list.features.find((item) => {
+              //   return !item.completed;
+              // }) == undefined &&
+              list.boxes.find((item) => {
+                return !item.completed;
+              }) == undefined &&
+              list.items.find((item) => {
+                return !item.completed;
+              }) == undefined
+              ?
+              <div  className="mt-8 text-left d-flex justify-content-left">
+                <input type="checkbox" className="mt-1"></input>
+                <span className="ml-2" style={{color:'#ffeaaa'}}>By submitting, you're agree with platform related fee of 2.5 %- 5% as withdrawal fee. Please contact our team [hyperlink to telegram VCG Admin] for more information</span>
+              </div>:""
+          }
+          
+
           <div className="mt-8 text-right">
             <button
               style={{ padding: "10px 30px" }}
@@ -428,13 +465,13 @@ export default function NewProject(props) {
                   data.name &&
                   data.desc &&
                   data.startedAt &&
-                  list.member.length &&
+                  // list.member.length &&
                   // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
-                  list.member.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.member.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   // list.features.find((item) => {
                   //   return !item.completed;
                   // }) == undefined &&
@@ -460,13 +497,13 @@ export default function NewProject(props) {
                   data.name &&
                   data.desc &&
                   data.startedAt &&
-                  list.member.length &&
+                  // list.member.length &&
                   // list.features.length &&
                   list.boxes.length &&
                   list.items.length &&
-                  list.member.find((item) => {
-                    return !item.completed;
-                  }) == undefined &&
+                  // list.member.find((item) => {
+                  //   return !item.completed;
+                  // }) == undefined &&
                   // list.features.find((item) => {
                   //   return !item.completed;
                   // }) == undefined &&
