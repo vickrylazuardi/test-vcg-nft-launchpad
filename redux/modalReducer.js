@@ -48,6 +48,13 @@ const initialState = {
       en: "Information New User",
     },
   },
+  modalSelectPayment: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Choose Payment Method",
+    },
+  },
 };
 
 const modalSlice = createSlice({
@@ -113,6 +120,13 @@ const modalSlice = createSlice({
 		    state.modalNewUser.title = val.payload.title;
       }
     },
+    toggleModalSelectPayment: (state, val) => {
+      if (val.payload) {
+        state.modalSelectPayment.loading = val.payload.loading;
+        state.modalSelectPayment.isOpen = val.payload.isOpen;
+		    state.modalSelectPayment.title = val.payload.title;
+      }
+    },
   },
 });
 
@@ -123,5 +137,6 @@ export const {
   toggleModalTransaction,
   toggleModalClaimable,
   toggleModalNewUser,
+  toggleModalSelectPayment
 } = modalSlice.actions;
 export default modalSlice.reducer;

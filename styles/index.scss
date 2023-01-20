@@ -1234,22 +1234,22 @@ footer {
         max-width: 800px;
         margin-inline: auto;
 
-        // .dialog-dark-head {
-        //     display: flex;
-        //     align-items: center;
+        .dialog-dark-head {
+            display: flex;
+            align-items: center;
 
-        //     .dbh-left {
-        //         width: 50%;
-        //         font-size: 16px;
-        //         font-weight: 700;
-        //     }
+            .dbh-left {
+                width: 50%;
+                font-size: 16px;
+                font-weight: 700;
+            }
 
-        //     .dbh-right {
-        //         display: flex;
-        //         justify-content: right;
-        //         width: 50%;
-        //     }
-        // }
+            .dbh-right {
+                display: flex;
+                justify-content: right;
+                width: 50%;
+            }
+        }
 
         // .dialog-dark-body {
         //     font-size: 14px;
@@ -2364,6 +2364,17 @@ footer {
     }
 }
 
+.input-qty.type-green{
+    input{
+        padding: 0 10px;
+    }
+
+    button{
+        padding: 0px 11px;
+        background: #40D04F;
+    }
+}
+
 .table-flexible{
     min-width: 100%;
     font-size: 14px;
@@ -2399,6 +2410,14 @@ footer {
 
 .text-color-grey{
     color: var(--gray-light);
+}
+
+.text-color-primary{
+    color: #E28058;
+}
+
+.text-color-light-green{
+    color: #40D04F;
 }
 
 
@@ -2854,4 +2873,151 @@ footer {
 #toast.show {
     visibility: visible;
     transform: scaleY(1);
+}
+
+.input-payment{
+    border: 1px solid #40D04F;
+    border-radius: 10px;
+    padding: 5px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 135%;
+    display: flex;
+    align-items: center;
+}
+
+.warp-list-payment{
+
+    .list-payment{
+        margin-top: 20px;
+
+        .type-payment{
+            color: #9AA4BF;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 18px;
+            margin-bottom: 5px;
+        }
+    
+        .payment-items{
+            padding: 10px 0;
+            border-bottom: 1px solid #2A334B;
+        
+            .img-payment{
+                width: 43px;
+                height: 43px;
+                border-radius: 10px;
+            }
+        
+            .title-payment{
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 18px;
+            }
+        
+            .subtitle-payment{
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 18px;
+                color: #9AA4BF;
+            }
+            
+            .subtitle-payment.text-promo{
+                color: #40D04F;
+            }
+    
+            .admin-fee{
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 18px;
+                color: #9AA4BF;
+            }
+    
+            .admin-fee.free{
+                color: #40D04F;
+            }
+        }
+    }
+
+    .list-payment:nth-child(1){
+        margin-top: 0px;
+    }
+}
+
+.navbar-mobile-with-back{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    padding: 16px;
+    background: #161B28;
+    z-index: 9;
+}
+
+.card-trx{
+    width: 400px;
+
+    .trx-top,
+    .trx-center,
+    .trx-bottom{
+        background: #1C2233;
+        padding: 16px;
+    }
+
+    .trx-top{
+        border-radius: 10px 10px 0px 0px;
+
+        .trx-countdown{
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            p{
+               font-weight: 700;
+               line-height: 120%; 
+               color: #FF9233;
+               margin-bottom: 5px;
+            }
+        }
+    }
+}
+
+.accordion-wrap{
+    .chevron-up{
+        display: none;
+    }
+    .chevron-down{
+        display: block;
+    }
+
+    .accordion-content{
+        height: 0;
+        visibility: hidden;
+        transition: height 200ms;
+        
+        ol, ul{
+            list-style: auto;
+            margin: unset;
+            padding: unset;
+        }
+    }
+    
+    .chevron-down,
+    .chevron-up{
+        color: #9AA4BF;
+    }
+}
+.accordion-wrap.show{
+    .chevron-up{
+        display: block;
+    }
+    .chevron-down{
+        display: none;
+    }
+
+    .accordion-content{
+        height: auto;
+        visibility: visible;
+    }
 }
