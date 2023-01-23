@@ -64,7 +64,7 @@ export default function Transaction(props) {
 
   return (
     <>
-      <NavbarMobileWithBack title="Checkout" />
+      <NavbarMobileWithBack title="Payment" />
 
       <div className="global-container ">
         <div className="container mx-auto pt-0 md:pt-16">

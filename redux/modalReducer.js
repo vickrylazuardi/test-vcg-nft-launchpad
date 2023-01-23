@@ -55,6 +55,33 @@ const initialState = {
       en: "Choose Payment Method",
     },
   },
+  modalconfirm: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Purchase Confirmation",
+    },
+    text: {
+      en: "",
+    },
+  },
+  modalconfirmPrivacyPolicy: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Privacy Policy",
+    },
+    text: {
+      en: "",
+    },
+  },
+  modalSendOTP: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "OTP Verification",
+    }
+  },
 };
 
 const modalSlice = createSlice({
@@ -127,6 +154,29 @@ const modalSlice = createSlice({
 		    state.modalSelectPayment.title = val.payload.title;
       }
     },
+    toggleModalConfirm: (state, val) => {
+      if (val.payload) {
+        state.modalconfirm.loading = val.payload.loading;
+        state.modalconfirm.isOpen = val.payload.isOpen;
+		    state.modalconfirm.title = val.payload.title;
+		    state.modalconfirm.text = val.payload.text;
+      }
+    },
+    toggleModalConfirmPrivacyPolicy: (state, val) => {
+      if (val.payload) {
+        state.modalconfirmPrivacyPolicy.loading = val.payload.loading;
+        state.modalconfirmPrivacyPolicy.isOpen = val.payload.isOpen;
+		    state.modalconfirmPrivacyPolicy.title = val.payload.title;
+		    state.modalconfirmPrivacyPolicy.text = val.payload.text;
+      }
+    },
+    toggleModalSendOTP: (state, val) => {
+      if (val.payload) {
+        state.modalSendOTP.loading = val.payload.loading;
+        state.modalSendOTP.isOpen = val.payload.isOpen;
+		    state.modalSendOTP.title = val.payload.title;
+      }
+    },
   },
 });
 
@@ -137,6 +187,9 @@ export const {
   toggleModalTransaction,
   toggleModalClaimable,
   toggleModalNewUser,
-  toggleModalSelectPayment
+  toggleModalSelectPayment,
+  toggleModalConfirm,
+  toggleModalConfirmPrivacyPolicy,
+  toggleModalSendOTP
 } = modalSlice.actions;
 export default modalSlice.reducer;

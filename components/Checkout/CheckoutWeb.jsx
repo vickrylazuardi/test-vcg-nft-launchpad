@@ -80,7 +80,9 @@ export default function CheckoutWeb(props) {
             <div
               className="input-payment mt-5"
               onClick={() =>
-                props.dispatch(props.toggleModalSelectPayment(props.modalSelectPayment))
+                props.dispatch(
+                  props.toggleModalSelectPayment(props.modalSelectPayment)
+                )
               }
             >
               <img src="/images/svg/card-payment.svg" alt="" />
@@ -113,6 +115,10 @@ export default function CheckoutWeb(props) {
             <button
               className="btn btn-light-green text-sm font-semibold mt-5 w-full"
               style={{ padding: "10px" }}
+              onClick={() => {
+                props.modalconfirm.isOpen = true;
+                props.dispatch(props.toggleModalConfirm(props.modalconfirm));
+              }}
             >
               Pay Now
             </button>
