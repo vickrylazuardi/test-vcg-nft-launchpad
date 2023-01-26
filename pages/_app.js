@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, router }) {
 				</Web3ReactProvider>
 			</React.StrictMode>
 		);
-	}else if (router.pathname.split("/")[1] === "detail") {
+	}else if (router.pathname.split("/")[1] === "detail" || router.pathname.split("/")[1] === "projects") {
 		return (
 			<React.StrictMode>
 				<Web3ReactProvider getLibrary={getLibrary}>

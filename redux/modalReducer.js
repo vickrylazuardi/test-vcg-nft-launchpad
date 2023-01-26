@@ -82,6 +82,13 @@ const initialState = {
       en: "OTP Verification",
     }
   },
+  modalFilterListProjectsWMR: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Filter",
+    }
+  },
 };
 
 const modalSlice = createSlice({
@@ -177,6 +184,13 @@ const modalSlice = createSlice({
 		    state.modalSendOTP.title = val.payload.title;
       }
     },
+    toggleModalFilterListProjectsWMR: (state, val) => {
+      if (val.payload) {
+        state.modalFilterListProjectsWMR.loading = val.payload.loading;
+        state.modalFilterListProjectsWMR.isOpen = val.payload.isOpen;
+		    state.modalFilterListProjectsWMR.title = val.payload.title;
+      }
+    },
   },
 });
 
@@ -190,6 +204,7 @@ export const {
   toggleModalSelectPayment,
   toggleModalConfirm,
   toggleModalConfirmPrivacyPolicy,
-  toggleModalSendOTP
+  toggleModalSendOTP,
+  toggleModalFilterListProjectsWMR
 } = modalSlice.actions;
 export default modalSlice.reducer;
