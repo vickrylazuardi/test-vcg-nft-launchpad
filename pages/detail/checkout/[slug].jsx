@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutWeb from "../../../components/Checkout/CheckoutWeb";
@@ -16,6 +16,9 @@ import DialogConfirmPrivacyPolicy from "../../../components/Common/DialogConfirm
 import DialogSendOTP from "../../../components/Common/DialogSendOTP";
 import { useRouter } from "next/router";
 import CheckoutMobile from "../../../components/Checkout/CheckoutMobile";
+import axios from "axios";
+import { API } from "../../../utils/globalConstant";
+import { useState } from "react";
 
 const modalSelectPayment = {
   loading: false,
@@ -72,10 +75,12 @@ export default function Checkout(props) {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const [listPayment, setListPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("");
+
   function handleContinue(val) {
     modalconfirm.isOpen = false;
     modalconfirmPrivacyPolicy.isOpen = true;
-    console.log("//",modalconfirmPrivacyPolicy);
 
     dispatch(toggleModalConfirm(modalconfirm));
     dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
@@ -95,6 +100,36 @@ export default function Checkout(props) {
     dispatch(toggleModalSendOTP(modalSendOTP));
     router.push(`/detail/transaction/63c4fc3d4ed10026b249e8c7`);
   }
+
+  const getListPayment = async () => {
+    try {
+      const { data } = await axios.get(
+        API.marketplaceV2 + `/api/marketplace/fiatpayment?t=desktop`
+      );
+
+      if (data.status) {
+        setListPayment(data.data);
+      }
+      console.log("DAta", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  function handleSelectPayment(payment) {
+    console.log(payment);
+    setSelectedPayment({
+      payment_method_name: payment.payment_method_name,
+      payment_method_image: payment.payment_method_image,
+    });
+
+    modalSelectPayment.isOpen = false;
+    dispatch(toggleModalSelectPayment({ ...modalSelectPayment }));
+  }
+
+  useEffect(() => {
+    getListPayment();
+  }, []);
 
   return (
     <>
@@ -127,6 +162,7 @@ export default function Checkout(props) {
             toggleModalConfirm={toggleModalConfirm}
             modalSelectPayment={modalSelectPayment}
             modalconfirm={modalconfirm}
+            selectedPayment={selectedPayment}
           />
 
           <CheckoutMobile
@@ -135,10 +171,16 @@ export default function Checkout(props) {
             toggleModalConfirm={toggleModalConfirm}
             modalSelectPayment={modalSelectPayment}
             modalconfirm={modalconfirm}
+            selectedPayment={selectedPayment}
           />
         </div>
 
-        {modal.modalSelectPayment.isOpen && <DialogSelectPayment />}
+        {modal.modalSelectPayment.isOpen && (
+          <DialogSelectPayment
+            listPayment={listPayment}
+            handleSelectPayment={handleSelectPayment}
+          />
+        )}
         {modal.modalconfirm.isOpen && (
           <DialogConfirm onContinue={handleContinue} />
         )}

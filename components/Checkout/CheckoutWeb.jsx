@@ -79,14 +79,43 @@ export default function CheckoutWeb(props) {
             <p className="font-bold">Summary Transaction</p>
             <div
               className="input-payment mt-5"
-              onClick={() =>
+              onClick={() => {
+                props.modalSelectPayment.isOpen = true;
                 props.dispatch(
                   props.toggleModalSelectPayment(props.modalSelectPayment)
-                )
-              }
+                );
+              }}
             >
-              <img src="/images/svg/card-payment.svg" alt="" />
-              <p>Select Payment Method</p>
+              {props.selectedPayment ? (
+                <>
+                  <img
+                    style={{
+                      width: "43px",
+                      height: "43px",
+                      borderRadius: "10px",
+                      objectFit: "contain",
+                      marginRight: "10px",
+                    }}
+                    src={
+                      props.selectedPayment.payment_method_image
+                        ? props.selectedPayment.payment_method_image
+                        : "/images/Broken-Image.png"
+                    }
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "/images/Broken-Image.png";
+                    }}
+                    alt=""
+                  />
+                  <p>{props.selectedPayment.payment_method_name}</p>
+                </>
+              ) : (
+                <>
+                  <img src="/images/svg/card-payment.svg" alt="" />
+                  <p>Select Payment Method</p>
+                </>
+              )}
+
               <FaChevronRight className="ml-auto" />
             </div>
             <div

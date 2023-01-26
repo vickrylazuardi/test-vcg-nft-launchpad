@@ -66,24 +66,72 @@ export default function DialogSelectPayment(props) {
           </div>
           <div className="p-4">
             <div className="warp-list-payment">
-              <div className="list-payment">
-                <p className="type-payment">Crypto</p>
-                <div className="payment-items flex items-center">
-                  <img
-                    className="img-payment"
-                    src="/images/Broken-Image.png"
-                    alt=""
-                  />
-                  <div className="mx-3">
-                    <p className="title-payment mb-1">BUSD</p>
-                    <p className="subtitle-payment">1.310.12413532</p>
-                  </div>
-                  <div className="ml-auto">
-                    <FaChevronRight className="text-color-grey" />
-                  </div>
-                </div>
-              </div>
-              <div className="list-payment">
+              {props.listPayment
+                ? props.listPayment.map((item, idx) => {
+                    return (
+                      <div className="list-payment" key={idx}>
+                        <p className="type-payment">
+                          {item.payment_method_category_name}
+                        </p>
+                        {item.payment_method_detail.map((payment, index) => {
+                          if (payment.payment_method_status == "Aktif") {
+                            return (
+                              <div
+                                className="payment-items flex items-center cursor-pointer"
+                                key={index}
+                                onClick={() =>
+                                  props.handleSelectPayment(payment)
+                                }
+                              >
+                                <img
+                                  className="img-payment"
+                                  src={
+                                    payment.payment_method_image
+                                      ? payment.payment_method_image
+                                      : "/images/Broken-Image.png"
+                                  }
+                                  onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null; // prevents looping
+                                    currentTarget.src =
+                                      "/images/Broken-Image.png";
+                                  }}
+                                  alt=""
+                                />
+                                <div className="mx-3">
+                                  <p className="title-payment mb-1">
+                                    {payment.payment_method_name}
+                                  </p>
+                                  {payment.cashback ? (
+                                    <p className="subtitle-payment text-promo">
+                                      Potential Cashback Rp{payment.cashback}
+                                    </p>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="ml-auto">
+                                  {payment.payment_fee_text != "0" ? (
+                                    <p className="admin-fee inline mx-2">
+                                      + Rp{payment.payment_fee_text}
+                                    </p>
+                                  ) : (
+                                    <p className="admin-fee free inline mx-2">
+                                      Free
+                                    </p>
+                                  )}
+                                  <FaChevronRight className="text-color-grey inline" />
+                                </div>
+                              </div>
+                            );
+                          } else {
+                            return "";
+                          }
+                        })}
+                      </div>
+                    );
+                  })
+                : ""}
+              {/* <div className="list-payment">
                 <p className="type-payment">Instant Payment</p>
                 <div className="payment-items flex items-center">
                   <img
@@ -126,7 +174,7 @@ export default function DialogSelectPayment(props) {
                     <FaChevronRight className="ml-auto text-color-grey inline" />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* <p className="text-xl font-bold mb-10">
