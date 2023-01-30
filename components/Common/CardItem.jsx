@@ -3,25 +3,37 @@ import React from "react";
 import { useState } from "react";
 import { isDesktop, isMobile } from "react-device-detect";
 
-export default function CardItem({ img, title, desc, slug, socmed }) {
+export default function CardItem({
+  img,
+  title,
+  desc,
+  slug,
+  socmed,
+  isCardDark,
+}) {
   const [emblemKYC, setEmblemKYC] = useState("/images/KYC-Default.png");
-  const [isKYC, setIsKYC ] =useState(false);
+  const [isKYC, setIsKYC] = useState(false);
 
   return (
     <>
       {/* {isDesktop && ( */}
-      <div id="card-item-container">
+      <div
+        id="card-item-container"
+        className={isCardDark ? "card-bg-dark" : ""}
+      >
         <Link href={`/detail/${slug}`}>
           <div className="img-wrap cursor-pointer">
-            {isKYC &&
-            <img
-              className="absolute mt-2 ml-2 hover:w-14"
-              src={emblemKYC}
-              alt=""
-              onMouseEnter={() => setEmblemKYC("/images/KYC-Default-white.png")}
-              onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
-            />
-            }
+            {isKYC && (
+              <img
+                className="absolute mt-2 ml-2 hover:w-14"
+                src={emblemKYC}
+                alt=""
+                onMouseEnter={() =>
+                  setEmblemKYC("/images/KYC-Default-white.png")
+                }
+                onMouseLeave={() => setEmblemKYC("/images/KYC-Default.png")}
+              />
+            )}
             <img
               src={img}
               alt={title}

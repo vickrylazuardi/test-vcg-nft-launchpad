@@ -15,6 +15,7 @@ import React from "react";
 import { Web3ReactProvider } from "@web3-react/core";
 import useMetaMask, { MetaMaskProvider } from "../wallet/hook";
 import LayoutNoFooterWMR from "../components/Layout/LayoutNoFooterWMR";
+import LayoutEmptyWMR from "../components/Layout/LayoutEmptyWMR";
 
 function MyApp({ Component, pageProps, router }) {
   function getLibrary(provider) {
@@ -30,6 +31,20 @@ function MyApp({ Component, pageProps, router }) {
 							<LayoutDashboard>
 								<Component {...pageProps} />
 							</LayoutDashboard>
+						</Provider>
+					</MetaMaskProvider>
+				</Web3ReactProvider>
+			</React.StrictMode>
+		);
+	}else if (router.pathname.split("/")[1] === "detail" || router.pathname.split("/")[1] === "projects") {
+		return (
+			<React.StrictMode>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<MetaMaskProvider>
+						<Provider store={store}>
+							<LayoutEmptyWMR>
+								<Component {...pageProps} />
+							</LayoutEmptyWMR>
 						</Provider>
 					</MetaMaskProvider>
 				</Web3ReactProvider>

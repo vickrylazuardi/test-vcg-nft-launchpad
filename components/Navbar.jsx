@@ -15,7 +15,7 @@ import axios from "axios";
 import { API } from "../utils/globalConstant";
 import ToastComponent from "./Common/toastComponent";
 
-export default function Navbar() {
+export default function Navbar(props) {
   const { account, disconnect, switchActive } = useMetaMask();
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
@@ -102,7 +102,13 @@ export default function Navbar() {
           <NavbarMobile />
         </nav>
       </div>
-      <NavigationBottomMobile account={account} disconnect={handleDisconnect} />
+
+      {!props.noneBtmNav && (
+        <NavigationBottomMobile
+          account={account}
+          disconnect={handleDisconnect}
+        />
+      )}
 
       {modal.modalNewUser.isOpen && <DialogNewUser />}
       <ToastComponent />

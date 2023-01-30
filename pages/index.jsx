@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import HeaderCenter from "../components/Home/HeaderCenter";
 import useMetaMask from "../wallet/hook";
 import { isDesktop, isMobile } from "react-device-detect";
+import Link from "next/link";
 
 const StyledSlider = styled(Slider)`
   .slick-track {
@@ -223,7 +224,14 @@ export default function Home() {
       />
       <div id="launchpad-tab" className="container mt-14 md:pb-10">
         <div>
-          <p className="text-lg font-bold pb-5">Featured Projects</p>
+          <div className="flex justify-between items-center pr-16 pb-5">
+            <p className="text-lg font-bold">Featured Projects</p>
+            <Link href="/projects/Featured">
+              <a className="text-sm font-bold" style={{ color: "#E28058" }}>
+                See All
+              </a>
+            </Link>
+          </div>
           <div className="item-tab-container mt-5">
             {trending?.length ? (
               <StyledSlider {...settings}>
@@ -252,7 +260,14 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-10">
-          <p className="text-lg font-bold pb-5">Project List</p>
+          <div className="flex justify-between items-center pb-5 pr-16">
+            <p className="text-lg font-bold">Project List</p>
+            <Link href="/projects/Project-List">
+              <a className="text-sm font-bold" style={{ color: "#E28058" }}>
+                See All
+              </a>
+            </Link>
+          </div>
           <div className="item-tab-container mt-5">
             {listProject?.length ? (
               <StyledSlider {...settings}>

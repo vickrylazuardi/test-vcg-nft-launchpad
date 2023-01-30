@@ -48,6 +48,47 @@ const initialState = {
       en: "Information New User",
     },
   },
+  modalSelectPayment: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Choose Payment Method",
+    },
+  },
+  modalconfirm: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Purchase Confirmation",
+    },
+    text: {
+      en: "",
+    },
+  },
+  modalconfirmPrivacyPolicy: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Privacy Policy",
+    },
+    text: {
+      en: "",
+    },
+  },
+  modalSendOTP: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "OTP Verification",
+    }
+  },
+  modalFilterListProjectsWMR: {
+    loading: false,
+    isOpen: false,
+    title: {
+      en: "Filter",
+    }
+  },
 };
 
 const modalSlice = createSlice({
@@ -113,6 +154,43 @@ const modalSlice = createSlice({
 		    state.modalNewUser.title = val.payload.title;
       }
     },
+    toggleModalSelectPayment: (state, val) => {
+      if (val.payload) {
+        state.modalSelectPayment.loading = val.payload.loading;
+        state.modalSelectPayment.isOpen = val.payload.isOpen;
+		    state.modalSelectPayment.title = val.payload.title;
+      }
+    },
+    toggleModalConfirm: (state, val) => {
+      if (val.payload) {
+        state.modalconfirm.loading = val.payload.loading;
+        state.modalconfirm.isOpen = val.payload.isOpen;
+		    state.modalconfirm.title = val.payload.title;
+		    state.modalconfirm.text = val.payload.text;
+      }
+    },
+    toggleModalConfirmPrivacyPolicy: (state, val) => {
+      if (val.payload) {
+        state.modalconfirmPrivacyPolicy.loading = val.payload.loading;
+        state.modalconfirmPrivacyPolicy.isOpen = val.payload.isOpen;
+		    state.modalconfirmPrivacyPolicy.title = val.payload.title;
+		    state.modalconfirmPrivacyPolicy.text = val.payload.text;
+      }
+    },
+    toggleModalSendOTP: (state, val) => {
+      if (val.payload) {
+        state.modalSendOTP.loading = val.payload.loading;
+        state.modalSendOTP.isOpen = val.payload.isOpen;
+		    state.modalSendOTP.title = val.payload.title;
+      }
+    },
+    toggleModalFilterListProjectsWMR: (state, val) => {
+      if (val.payload) {
+        state.modalFilterListProjectsWMR.loading = val.payload.loading;
+        state.modalFilterListProjectsWMR.isOpen = val.payload.isOpen;
+		    state.modalFilterListProjectsWMR.title = val.payload.title;
+      }
+    },
   },
 });
 
@@ -123,5 +201,10 @@ export const {
   toggleModalTransaction,
   toggleModalClaimable,
   toggleModalNewUser,
+  toggleModalSelectPayment,
+  toggleModalConfirm,
+  toggleModalConfirmPrivacyPolicy,
+  toggleModalSendOTP,
+  toggleModalFilterListProjectsWMR
 } = modalSlice.actions;
 export default modalSlice.reducer;
