@@ -66,6 +66,36 @@ export default function DialogSelectPayment(props) {
           </div>
           <div className="p-4">
             <div className="warp-list-payment">
+              <div className="list-payment">
+                <p className="type-payment">Crypto</p>
+                <div
+                  className="payment-items flex items-center cursor-pointer"
+                  onClick={() => {
+                    let payment = {
+                      payment_method_name: "VCG",
+                      payment_method_image: "/images/coin-vcg.png",
+                    };
+                    props.handleSelectPayment(payment, "crypto");
+                  }}
+                >
+                  <img
+                    className="img-payment"
+                    src="/images/coin-vcg.png"
+                    alt=""
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "/images/Broken-Image.png";
+                    }}
+                  />
+                  <div className="mx-3">
+                    <p className="title-payment mb-1">VCG</p>
+                    <p className="subtitle-payment">0.4120944812</p>
+                  </div>
+                  <div className="ml-auto">
+                    <FaChevronRight className="ml-auto text-color-grey inline" />
+                  </div>
+                </div>
+              </div>
               {props.listPayment
                 ? props.listPayment.map((item, idx) => {
                     return (
@@ -80,7 +110,7 @@ export default function DialogSelectPayment(props) {
                                 className="payment-items flex items-center cursor-pointer"
                                 key={index}
                                 onClick={() =>
-                                  props.handleSelectPayment(payment)
+                                  props.handleSelectPayment(payment, "fiat")
                                 }
                               >
                                 <img

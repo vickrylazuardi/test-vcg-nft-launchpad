@@ -2,6 +2,29 @@ import React from "react";
 import { FaChevronRight } from "react-icons/fa";
 
 export default function CheckoutMobile(props) {
+  function handleTotalPayment() {
+    // console.log(
+    //   typeof props.boxItem.price,
+    //   typeof props.amount,
+    //   typeof props.selectedPayment.payment_fee
+    // );
+    // console.log(
+    //   parseInt(props.boxItem.price) * parseInt(props.amount) +
+    //     parseInt(props.selectedPayment.payment_fee)
+    // );
+    if (props.typePayment == "fiat") {
+      return "-";
+    } else if (props.typePayment == "crypto") {
+      let total = "-";
+      if (props.boxItem.price && props.amount) {
+        total = parseInt(props.boxItem.price) * parseInt(props.amount);
+      }
+      return total;
+    } else {
+      return "-";
+    }
+  }
+
   return (
     <div className="hidden md:block">
       <div className="card-dark" style={{ borderRadius: "0" }}>
@@ -14,53 +37,63 @@ export default function CheckoutMobile(props) {
           }}
         >
           <div className="flex justify-between items-center">
-            <p className="text-sm font-bold">Small Box</p>
-            <p className="text-sm font-bold">
+            <p className="text-sm font-bold">{props.boxItem.name}</p>
+            {/* <p className="text-sm font-bold">
               $1.010 / <strong className="text-color-light-green">Rp</strong>
               1.133.010
-            </p>
+            </p> */}
+            <p className="text-sm font-bold">{props.boxItem.price} VCG</p>
           </div>
-          <p className="text-sm font-bold text-color-light-green">Cross out</p>
+          <p className="text-sm font-bold text-color-light-green">
+            {props.project.name}
+          </p>
           <div className="flex justify-between items-center mt-3">
             <p className="text-sm font-bold">Quantity</p>
             <div className="wrap-input input-qty border-dark type-green">
               <button
-              // onClick={() => {
-              //   item.supply -= 1;
-              //   props.setList({ ...props.list });
-              // }}
-              // disabled={item.supply == 0}
+                onClick={() => {
+                  let amnt = props.amount;
+                  amnt -= 1;
+                  props.setAmount(amnt == 0 ? "" : amnt);
+                }}
+                disabled={props.amount == 0}
               >
                 -
               </button>
               <input
                 type="number"
                 min={0}
-                // value={item.supply}
+                value={props.amount}
                 placeholder="0"
-                // onChange={(e) => {
-                //   const val = e.target.value.replace(/[^0-9]/g, "");
-                //   if (e.target.value) {
-                //     if (e.target.value === "0") {
-                //       e.target.value = "";
-                //     } else {
-                //       e.target.value = val;
-                //     }
-                //   }
-                //   item.supply = e.target.value;
-                //   props.setList({ ...props.list });
-                // }}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/[^0-9]/g, "");
+                  if (e.target.value) {
+                    if (e.target.value === "0") {
+                      e.target.value = "";
+                    } else if (
+                      e.target.value >=
+                      props.boxItem.stock - props.boxItem.sold
+                    ) {
+                      e.target.value = props.boxItem.stock - props.boxItem.sold;
+                    } else {
+                      e.target.value = val;
+                    }
+                  }
+                  props.setAmount(e.target.value);
+                }}
               />
               <button
-              // onClick={() => {
-              //   if (!item.supply) {
-              //     item.supply = 0;
-              //   }
-
-              //   let val = parseInt(item.supply) + 1;
-              //   item.supply = val;
-              //   props.setList({ ...props.list });
-              // }}
+                onClick={() => {
+                  let amnt = props.amount;
+                  if (!amnt) {
+                    amnt = 0;
+                  }
+                  let val = parseInt(amnt) + 1;
+                  props.setAmount(val);
+                }}
+                disabled={
+                  props.amount >= props.boxItem.stock - props.boxItem.sold
+                }
               >
                 +
               </button>
@@ -118,17 +151,33 @@ export default function CheckoutMobile(props) {
             className="flex justify-between items-center mt-3 pb-2"
             style={{ borderBottom: "solid 1px #2A334B" }}
           >
+            <p className="text-sm font-semibold text-color-grey">Total Order</p>
             <p className="text-sm font-semibold text-color-grey">
-              Admin fee for Bank Mandiri VA
+              {props.boxItem.price * props.amount}
             </p>
-            <p className="text-sm font-semibold text-color-grey">-</p>
           </div>
-          <div className="flex justify-between items-center mt-2">
-            <p className="text-sm font-semibold text-color-grey">
-              Total Payment
-            </p>
-            <p className="text-sm font-semibold text-color-grey">-</p>
-          </div>
+          {props.typePayment == "fiat" && (
+            <div
+              className="flex justify-between items-center mt-2 pb-2"
+              // style={{ borderBottom: "solid 1px #2A334B" }}
+            >
+              <p className="text-sm font-semibold text-color-grey">
+                Admin fee{" "}
+                {`for ${
+                  props.selectedPayment
+                    ? props.selectedPayment.payment_method_name
+                    : ""
+                }`}
+              </p>
+              <p className="text-sm font-semibold text-color-grey">
+                {props.selectedPayment
+                  ? props.selectedPayment.payment_fee_text
+                    ? props.selectedPayment.payment_fee_text
+                    : "-"
+                  : "-"}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -138,18 +187,48 @@ export default function CheckoutMobile(props) {
             <p className="text-sm font-semibold text-color-grey">
               Total Payment
             </p>
-            <p className="text-sm font-semibold text-color-light-green">-</p>
+            <p className="text-sm font-semibold text-color-light-green">
+              {handleTotalPayment()}
+            </p>
           </div>
-          <button
-            className="btn btn-light-green text-sm font-semibold w-full"
-            style={{ padding: "10px" }}
-            onClick={() => {
-              props.modalconfirm.isOpen = true;
-              props.dispatch(props.toggleModalConfirm(props.modalconfirm));
-            }}
-          >
-            Pay Now
-          </button>
+          {props.typePayment == "fiat" && (
+            <button
+              className="btn btn-light-green text-sm font-semibold w-full"
+              style={{ padding: "10px" }}
+              onClick={() => {
+                props.modalconfirm.isOpen = true;
+                props.dispatch(props.toggleModalConfirm(props.modalconfirm));
+              }}
+              disabled
+            >
+              Pay Now
+            </button>
+          )}
+          {props.typePayment == "crypto" && (
+            <button
+              className="btn btn-light-green text-sm font-semibold w-full"
+              style={{ padding: "10px" }}
+              onClick={() => {
+                props.handleBuyCrypto({
+                  name: props.boxItem.name,
+                  amount: props.amount,
+                  price: props.boxItem.price,
+                });
+              }}
+              disabled={!props.amount || !props.boxItem.price}
+            >
+              Pay Now
+            </button>
+          )}
+          {props.typePayment == "" && (
+            <button
+              className="btn btn-light-green text-sm font-semibold w-full"
+              style={{ padding: "10px" }}
+              disabled
+            >
+              Pay Now
+            </button>
+          )}
         </div>
       </div>
     </div>

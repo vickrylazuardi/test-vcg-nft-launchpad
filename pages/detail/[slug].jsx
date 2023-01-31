@@ -623,6 +623,11 @@ export default function _slug() {
     }
   };
 
+  function handleActionBuyItem(val) {
+    let name = val.replace(" ", "-");
+    router.push(`/detail/checkout/${data.slug}?name=${name}`);
+  }
+
   useEffect(() => {
     if (data.slug) {
       getDetailProject(data.slug);
@@ -643,7 +648,6 @@ export default function _slug() {
   return (
     <>
       <NavbarMobileWithBack title="Detail Project" />
-
 
       <div id="detailPage" className="global-container">
         {!isLoading ? (
@@ -926,6 +930,7 @@ export default function _slug() {
                               project={project}
                               account={account}
                               action={setModal}
+                              handleActionBuyItem={handleActionBuyItem}
                             />
                           </div>
                         );
