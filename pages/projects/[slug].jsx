@@ -11,6 +11,7 @@ import Pagination from "../../components/Common/Pagination";
 import DialogFilterListProjectsWMR from "../../components/Common/DialogFilterListProjectsWMR";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModalFilterListProjectsWMR } from "../../redux/modalReducer";
+import moment from "moment";
 
 const listStatus = [
   {
@@ -297,7 +298,9 @@ export default function Projects(props) {
               </a>
             </Link>
             <img src="/images/svg/arrow-gray.svg" alt="" />
-            <p className="ml-3 text-sm font-bold">{textSlug}</p>
+            <p className="ml-3 text-sm font-bold text-color-primary">
+              {textSlug}
+            </p>
           </div>
           <div className="mt-5">
             <div className="flex justify-between items-center md:hidden">
@@ -426,18 +429,24 @@ export default function Projects(props) {
                   ) : listProject?.length > 0 ? (
                     <>
                       <div className="item-wrapper grid gap-4 grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
-                        {listProject?.map((item, idx) => (
-                          <div key={idx} className="card-wrap">
-                            <CardItem
-                              img={item.banner ? item.banner : item.icon}
-                              title={item.name}
-                              desc={item.desc}
-                              slug={item._id}
-                              socmed={item.socialMedia}
-                              isCardDark={true}
-                            />
-                          </div>
-                        ))}
+                        {listProject?.map((item, idx) => {
+                          console.log(">>>", item);
+                          return (
+                            <div key={idx} className="card-wrap">
+                              <CardItem
+                                img={item.banner ? item.banner : item.icon}
+                                title={item.name}
+                                desc={item.desc}
+                                slug={item._id}
+                                socmed={item.socialMedia}
+                                isCardDark={true}
+                                startedAt={item.startedAt}
+                                finishedAt={item.finishedAt}
+                                totalFundRaised={item.totalFundRaised}
+                              />
+                            </div>
+                          );
+                        })}
                       </div>
                       <div className="mt-8">
                         <Pagination
