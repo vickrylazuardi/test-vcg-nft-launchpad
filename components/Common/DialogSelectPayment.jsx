@@ -89,7 +89,7 @@ export default function DialogSelectPayment(props) {
                   />
                   <div className="mx-3">
                     <p className="title-payment mb-1">VCG</p>
-                    <p className="subtitle-payment">0.4120944812</p>
+                    {/* <p className="subtitle-payment">0.4120944812</p> */}
                   </div>
                   <div className="ml-auto">
                     <FaChevronRight className="ml-auto text-color-grey inline" />

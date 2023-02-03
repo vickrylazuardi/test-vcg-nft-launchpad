@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaChevronRight } from "react-icons/fa";
 
@@ -158,7 +159,9 @@ export default function CheckoutWeb(props) {
                 Total Order
               </p>
               <p className="text-sm font-semibold text-color-grey">
-                {props.boxItem.price * props.amount}
+                {props.boxItem.price && props.amount
+                  ? props.boxItem.price * props.amount
+                  : 0}
               </p>
             </div>
             <div style={{ borderBottom: "solid 1px #2A334B" }} className="pb-1">
@@ -203,22 +206,34 @@ export default function CheckoutWeb(props) {
                 Pay Now
               </button>
             )}
-            {props.typePayment == "crypto" && (
-              <button
-                className="btn btn-light-green text-sm font-semibold mt-5 w-full"
-                style={{ padding: "10px" }}
-                onClick={() => {
-                  props.handleBuyCrypto({
-                    name: props.boxItem.name,
-                    amount: props.amount,
-                    price: props.boxItem.price,
-                  });
-                }}
-                disabled={!props.amount || !props.boxItem.price}
-              >
-                Pay Now
-              </button>
-            )}
+            {props.typePayment == "crypto" &&
+              (props.account ? (
+                <button
+                  className="btn btn-light-green text-sm font-semibold mt-5 w-full"
+                  style={{ padding: "10px" }}
+                  onClick={() => {
+                    props.handleBuyCrypto({
+                      name: props.boxItem.name,
+                      amount: props.amount,
+                      price: props.boxItem.price,
+                    });
+                  }}
+                  disabled={!props.amount || !props.boxItem.price}
+                >
+                  Pay Now
+                </button>
+              ) : (
+                <Link href="/connect-wallet">
+                  <a>
+                    <button
+                      className="btn btn-light-green text-sm font-semibold mt-5 w-full"
+                      style={{ padding: "10px" }}
+                    >
+                      Connect Wallet
+                    </button>
+                  </a>
+                </Link>
+              ))}
             {props.typePayment == "" && (
               <button
                 className="btn btn-light-green text-sm font-semibold mt-5 w-full"

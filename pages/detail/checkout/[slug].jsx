@@ -117,7 +117,7 @@ export default function Checkout(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState({});
   const [boxItem, setBoxItem] = useState({});
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(1);
   const [listPayment, setListPayment] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("");
   const [typePayment, setTypePayment] = useState("");
@@ -271,6 +271,7 @@ export default function Checkout(props) {
 
   const buyBox = async (box, amount) => {
     try {
+      let historyId = '' 
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
 
@@ -294,7 +295,7 @@ export default function Checkout(props) {
               })
               .then((res) => {
                 if (res.status === 204) return;
-                setProject(res.data.data);
+                // setProject(res.data.data);
               });
             axios.post(API.launchpad.local + API.launchpad.item.buy, {
               owner: account,
@@ -304,24 +305,29 @@ export default function Checkout(props) {
               projectName: project.name,
               projectDetail: project._id,
             });
-            axios.post(API.launchpad.local + API.launchpad.history.add, {
-              name: box,
-              image: project.boxes[box].image,
-              amount: Number(amount),
-              price: project.boxes[box].price * Number(amount),
-              action: 0,
-              owner: account,
-              txHash: res.transactionHash,
-              projectName: project.name,
-              projectDetail: project._id,
-            });
+            axios
+              .post(API.launchpad.local + API.launchpad.history.add, {
+                name: box,
+                image: project.boxes[box].image,
+                amount: Number(amount),
+                price: project.boxes[box].price * Number(amount),
+                action: 0,
+                owner: account,
+                txHash: res.transactionHash,
+                projectName: project.name,
+                projectDetail: project._id,
+              })
+              .then((res) => {
+                if (res.status === 204) return;
+                historyId = res.data.data.addedHistory._id
+              });
           }
         })
         .finally(() => {
           dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
           setTimeout(() => {
-            router.push(`/detail/${project._id}`);
-          }, 1000);
+            router.push(`/detail/transaction/${historyId}?isPaymentSuccess=true&paymentType=crypto`);
+          }, 1500);
         });
     } catch (error) {
       console.log(error);
@@ -367,6 +373,7 @@ export default function Checkout(props) {
             </div>
 
             <CheckoutWeb
+              account={account}
               project={project}
               boxItem={boxItem}
               amount={amount}
@@ -382,6 +389,7 @@ export default function Checkout(props) {
             />
 
             <CheckoutMobile
+              account={account}
               project={project}
               boxItem={boxItem}
               amount={amount}

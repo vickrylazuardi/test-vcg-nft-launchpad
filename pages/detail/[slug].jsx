@@ -335,8 +335,8 @@ export default function _slug() {
         const random = Math.floor(Math.random() * 100000000000 + 1);
         randomList.push(random);
       }
-      console.log("random list", randomList);
-      return;
+      // console.log("random list", randomList);
+      // return;
 
       const launchpadContract = connectContract(project.address, abiLaunchpad);
 

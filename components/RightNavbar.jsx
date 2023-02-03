@@ -46,7 +46,7 @@ export default function RightNavbar(props) {
         </div> */}
         {props.account ? (
           <div
-            className="profile flex items-center cursor-pointer ml-4"
+            className="profile flex items-center cursor-pointer ml-4 relative"
             onMouseEnter={() => handleEnter("sub-menu-4")}
             onMouseLeave={() => handleLeave("sub-menu-4")}
           >
@@ -59,7 +59,7 @@ export default function RightNavbar(props) {
                 />
               </div>
             </div> */}
-            <div className="relative sub-menu-container sub-menu-4">
+            <div className="sub-menu-container sub-menu-4">
               <div className="sub-menu">
                 <div className="dropdown-profile" style={{ cursor: "default" }}>
                   <div

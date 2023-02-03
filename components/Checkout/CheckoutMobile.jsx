@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaChevronRight } from "react-icons/fa";
 
@@ -204,22 +205,34 @@ export default function CheckoutMobile(props) {
               Pay Now
             </button>
           )}
-          {props.typePayment == "crypto" && (
-            <button
-              className="btn btn-light-green text-sm font-semibold w-full"
-              style={{ padding: "10px" }}
-              onClick={() => {
-                props.handleBuyCrypto({
-                  name: props.boxItem.name,
-                  amount: props.amount,
-                  price: props.boxItem.price,
-                });
-              }}
-              disabled={!props.amount || !props.boxItem.price}
-            >
-              Pay Now
-            </button>
-          )}
+          {props.typePayment == "crypto" &&
+            (props.account ? (
+              <button
+                className="btn btn-light-green text-sm font-semibold w-full"
+                style={{ padding: "10px" }}
+                onClick={() => {
+                  props.handleBuyCrypto({
+                    name: props.boxItem.name,
+                    amount: props.amount,
+                    price: props.boxItem.price,
+                  });
+                }}
+                disabled={!props.amount || !props.boxItem.price}
+              >
+                Pay Now
+              </button>
+            ) : (
+              <Link href="/connect-wallet">
+                <a>
+                  <button
+                    className="btn btn-light-green text-sm font-semibold w-full"
+                    style={{ padding: "10px" }}
+                  >
+                    Connect Wallet
+                  </button>
+                </a>
+              </Link>
+            ))}
           {props.typePayment == "" && (
             <button
               className="btn btn-light-green text-sm font-semibold w-full"
