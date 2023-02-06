@@ -246,6 +246,7 @@ export default function Home() {
                       startedAt={item.startedAt}
                       finishedAt={item.finishedAt}
                       totalFundRaised={item.totalFundRaised}
+                      kyc={item.kyc}
                     />
                   </div>
                 ))}
@@ -285,6 +286,7 @@ export default function Home() {
                       startedAt={item.startedAt}
                       finishedAt={item.finishedAt}
                       totalFundRaised={item.totalFundRaised}
+                      kyc={item.kyc}
                     />
                   </div>
                 ))}

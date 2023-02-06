@@ -443,6 +443,7 @@ export default function Projects(props) {
                                 startedAt={item.startedAt}
                                 finishedAt={item.finishedAt}
                                 totalFundRaised={item.totalFundRaised}
+                                kyc={item.kyc}
                               />
                             </div>
                           );
