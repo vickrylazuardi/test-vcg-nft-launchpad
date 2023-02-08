@@ -1,7 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function RightNavbar(props) {
+  const router = useRouter();
+
+  console.log(">>>", router);
+
   const handleEnter = (el) => {
     let elm = document.querySelector(`.${el}`);
     if (el == "sub-sub-menu-1") {
@@ -152,14 +157,14 @@ export default function RightNavbar(props) {
             <Link href="/connect-wallet">
               <a>
                 <button
-                  className="btn btn-light-green text-sm font-semibold mr-3"
+                  className="btn btn-connect-wallet-dark text-sm font-semibold mr-3"
                   style={{ padding: "10px 16px" }}
                 >
                   Connect Wallet
                 </button>
               </a>
             </Link>
-            {/* <Link href="#">
+            <Link href={`https://auth.vcg.asia/?ref=http://localhost:3000`}>
               <a>
                 <button
                   className="btn btn-light-green text-sm font-semibold"
@@ -172,7 +177,7 @@ export default function RightNavbar(props) {
                   Login
                 </button>
               </a>
-            </Link> */}
+            </Link>
           </>
         )}
       </div>
