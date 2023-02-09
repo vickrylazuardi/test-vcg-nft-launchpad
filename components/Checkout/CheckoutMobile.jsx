@@ -106,10 +106,11 @@ export default function CheckoutMobile(props) {
           <div
             className="input-payment"
             onClick={() => {
-              props.modalSelectPayment.isOpen = true;
-              props.dispatch(
-                props.toggleModalSelectPayment(props.modalSelectPayment)
-              );
+              // props.modalSelectPayment.isOpen = true;
+              // props.dispatch(
+              //   props.toggleModalSelectPayment(props.modalSelectPayment)
+              // );
+              props.handleShowSelectPaymentMethod();
             }}
           >
             {props.selectedPayment ? (

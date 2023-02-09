@@ -148,6 +148,15 @@ export default function Checkout(props) {
     router.push(`/detail/transaction/63c4fc3d4ed10026b249e8c7`);
   }
 
+  function handleShowSelectPaymentMethod(val) {
+    if (account) {
+      modalSelectPayment.isOpen = true;
+      dispatch(toggleModalSelectPayment(modalSelectPayment));
+    } else {
+      router.push("/connect-wallet");
+    }
+  }
+
   const getDetailProject = (id, name) => {
     setIsLoading(true);
     try {
@@ -172,10 +181,18 @@ export default function Checkout(props) {
     }
   };
 
-  const getListPayment = async () => {
+  const getListPayment = async (name) => {
+    const formData = new FormData();
+    formData.append("t", "desktop");
+    formData.append("address", account);
+    formData.append("token", name);
+    formData.append("price", boxItem.price);
+    formData.append("qty", amount);
+
     try {
-      const { data } = await axios.get(
-        API.marketplaceV2 + `/api/marketplace/fiatpayment?t=desktop`
+      const { data } = await axios.post(
+        API.marketplaceV2 + `/api/marketplace/fiatpayment?t=desktop`,
+        formData
       );
 
       if (data.status) {
@@ -271,7 +288,7 @@ export default function Checkout(props) {
 
   const buyBox = async (box, amount) => {
     try {
-      let historyId = '' 
+      let historyId = "";
       const boxIds = Object.keys(project.boxes);
       const boxId = boxIds.indexOf(box) + 1;
 
@@ -319,14 +336,16 @@ export default function Checkout(props) {
               })
               .then((res) => {
                 if (res.status === 204) return;
-                historyId = res.data.data.addedHistory._id
+                historyId = res.data.data.addedHistory._id;
               });
           }
         })
         .finally(() => {
           dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
           setTimeout(() => {
-            router.push(`/detail/transaction/${historyId}?isPaymentSuccess=true&paymentType=crypto`);
+            router.push(
+              `/detail/transaction/${historyId}?isPaymentSuccess=true&paymentType=crypto`
+            );
           }, 1500);
         });
     } catch (error) {
@@ -336,8 +355,11 @@ export default function Checkout(props) {
   };
 
   useEffect(() => {
-    getListPayment();
-  }, []);
+    if (account && router.query && boxItem.price) {
+      let name = router.query.name?.replace("-", " ");
+      getListPayment(name);
+    }
+  }, [amount, boxItem]);
 
   useEffect(() => {
     if (router.query) {
@@ -386,6 +408,7 @@ export default function Checkout(props) {
               selectedPayment={selectedPayment}
               typePayment={typePayment}
               handleBuyCrypto={handleBuyCrypto}
+              handleShowSelectPaymentMethod={handleShowSelectPaymentMethod}
             />
 
             <CheckoutMobile
@@ -402,6 +425,7 @@ export default function Checkout(props) {
               selectedPayment={selectedPayment}
               typePayment={typePayment}
               handleBuyCrypto={handleBuyCrypto}
+              handleShowSelectPaymentMethod={handleShowSelectPaymentMethod}
             />
           </div>
 
