@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps, router }) {
 				</Web3ReactProvider>
 			</React.StrictMode>
 		);
-	} else if (router.pathname === "/connect-wallet") {
+	} else if (router.pathname === "/connect-wallet" || router.pathname === "/auth") {
 		return (
 			<React.StrictMode>
 				<Web3ReactProvider getLibrary={getLibrary}>
