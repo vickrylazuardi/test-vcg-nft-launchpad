@@ -21,7 +21,9 @@ export default function Navbar(props) {
   const dispatch = useDispatch();
   const cookies = new Cookies();
 
-  const [detailProfile, setDetailProfile] = useState();
+  const [detailProfile, setDetailProfile] = useState("");
+  const [detailProfileVcg, setDetailProfileVcg] = useState("");
+  const [isLogin, setIsLogin] = useState("");
 
   const modalNewUser = {
     loading: false,
@@ -34,6 +36,13 @@ export default function Navbar(props) {
   const handleDisconnect = () => {
     switchActive(false);
     disconnect();
+    setIsLogin("");
+  };
+
+  const handleLogout = () => {
+    cookies.remove("profile-data");
+    cookies.remove("tokenVcg");
+    setIsLogin("");
   };
 
   const getCreator = (params) => {
@@ -66,8 +75,18 @@ export default function Navbar(props) {
       getCreator(account);
       const cookieProfile = cookies.get(account + "-profile");
       setDetailProfile(cookieProfile);
+      setIsLogin("accountWeb3");
     }
   }, [account]);
+
+  useEffect(() => {
+    const data = cookies.get("profile-data");
+    if (data) {
+      console.log("MMM", data);
+      setDetailProfileVcg(data);
+      setIsLogin("accountWeb2");
+    }
+  }, []);
 
   useEffect(() => {
     if (modal.modalNewUser.isOpen) {
@@ -88,11 +107,27 @@ export default function Navbar(props) {
               account={account}
               disconnect={handleDisconnect}
             /> */}
-              <RightNavbar
-                detailProfile={detailProfile}
-                account={account}
-                disconnect={handleDisconnect}
-              />
+              {isLogin == "accountWeb2" ? (
+                <RightNavbar
+                  isLogin={isLogin}
+                  // detailProfile={detailProfile}
+                  account={account}
+                  disconnect={handleLogout}
+                  // detailProfileVcg={detailProfileVcg}
+                  profileName={detailProfileVcg?.member_name}
+                  profileImg={detailProfileVcg?.member_photo}
+                />
+              ) : (
+                <RightNavbar
+                  isLogin={isLogin}
+                  // detailProfile={detailProfile}
+                  account={account}
+                  disconnect={handleDisconnect}
+                  // detailProfileVcg={detailProfileVcg}
+                  profileName={detailProfile?.name}
+                  profileImg={"-"}
+                />
+              )}
             </div>
           </div>
           {/* <div className="bottom-action-container hidden lg:block">
