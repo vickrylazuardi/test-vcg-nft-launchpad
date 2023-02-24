@@ -14,12 +14,14 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import { API } from "../utils/globalConstant";
 import ToastComponent from "./Common/toastComponent";
+import { useRouter } from "next/router";
 
 export default function Navbar(props) {
   const { account, disconnect, switchActive } = useMetaMask();
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const cookies = new Cookies();
+  const router = useRouter();
 
   const [detailProfile, setDetailProfile] = useState("");
   const [detailProfileVcg, setDetailProfileVcg] = useState("");
@@ -40,9 +42,10 @@ export default function Navbar(props) {
   };
 
   const handleLogout = () => {
-    cookies.remove("profile-data");
-    cookies.remove("tokenVcg");
+    // cookies.remove("profile-data");
+    // cookies.remove("tokenVcg");
     setIsLogin("");
+    router.push("/auth?logout=true");
   };
 
   const getCreator = (params) => {
