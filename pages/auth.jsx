@@ -3,7 +3,7 @@ import React from "react";
 import { API } from "../utils/globalConstant";
 import nookies from "nookies";
 
-export async function getServerSideProps({ query: { token }, ...ctx }) {
+export async function getServerSideProps({ query: { token, logout }, ...ctx }) {
   if (token) {
     nookies.set(ctx, "tokenVcg", token, {
       path: "/",
@@ -20,6 +20,41 @@ export async function getServerSideProps({ query: { token }, ...ctx }) {
       .then((res) => {
         if (res.data.status) {
           nookies.set(ctx, "profile-data", JSON.stringify(res.data.data), {
+            path: "/",
+          });
+          return true;
+        }
+      });
+
+    if (res) {
+      return {
+        redirect: {
+          destination: "/",
+        },
+      };
+    }
+  }
+
+  if (logout) {
+    const tokenCookies = nookies.get("tokenVcg");
+
+    const res = await axios
+      .get(API.marketplaceV2 + "api/profiles/logout", {
+        headers: {
+          common: {
+            Authorization: tokenCookies,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          nookies.set(ctx, "profile-data", null, {
+            path: "/",
+          });
+          nookies.set(ctx, "tokenVcg", null, {
+            path: "/",
+          });
+          nookies.set(ctx, "accessToken", null, {
             path: "/",
           });
           return true;
