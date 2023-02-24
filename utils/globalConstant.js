@@ -73,6 +73,7 @@ export const API = {
   domain: "https://api-marketplace.vcg.asia/mp",
   local: "https://api-marketplace.vcg.asia/mp",
   tournament: "https://v2-crm.vcg.asia/",
+  marketplaceV2: "https://v2-crm.vcg.asia/",
   land: {
     list: "/land/list",
     filter: "/land/filter",
