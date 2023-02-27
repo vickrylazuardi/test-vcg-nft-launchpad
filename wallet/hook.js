@@ -6,6 +6,7 @@ import { ethers, utils } from "ethers";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import { API, RPC } from "../utils/globalConstant";
+import { useRouter } from "next/router";
 
 export const MetaMaskContext = React.createContext(null);
 
@@ -22,6 +23,7 @@ export const MetaMaskProvider = ({ children }) => {
   const [signature, setSignature] = useState(null);
 
   const cookies = new Cookies();
+  const router = useRouter();
 
   // Init Loading
   useEffect(() => {
@@ -38,8 +40,19 @@ export const MetaMaskProvider = ({ children }) => {
     if (cookies.get("isConnected")) {
       connect(cookies.get("providerType"));
     }
+    // if (cookies.get("tokenVcg") != "null") {
+    //   console.log("chek token");
+    //   router.push(`/auth?checkToken=${cookies.get("tokenVcg")}`);
+    // }
   }, []);
-  
+
+  useEffect(() => {
+    if (cookies.get("tokenVcg") != "null") {
+      console.log("chek token");
+      router.push(`/auth?checkToken=${cookies.get("tokenVcg")}`);
+    }
+  }, [cookies.get("tokenVcg")]);
+
   useEffect(() => {
     if (cookies.get("isConnected") && isActive) {
       connect(cookies.get("providerType"));
@@ -92,13 +105,14 @@ export const MetaMaskProvider = ({ children }) => {
 
   const getCreator = (params) => {
     try {
-      axios.post(API.marketplace + API.artist.list, {
-        walletAddress : params
-      })
-      .then(res => {
-        if (res.status === 204) document.getElementById('newUser').click();
-        else setCookie(params + "-profile", res.data.data.items[0], 1);
-      })
+      axios
+        .post(API.marketplace + API.artist.list, {
+          walletAddress: params,
+        })
+        .then((res) => {
+          if (res.status === 204) document.getElementById("newUser").click();
+          else setCookie(params + "-profile", res.data.data.items[0], 1);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +155,9 @@ export const MetaMaskProvider = ({ children }) => {
                   symbol: "tBNB",
                   decimals: 18,
                 },
-                rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"] /* ... */,
+                rpcUrls: [
+                  "https://data-seed-prebsc-1-s1.binance.org:8545/",
+                ] /* ... */,
                 blockExplorerUrls: ["https://testnet.bscscan.com/"],
               },
             ],
@@ -231,8 +247,10 @@ export const MetaMaskProvider = ({ children }) => {
   };
 
   const connectContract = (contractAddress, ABI) => {
-    
-    return new ethers.Contract(contractAddress, ABI, new ethers.providers.JsonRpcProvider(RPC.http)
+    return new ethers.Contract(
+      contractAddress,
+      ABI,
+      new ethers.providers.JsonRpcProvider(RPC.http)
     );
   };
 
@@ -253,7 +271,7 @@ export const MetaMaskProvider = ({ children }) => {
       shouldDisable,
       connectContract,
       signer,
-      signature
+      signature,
     }),
     [
       isActive,
@@ -265,7 +283,7 @@ export const MetaMaskProvider = ({ children }) => {
       walletModal,
       library,
       signer,
-      signature
+      signature,
     ]
   );
 
