@@ -42,10 +42,8 @@ export default function Navbar(props) {
   };
 
   const handleLogout = () => {
-    // cookies.remove("profile-data");
-    // cookies.remove("tokenVcg");
     setIsLogin("");
-    router.push("/auth?logout=true");
+    router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
   };
 
   const getCreator = (params) => {
@@ -83,12 +81,15 @@ export default function Navbar(props) {
   }, [account]);
 
   useEffect(() => {
-    const data = cookies.get("profile-data");
-    if (data) {
-      console.log("MMM", data);
-      setDetailProfileVcg(data);
-      setIsLogin("accountWeb2");
-    }
+    setTimeout(() => {
+      const isLogedin = cookies.get("isLogedin");
+      const data = cookies.get("profile-data");
+      console.log("?ISLOF", isLogedin, data);
+      if (isLogedin == "true") {
+        setDetailProfileVcg(data);
+        setIsLogin("accountWeb2");
+      }
+    }, 1000);
   }, []);
 
   useEffect(() => {
