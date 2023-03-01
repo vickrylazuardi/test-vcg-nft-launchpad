@@ -40,18 +40,25 @@ export const MetaMaskProvider = ({ children }) => {
     if (cookies.get("isConnected")) {
       connect(cookies.get("providerType"));
     }
-    // if (cookies.get("tokenVcg") != "null") {
-    //   console.log("chek token");
-    //   router.push(`/auth?checkToken=${cookies.get("tokenVcg")}`);
-    // }
   }, []);
 
   useEffect(() => {
-    if (cookies.get("tokenVcg") != "null") {
-      console.log("chek token");
+    if (cookies.get("VcgAuth")) {
+      console.log(
+        "???satu",
+        typeof cookies.get("VcgAuth"),
+        cookies.get("VcgAuth")
+      );
+      router.push(`/auth?checkToken=${cookies.get("VcgAuth")}`);
+    } else if (cookies.get("tokenVcg")) {
+      console.log(
+        "???dua",
+        typeof cookies.get("tokenVcg"),
+        cookies.get("tokenVcg")
+      );
       router.push(`/auth?checkToken=${cookies.get("tokenVcg")}`);
     }
-  }, [cookies.get("tokenVcg")]);
+  }, [cookies.get("tokenVcg"), cookies.get("VcgAuth")]);
 
   useEffect(() => {
     if (cookies.get("isConnected") && isActive) {

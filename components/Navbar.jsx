@@ -43,7 +43,14 @@ export default function Navbar(props) {
 
   const handleLogout = () => {
     setIsLogin("");
-    router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+    if (cookies.get("VcgAuth")) {
+      console.log("???satulog", typeof cookies.get("VcgAuth"));
+      setCookie("tokenVcg", cookies.get("VcgAuth"), 1);
+      router.push(`/auth?logout=${cookies.get("VcgAuth")}`);
+    } else if (cookies.get("tokenVcg")) {
+      console.log("???dualog", typeof cookies.get("tokenVcg"));
+      router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+    }
   };
 
   const getCreator = (params) => {
