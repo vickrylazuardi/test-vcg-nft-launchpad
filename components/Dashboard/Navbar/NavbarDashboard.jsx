@@ -76,22 +76,35 @@ export default function NavbarDashboard() {
   };
 
   const handleDisconnect = () => {
-    router.push("/");
     switchActive(false);
     disconnect();
     setIsLogin("");
+    router.push("/");
   };
 
   const handleLogout = () => {
-    router.push("/");
-    cookies.remove("profile-data");
-    cookies.remove("tokenVcg");
     setIsLogin("");
+    if (cookies.get("VcgAuth")) {
+      setCookie("tokenVcg", cookies.get("VcgAuth"), 1);
+      router.push(`/auth?logout=${cookies.get("VcgAuth")}`);
+    } else if (cookies.get("tokenVcg")) {
+      router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+    }
+  };
+
+  const setCookie = async (key, value, expires) => {
+    try {
+      const d = new Date();
+      d.setDate(d.getDate() + expires);
+      cookies.set(key, value, { path: "/", expires: d });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     if (account) {
-      //   getCreator(account);
+      // getCreator(account);
       const cookieProfile = cookies.get(account + "-profile");
       setDetailProfile(cookieProfile);
       setIsLogin("accountWeb3");
@@ -99,12 +112,15 @@ export default function NavbarDashboard() {
   }, [account]);
 
   useEffect(() => {
-    const data = cookies.get("profile-data");
-    if (data) {
-      console.log("MMM", data);
-      setDetailProfileVcg(data);
-      setIsLogin("accountWeb2");
-    }
+    setTimeout(() => {
+      const isLogedin = cookies.get("isLogedin");
+      const data = cookies.get("profile-data");
+      console.log("?ISLOF", isLogedin, data);
+      if (isLogedin == "true") {
+        setDetailProfileVcg(data);
+        setIsLogin("accountWeb2");
+      }
+    }, 1000);
   }, []);
 
   return (

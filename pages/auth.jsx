@@ -64,7 +64,6 @@ export async function getServerSideProps({
   }
 
   if (logout) {
-    console.log(">???", logout);
     const res = await axios
       .get(API.marketplaceV2 + "api/profiles/logout", {
         headers: {
@@ -74,15 +73,17 @@ export async function getServerSideProps({
         },
       })
       .then((res) => {
-        console.log("???", res.data);
         if (res.data.status) {
-          nookies.set(ctx, "isLogedin", false, {
+          nookies.destroy(ctx, "isLogedin", {
             path: "/",
           });
-          nookies.set(ctx, "profile-data", null, {
+          nookies.destroy(ctx, "profile-data", {
             path: "/",
           });
-          nookies.set(ctx, "tokenVcg", null, {
+          nookies.destroy(ctx, "tokenVcg", {
+            path: "/",
+          });
+          nookies.destroy(ctx, "VcgAuth", {
             path: "/",
           });
           return true;
