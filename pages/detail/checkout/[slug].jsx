@@ -341,6 +341,8 @@ export default function Checkout(props) {
           }
         })
         .finally(() => {
+          modalConfirmationWhenSuccess.loading = false;
+          modalConfirmationWhenSuccess.isOpen = false;
           dispatch(toggleModalConfirmation(modalConfirmationWhenSuccess));
           setTimeout(() => {
             router.push(

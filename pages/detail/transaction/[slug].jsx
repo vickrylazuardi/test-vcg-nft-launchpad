@@ -108,7 +108,7 @@ export default function Transaction(props) {
                     ) : (
                       <>
                         <p className="font-bold mb-4">
-                          Yuk, selesaikan pembayaran!
+                          Come on, complete the payment!
                         </p>
                         <p className="font-semibold text-color-grey">
                           33339334925
