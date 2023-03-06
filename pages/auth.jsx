@@ -4,7 +4,7 @@ import { API } from "../utils/globalConstant";
 import nookies from "nookies";
 
 export async function getServerSideProps({
-  query: { token, checkToken, logout },
+  query: { token, checkToken, logout, href },
   ...ctx
 }) {
   if (token) {
@@ -20,6 +20,10 @@ export async function getServerSideProps({
   }
 
   if (checkToken) {
+    nookies.set(ctx, "token-terditek", ctx.req.cookies.VcgAuth, {
+      path: "/",
+    });
+
     const res = await axios
       .get(API.marketplaceV2 + "api/profile", {
         headers: {
@@ -29,7 +33,7 @@ export async function getServerSideProps({
         },
       })
       .then((res) => {
-        console.log("??then", res.data);
+        // console.log("??then", res.data);
         if (res.data.status) {
           nookies.set(ctx, "isLogedin", true, {
             path: "/",
@@ -41,8 +45,8 @@ export async function getServerSideProps({
         }
       })
       .catch((error) => {
-        if (error.response.status) {
-          console.log("??cat", error.response.data);
+        if (error.response.status == 401) {
+          // console.log("??cat", error.response.data);
           nookies.set(ctx, "isLogedin", false, {
             path: "/",
           });
@@ -57,7 +61,7 @@ export async function getServerSideProps({
     if (res) {
       return {
         redirect: {
-          destination: "/",
+          destination: href,
         },
       };
     }

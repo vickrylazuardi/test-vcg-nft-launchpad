@@ -24,6 +24,9 @@ import { vcgEnableToken } from "../../../utils/contractConfig";
 import { ethers } from "ethers";
 import abiLaunchpad from "../../../abi/launchpad.json";
 import useMetaMask from "../../../wallet/hook";
+import Cookies from "universal-cookie";
+import nookies from "nookies";
+import { hashCode } from "../../../utils/globalFunction";
 
 const modalSelectPayment = {
   loading: false,
@@ -109,9 +112,11 @@ const modalConfirmationWhenSuccess = {
 };
 
 export default function Checkout(props) {
+  console.log("???>>>", props);
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const router = useRouter();
+  const cookies = new Cookies();
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -149,12 +154,14 @@ export default function Checkout(props) {
   }
 
   function handleShowSelectPaymentMethod(val) {
-    if (account) {
-      modalSelectPayment.isOpen = true;
-      dispatch(toggleModalSelectPayment(modalSelectPayment));
-    } else {
-      router.push("/connect-wallet");
-    }
+    modalSelectPayment.isOpen = true;
+    dispatch(toggleModalSelectPayment(modalSelectPayment));
+    // if (account) {
+    //   modalSelectPayment.isOpen = true;
+    //   dispatch(toggleModalSelectPayment(modalSelectPayment));
+    // } else {
+    //   router.push("/connect-wallet");
+    // }
   }
 
   const getDetailProject = (id, name) => {
@@ -168,8 +175,8 @@ export default function Checkout(props) {
           if (res.status === 204) return;
           const value = res.data.data.boxes[name];
           value.name = name;
-          console.log("RES", res.data.data);
-          console.log("Val", value);
+          // console.log("RES", res.data.data);
+          // console.log("Val", value);
           setProject(res.data.data);
           setBoxItem({ ...value });
           setTimeout(() => {
@@ -178,29 +185,6 @@ export default function Checkout(props) {
         });
     } catch (error) {
       console.log("getDetailProject err->", error);
-    }
-  };
-
-  const getListPayment = async (name) => {
-    const formData = new FormData();
-    formData.append("t", "desktop");
-    formData.append("address", account);
-    formData.append("token", name);
-    formData.append("price", boxItem.price);
-    formData.append("qty", amount);
-
-    try {
-      const { data } = await axios.post(
-        API.marketplaceV2 + `/api/marketplace/fiatpayment?t=desktop`,
-        formData
-      );
-
-      if (data.status) {
-        setListPayment(data.data);
-      }
-      console.log("DAta", data);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -215,6 +199,25 @@ export default function Checkout(props) {
     setSelectedPayment(payment);
     modalSelectPayment.isOpen = false;
     dispatch(toggleModalSelectPayment({ ...modalSelectPayment }));
+  }
+
+  function handleBuyFiat() {
+    let total = router.query.price * router.query.qty;
+    const code = hashCode(
+      "desktop",
+      selectedPayment.payment_method_id,
+      (Math.round(total * 100) / 100).toFixed(2)
+    );
+
+    console.log("??", code, ">>", selectedPayment.payment_method_id);
+    // setTimeout(() => {
+    //   router.push(
+    //     `/detail/transaction/${code}?paymentType=${selectedPayment.payment_method_id}`
+    //   );
+    // }, 1500);
+    router.replace(
+      `/detail/checkout/${router.query.slug}?name=${router.query.name}&price=${boxItem.price}&qty=${amount}&hash=${code}-${selectedPayment.payment_method_id}`
+    );
   }
 
   function handleBuyCrypto(data) {
@@ -356,12 +359,37 @@ export default function Checkout(props) {
     }
   };
 
-  useEffect(() => {
-    if (account && router.query && boxItem.price) {
-      let name = router.query.name?.replace("-", " ");
-      getListPayment(name);
+  function launch_toast(isError, msg) {
+    let x = document.getElementById("toast");
+    let text = document.getElementById("toast-text");
+
+    x.style.top = "30px";
+
+    if (isError) {
+      x.className = "show failed";
+    } else {
+      x.className = "show success";
     }
-  }, [amount, boxItem]);
+
+    text.innerHTML = msg;
+
+    setTimeout(function () {
+      x.className = x.className.replace("show", "");
+      setTimeout(() => {
+        text.innerHTML = "";
+      }, 1000);
+    }, 3000);
+  }
+
+  useEffect(() => {
+    if (router.query && boxItem.price) {
+      let name = router.query.name?.replace("-", " ");
+      // getListPayment(name);
+      router.replace(
+        `/detail/checkout/${router.query.slug}?name=${router.query.name}&price=${boxItem.price}&qty=${amount}`
+      );
+    }
+  }, [amount, boxItem.price]);
 
   useEffect(() => {
     if (router.query) {
@@ -369,6 +397,25 @@ export default function Checkout(props) {
       getDetailProject(router.query.slug, name);
     }
   }, [router.query]);
+
+  useEffect(() => {
+    if (props.paymentList) {
+      setListPayment(props.paymentList);
+    }
+  }, [props.paymentList]);
+
+  useEffect(() => {
+    if (props.transaction) {
+      if (props.transaction.status) {
+        cookies.set("detailTRX", props.transaction.data, { path: "/" });
+        router.push(
+          `/detail/transaction/${router.query.slug}?paymentType=fiat`
+        );
+      } else {
+        launch_toast(true, props.transaction.message);
+      }
+    }
+  }, [props.transaction]);
 
   return (
     <>
@@ -411,6 +458,7 @@ export default function Checkout(props) {
               typePayment={typePayment}
               handleBuyCrypto={handleBuyCrypto}
               handleShowSelectPaymentMethod={handleShowSelectPaymentMethod}
+              handleBuyFiat={handleBuyFiat}
             />
 
             <CheckoutMobile
@@ -472,4 +520,91 @@ export default function Checkout(props) {
       )}
     </>
   );
+}
+
+export async function getServerSideProps({
+  query: { name, price, qty, hash },
+  ...ctx
+}) {
+  let data = {
+    t: "desktop",
+    token: name.replace("-", " "),
+    price: price,
+    qty: qty,
+  };
+
+  let transaction = null;
+
+  const res = await axios
+    .post(API.marketplaceV2 + "api/marketplace/fiatpayment?t=desktop", data, {
+      headers: {
+        common: {
+          Authorization: ctx.req.cookies.tokenVcg,
+        },
+      },
+    })
+    .then((res) => {
+      // console.log("??then>>>", res);
+      if (res.data.status) {
+        // console.log("??then", res.data.data);
+        // paymentList = res.data.data;
+        return res.data.data;
+      }
+    })
+    .catch((error) => {
+      // console.log("??cat>>", error);
+      if (error.response.status == 401) {
+        // console.log("??cat>>", error.response);
+        nookies.set(ctx, "isLogedin", false, {
+          path: "/",
+        });
+        nookies.set(ctx, "profile-data", null, {
+          path: "/",
+        });
+      }
+      return null;
+    });
+
+  if (hash) {
+    let hasharams = hash.split("-");
+    let dataTRX = {
+      id: hasharams[1],
+      pin: "",
+      type: "desktop",
+      token: hasharams[0],
+      phone: "",
+    };
+
+    transaction = await axios
+      .post(
+        API.marketplaceV2 + "api/marketplace/fiatpayment/payprocessnew",
+        dataTRX,
+        {
+          headers: {
+            common: {
+              Authorization: ctx.req.cookies.tokenVcg,
+            },
+          },
+        }
+      )
+      .then((res) => {
+        console.log("??then>>>", res.data);
+        if (res.data.status) {
+          return res.data;
+        } else {
+          return { status: false, message: "Transaksi Gagal" };
+        }
+      })
+      .catch((error) => {
+        // console.log("??cat>>", error.response.data);
+        return error.response.data;
+      });
+  }
+
+  return {
+    props: {
+      paymentList: res,
+      transaction: transaction ? transaction : null,
+    },
+  };
 }

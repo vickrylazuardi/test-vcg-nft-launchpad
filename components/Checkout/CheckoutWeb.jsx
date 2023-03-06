@@ -14,7 +14,12 @@ export default function CheckoutWeb(props) {
     //     parseInt(props.selectedPayment.payment_fee)
     // );
     if (props.typePayment == "fiat") {
-      return "-";
+      let total = "-";
+      if (props.boxItem.price && props.amount) {
+        total = parseInt(props.boxItem.price) * parseInt(props.amount);
+        total += parseInt(props.selectedPayment.payment_fee);
+      }
+      return total;
     } else if (props.typePayment == "crypto") {
       let total = "-";
       if (props.boxItem.price && props.amount) {
@@ -178,8 +183,8 @@ export default function CheckoutWeb(props) {
                   </p>
                   <p className="text-sm font-semibold text-color-grey">
                     {props.selectedPayment
-                      ? props.selectedPayment.payment_fee_text
-                        ? props.selectedPayment.payment_fee_text
+                      ? parseInt(props.selectedPayment.payment_fee)
+                        ? parseInt(props.selectedPayment.payment_fee)
                         : "-"
                       : "-"}
                   </p>
@@ -199,10 +204,11 @@ export default function CheckoutWeb(props) {
                 className="btn btn-light-green text-sm font-semibold mt-5 w-full"
                 style={{ padding: "10px" }}
                 onClick={() => {
-                  props.modalconfirm.isOpen = true;
-                  props.dispatch(props.toggleModalConfirm(props.modalconfirm));
+                  props.handleBuyFiat();
+                  // props.modalconfirm.isOpen = true;
+                  // props.dispatch(props.toggleModalConfirm(props.modalconfirm));
                 }}
-                disabled
+                // disabled
               >
                 Pay Now
               </button>
