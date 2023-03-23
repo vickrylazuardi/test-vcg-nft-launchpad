@@ -2,13 +2,21 @@ import axios from "axios";
 import React from "react";
 import { API } from "../utils/globalConstant";
 import nookies from "nookies";
+import cookeieParser from "cookieparser";
 
 export async function getServerSideProps({
-  query: { token, checkToken, logout, href },
+  req,
+  res,
+  query: { token, checkToken, logout },
   ...ctx
 }) {
+  const tokenAuth = req.headers.cookie
+    ? cookeieParser.parse(req.headers.cookie).VcgAuth
+    : null;
+
+  // console.log("CTX", tokenAuth);
   if (token) {
-    nookies.set(ctx, "tokenVcg", token, {
+    nookies.set(ctx, "tokenVcg", tokenAuth ? tokenAuth : token, {
       path: "/",
     });
 
@@ -20,15 +28,11 @@ export async function getServerSideProps({
   }
 
   if (checkToken) {
-    nookies.set(ctx, "token-terditek", ctx.req.cookies.VcgAuth, {
-      path: "/",
-    });
-
     const res = await axios
       .get(API.marketplaceV2 + "api/profile", {
         headers: {
           common: {
-            Authorization: checkToken,
+            Authorization: tokenAuth ? tokenAuth : checkToken,
           },
         },
       })
@@ -72,7 +76,7 @@ export async function getServerSideProps({
       .get(API.marketplaceV2 + "api/profiles/logout", {
         headers: {
           common: {
-            Authorization: logout,
+            Authorization: tokenAuth ? tokenAuth : logout,
           },
         },
       })
@@ -104,7 +108,9 @@ export async function getServerSideProps({
   }
 
   return {
-    props: {},
+    redirect: {
+      destination: "/",
+    },
   };
 }
 

@@ -48,30 +48,14 @@ export const MetaMaskProvider = ({ children }) => {
       cookies.get("tokenVcg"),
       window.location.pathname + window.location.search
     );
-    if (cookies.get("VcgAuth")) {
-      console.log(
-        "???satu",
-        typeof cookies.get("VcgAuth"),
-        cookies.get("VcgAuth")
-      );
-      router.push(
-        `/auth?checkToken=${cookies.get("VcgAuth")}&href=${
-          window.location.pathname + window.location.search
-        }`
-      );
-    } else if (cookies.get("tokenVcg")) {
-      console.log(
-        "???dua",
-        typeof cookies.get("tokenVcg"),
-        cookies.get("tokenVcg")
-      );
+    if (cookies.get("tokenVcg")) {
       router.push(
         `/auth?checkToken=${cookies.get("tokenVcg")}&href=${
           window.location.pathname + window.location.search
         }`
       );
     }
-  }, [cookies.get("tokenVcg"), cookies.get("VcgAuth")]);
+  }, [cookies.get("tokenVcg")]);
 
   useEffect(() => {
     if (cookies.get("isConnected") && isActive) {

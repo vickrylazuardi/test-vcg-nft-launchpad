@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+import cookeieParser from "cookieparser";
 
 export function middleware(request) {
   const response = NextResponse.next();
 
-  const isLocal = true;
+  const token = request.headers.get("cookie")
+    ? cookeieParser.parse(request.headers.get("cookie")).VcgAuth
+    : null;
 
-  const token = request.cookies.get("VcgAuth");
-  const tokenlocal = request.cookies.get("tokenVcg");
+  // console.log("MID", token);
 
   if (token) {
     response.cookies.set("tokenVcg", token);

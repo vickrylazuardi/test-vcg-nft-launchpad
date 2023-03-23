@@ -9,33 +9,6 @@ import { HiExternalLink } from "react-icons/hi";
 import Link from "next/link";
 import Cookies from "universal-cookie";
 
-const payment_instruction = [
-  {
-    payment_instruction_description:
-      "<ol>\r\n<li>Silahkan melakukan login di KlikBCA Bisnis</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer Dana&rdquo; &gt; &ldquo;Daftar Transfer&rdquo; &gt; &ldquo;Tambah&rdquo;</strong></li>\r\n<li>Masukkan nomor BCA&nbsp;<em>Virtual Account</em>, lalu&nbsp;<strong>&ldquo;Kirim&rdquo;</strong></li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer Dana&rdquo;</strong></li>\r\n<li>Lanjut ke&nbsp;<strong>&ldquo;Ke BCA Virtual Account&rdquo;</strong></li>\r\n<li>Pilih rekening sumber dana dan BCA&nbsp;<em>Virtual Account</em>&nbsp;tujuan</li>\r\n<li>Lalu, masukkan jumlah yang akan dibayarkan, lalu pilih&nbsp;<strong>&ldquo;Kirim&rdquo;</strong></li>\r\n<li>Validasi Pembayaran. Sampai tahap ini berarti data berhasil di input. Kemudian pilih <strong>&ldquo;S</strong><strong>impan</strong>&rdquo;</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer Dana&rdquo; &gt; &ldquo;Otorisasi Transaksi&rdquo;</strong>, lalu pilih transaksi yang akan diotorisasi</li>\r\n<li>Pembayaran telah selesai dilakukan</li>\r\n</ol>",
-    payment_instruction_name: "via Klik BCA Bisnis",
-    payment_method_name: "BCA Virtual Account 2",
-  },
-  {
-    payment_instruction_description:
-      "<ol>\r\n<li>Masukkan kartu ke mesin ATM</li>\r\n<li>Masukkan 6 digit PIN Anda</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transaksi Lainnya&rdquo;</strong></li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer&rdquo;</strong></li>\r\n<li>Lanjut ke&nbsp;<strong>&ldquo;ke Rekening BCA Virtual Account&rdquo;</strong></li>\r\n<li>Masukkan nomor BCA&nbsp;<em>Virtual Account</em>&nbsp;Anda, kemudian tekan&nbsp;<strong>&ldquo;Benar&rdquo;</strong></li>\r\n<li>Masukkan jumlah yang akan dibayarkan, selanjutnya tekan&nbsp;<strong>&ldquo;Benar&rdquo;</strong></li>\r\n<li>Validasi pembayaran Anda. Pastikan semua detail transaksi yang ditampilkan sudah benar, kemudian pilih&nbsp;<strong>&ldquo;Ya&rdquo;</strong></li>\r\n<li>Pembayaran Anda telah selesai. Tekan&nbsp;<strong>&ldquo;Tidak&rdquo;&nbsp;</strong>untuk menyelesaikan transaksi, atau tekan&nbsp;<strong>&ldquo;Ya&rdquo;&nbsp;</strong>untuk melakukan transaksi lainnya</li>\r\n</ol>\r\n<p>&nbsp;</p>",
-    payment_instruction_name: "via Transfer ATM",
-    payment_method_name: "BCA Virtual Account 2",
-  },
-  {
-    payment_instruction_description:
-      "<ol>\r\n<li>Silahkan login pada aplikasi KlikBCA Individual</li>\r\n<li>Masukkan User ID dan PIN Anda</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer Dana&rdquo;</strong></li>\r\n<li>Pilih&nbsp;<strong>&ldquo;Transfer ke BCA&nbsp;</strong><strong>Virtual Account</strong><strong>&rdquo;</strong></li>\r\n<li>Masukkan nomor BCA&nbsp;<em>Virtual Account&nbsp;</em>Anda atau pilih dari Daftar Transfer</li>\r\n<li>Masukkan jumlah yang akan dibayarkan</li>\r\n<li>Validasi pembayaran. Pastikan semua datanya sudah benar, lalu masukkan kode yang diperoleh dari KEYBCA APPLI 1, kemudian klik&nbsp;<strong>&ldquo;Kirim&rdquo;</strong></li>\r\n<li>Pembayaran telah selesai dilakukan</li>\r\n</ol>",
-    payment_instruction_name: "via Klik BCA Pribadi",
-    payment_method_name: "BCA Virtual Account 2",
-  },
-  {
-    payment_instruction_description:
-      "<ol>\r\n<li>Silahkan login pada aplikasi BCA Mobile</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;m-BCA&rdquo;</strong>, lalu masukkan kode akses m-BCA</li>\r\n<li>Pilih&nbsp;<strong>&ldquo;m-Transfer&rdquo;</strong></li>\r\n<li>Lanjut ke&nbsp;<strong>&ldquo;BCA Virtual Account&rdquo;</strong></li>\r\n<li>Masukkan nomor BCA&nbsp;<em>Virtual Account</em>&nbsp;Anda, atau pilih dari Daftar Transfer</li>\r\n<li>Lalu, masukkan jumlah yang akan dibayarkan</li>\r\n<li>Masukkan PIN m-BCA Anda</li>\r\n<li>Transaksi telah berhasil</li>\r\n</ol>",
-    payment_instruction_name: "via m-BCA (BCA mobile)",
-    payment_method_name: "BCA Virtual Account 2",
-  },
-];
-
 export default function Transaction(props) {
   const router = useRouter();
   const cookies = new Cookies();
@@ -234,7 +207,7 @@ export default function Transaction(props) {
                             Transaction Expire
                           </p>
                           <p className="text-sm font-semibold">
-                            {new Date(dataTRX.expire_time).toLocaleString()}
+                            {new Date(dataTRX?.expire_time).toLocaleString()}
                           </p>
                         </div>
                       ) : (
@@ -271,7 +244,7 @@ export default function Transaction(props) {
                           How to Make Payments
                         </p>
                         <div className="mt-5">
-                          {dataTRX.payment_instruction.map((item, idx) => {
+                          {dataTRX?.payment_instruction?.map((item, idx) => {
                             return (
                               <div key={idx} className="accordion-wrap py-2">
                                 <div
