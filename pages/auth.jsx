@@ -5,17 +5,16 @@ import nookies from "nookies";
 import cookeieParser from "cookieparser";
 
 export async function getServerSideProps({
-  req,
-  res,
-  query: { token, checkToken, logout },
+  query: { token, checkToken, logout, href },
   ...ctx
 }) {
-  const tokenAuth = req.headers.cookie
-    ? cookeieParser.parse(req.headers.cookie).VcgAuth
+  const tokenAuth = ctx.req.headers.cookie
+    ? cookeieParser.parse(ctx.req.headers.cookie).VcgAuth
     : null;
 
   // console.log("CTX", tokenAuth);
   if (token) {
+    console.log("Token", token);
     nookies.set(ctx, "tokenVcg", tokenAuth ? tokenAuth : token, {
       path: "/",
     });
@@ -28,6 +27,7 @@ export async function getServerSideProps({
   }
 
   if (checkToken) {
+    console.log("CHEK", checkToken);
     const res = await axios
       .get(API.marketplaceV2 + "api/profile", {
         headers: {
