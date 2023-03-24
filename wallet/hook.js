@@ -54,6 +54,12 @@ export const MetaMaskProvider = ({ children }) => {
           window.location.pathname + window.location.search
         }`
       );
+    } else {
+      router.push(
+        `/auth?checkToken=check-token&href=${
+          window.location.pathname + window.location.search
+        }`
+      );
     }
   }, [cookies.get("tokenVcg")]);
 
