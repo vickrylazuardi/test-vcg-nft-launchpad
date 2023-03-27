@@ -27,6 +27,7 @@ import useMetaMask from "../../../wallet/hook";
 import Cookies from "universal-cookie";
 import nookies from "nookies";
 import { hashCode } from "../../../utils/globalFunction";
+import cookeieParser from "cookieparser";
 
 const modalSelectPayment = {
   loading: false,
@@ -526,6 +527,10 @@ export async function getServerSideProps({
   query: { name, price, qty, hash },
   ...ctx
 }) {
+  const tokenAuth = ctx.req.headers.cookie
+    ? cookeieParser.parse(ctx.req.headers.cookie).VcgAuth
+    : null;
+
   let data = {
     t: "desktop",
     token: name.replace("-", " "),
@@ -539,7 +544,7 @@ export async function getServerSideProps({
     .post(API.marketplaceV2 + "api/marketplace/fiatpayment?t=desktop", data, {
       headers: {
         common: {
-          Authorization: ctx.req.cookies.tokenVcg,
+          Authorization: tokenAuth ? tokenAuth : ctx.req.cookies.tokenVcg,
         },
       },
     })
