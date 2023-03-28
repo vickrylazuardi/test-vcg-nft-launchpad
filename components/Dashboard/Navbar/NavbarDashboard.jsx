@@ -84,40 +84,25 @@ export default function NavbarDashboard() {
 
   const handleLogout = () => {
     setIsLogin("");
-    if (cookies.get("VcgAuth")) {
-      setCookie("tokenVcg", cookies.get("VcgAuth"), 1);
-      router.push(`/auth?logout=${cookies.get("VcgAuth")}`);
-    } else if (cookies.get("tokenVcg")) {
-      router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
-    }
-  };
-
-  const setCookie = async (key, value, expires) => {
-    try {
-      const d = new Date();
-      d.setDate(d.getDate() + expires);
-      cookies.set(key, value, { path: "/", expires: d });
-    } catch (error) {
-      console.log(error);
-    }
+    router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
   };
 
   useEffect(() => {
     if (account) {
       // getCreator(account);
-      const cookieProfile = cookies.get(account + "-profile");
-      setDetailProfile(cookieProfile);
+      const profileAccount = localStorage.getItem(account + "-profile");
+      setDetailProfile(JSON.parse(profileAccount));
       setIsLogin("accountWeb3");
     }
   }, [account]);
 
   useEffect(() => {
     setTimeout(() => {
-      const isLogedin = cookies.get("isLogedin");
-      const data = cookies.get("profile-data");
-      console.log("?ISLOF", isLogedin, data);
+      const isLogedin = localStorage.getItem("isLogedin");
+      const data = localStorage.getItem("profile-data");
+      // console.log("?ISLOF", isLogedin, data);
       if (isLogedin == "true") {
-        setDetailProfileVcg(data);
+        setDetailProfileVcg(JSON.parse(data));
         setIsLogin("accountWeb2");
       }
     }, 1000);
@@ -136,7 +121,7 @@ export default function NavbarDashboard() {
                 <RightNavbar
                   isLogin={isLogin}
                   // detailProfile={detailProfile}
-                  account={account}
+                  account={detailProfileVcg?.member_wallet}
                   disconnect={handleLogout}
                   // detailProfileVcg={detailProfileVcg}
                   profileName={detailProfileVcg?.member_name}

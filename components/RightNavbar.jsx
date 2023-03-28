@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { domainMp } from "../utils/globalConstant";
-import axios from "axios";
-import Cookies from "universal-cookie";
 
 export default function RightNavbar(props) {
-  const cookies = new Cookies();
   const [domainOrigin, setDomainOrigin] = useState("");
 
   const handleEnter = (el) => {

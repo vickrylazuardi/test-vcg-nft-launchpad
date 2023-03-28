@@ -7,11 +7,9 @@ import NavbarMobileWithBack from "../../../components/NavbarMobileWithBack";
 import { API } from "../../../utils/globalConstant";
 import { HiExternalLink } from "react-icons/hi";
 import Link from "next/link";
-import Cookies from "universal-cookie";
 
 export default function Transaction(props) {
   const router = useRouter();
-  const cookies = new Cookies();
 
   const [isLoading, setIsLoading] = useState(false);
   const [paymentType, setPaymentType] = useState("");
@@ -57,8 +55,9 @@ export default function Transaction(props) {
         gethistoryTransaction(router.query.slug);
       }
       if (router.query.paymentType == "fiat") {
-        console.log(">>???", cookies.get("detailTRX"));
-        setDataTRX(cookies.get("detailTRX")[0]);
+        const data = localStorage.getItem("detailTRX");
+        console.log(">>???", localStorage.getItem("detailTRX"));
+        setDataTRX(JSON.parse(data)[0]);
       }
       setPaymentType(router.query.paymentType);
     }
@@ -148,7 +147,7 @@ export default function Transaction(props) {
                           <p className="text-sm font-semibold">
                             {dataTRX?.bank_name}{" "}
                             <img
-                              style={{ width: "35px", aspectRatio: "2/1" }}
+                              style={{ width: "35px", aspectRatio: "2/1", objectFit:'contain' }}
                               className="inline ml-2"
                               src={dataTRX?.bank_image}
                               alt=""

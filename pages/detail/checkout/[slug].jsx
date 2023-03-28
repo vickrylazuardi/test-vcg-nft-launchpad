@@ -24,8 +24,6 @@ import { vcgEnableToken } from "../../../utils/contractConfig";
 import { ethers } from "ethers";
 import abiLaunchpad from "../../../abi/launchpad.json";
 import useMetaMask from "../../../wallet/hook";
-import Cookies from "universal-cookie";
-import nookies from "nookies";
 import { hashCode } from "../../../utils/globalFunction";
 import cookeieParser from "cookieparser";
 
@@ -117,7 +115,6 @@ export default function Checkout(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const router = useRouter();
-  const cookies = new Cookies();
   const { account, chainId, signer, connectContract } = useMetaMask();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -407,8 +404,12 @@ export default function Checkout(props) {
 
   useEffect(() => {
     if (props.transaction) {
+      console.log("TRX", props.transaction);
       if (props.transaction.status) {
-        cookies.set("detailTRX", props.transaction.data, { path: "/" });
+        localStorage.setItem(
+          "detailTRX",
+          JSON.stringify(props.transaction.data)
+        );
         router.push(
           `/detail/transaction/${router.query.slug}?paymentType=fiat`
         );
@@ -557,16 +558,7 @@ export async function getServerSideProps({
       }
     })
     .catch((error) => {
-      // console.log("??cat>>", error);
-      if (error.response.status == 401) {
-        // console.log("??cat>>", error.response);
-        nookies.set(ctx, "isLogedin", false, {
-          path: "/",
-        });
-        nookies.set(ctx, "profile-data", null, {
-          path: "/",
-        });
-      }
+      console.log("??cat>>", error);
       return null;
     });
 
@@ -587,7 +579,7 @@ export async function getServerSideProps({
         {
           headers: {
             common: {
-              Authorization: ctx.req.cookies.tokenVcg,
+              Authorization: tokenAuth ? tokenAuth : ctx.req.cookies.tokenVcg,
             },
           },
         }

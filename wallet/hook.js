@@ -28,7 +28,7 @@ export const MetaMaskProvider = ({ children }) => {
   // Init Loading
   useEffect(() => {
     async function fetchData() {
-      if (account && cookies.get(account) === undefined && !isLoading) {
+      if (account && localStorage.getItem(account) === null && !isLoading) {
         setIsLoading(true);
         await signMessage(account);
       }
@@ -37,17 +37,17 @@ export const MetaMaskProvider = ({ children }) => {
   }, [account]);
 
   useEffect(() => {
-    if (cookies.get("isConnected")) {
-      connect(cookies.get("providerType"));
+    if (localStorage.getItem("isConnected")) {
+      connect(localStorage.getItem("providerType"));
     }
   }, []);
 
   useEffect(() => {
-    console.log(
-      "MASUK",
-      cookies.get("tokenVcg"),
-      window.location.pathname + window.location.search
-    );
+    // console.log(
+    //   "MASUK",
+    //   cookies.get("tokenVcg"),
+    //   window.location.pathname + window.location.search
+    // );
     if (cookies.get("tokenVcg")) {
       router.push(
         `/auth?checkToken=${cookies.get("tokenVcg")}&href=${
@@ -64,8 +64,8 @@ export const MetaMaskProvider = ({ children }) => {
   }, [cookies.get("tokenVcg")]);
 
   useEffect(() => {
-    if (cookies.get("isConnected") && isActive) {
-      connect(cookies.get("providerType"));
+    if (localStorage.getItem("isConnected") && isActive) {
+      connect(localStorage.getItem("providerType"));
     }
   }, [isActive]);
 
@@ -93,9 +93,14 @@ export const MetaMaskProvider = ({ children }) => {
             .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
             .then((resp) => {
               setSignature(res);
-              setCookie(walletId, res, 1);
-              setCookie(walletId + "-msg", messageTemplate, 1);
-              setCookie(walletId + "-profile", resp.data.data, 1);
+              setLocalStorage(walletId, JSON.stringify(res), 1);
+              setLocalStorage(walletId + "-msg", messageTemplate, 1);
+              console.log("MASHIIIK", resp);
+              setLocalStorage(
+                walletId + "-profile",
+                JSON.stringify(resp.data.data),
+                1
+              );
               // getCreator(walletId);
               switchActive(true);
               setIsLoading(false);
@@ -121,18 +126,24 @@ export const MetaMaskProvider = ({ children }) => {
         })
         .then((res) => {
           if (res.status === 204) document.getElementById("newUser").click();
-          else setCookie(params + "-profile", res.data.data.items[0], 1);
+          else
+            setLocalStorage(
+              params + "-profile",
+              JSON.stringify(res.data.data.items[0]),
+              1
+            );
         });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setCookie = async (key, value, expires) => {
+  const setLocalStorage = async (key, value, expires) => {
     try {
-      const d = new Date();
-      d.setDate(d.getDate() + expires);
-      cookies.set(key, value, { path: "/", expires: d });
+      // const d = new Date();
+      // d.setDate(d.getDate() + expires);
+      // cookies.set(key, value, { path: "/", expires: d });
+      localStorage.setItem(key, value);
     } catch (error) {
       console.log(error);
     }
@@ -204,30 +215,30 @@ export const MetaMaskProvider = ({ children }) => {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          setCookie("providerType", "metaMask", 1);
-          setCookie("isConnected", true, 1);
+          setLocalStorage("providerType", "metaMask", 1);
+          setLocalStorage("isConnected", true, 1);
         });
       } else if (providerType === "safePal") {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          setCookie("providerType", "safePal", 1);
-          setCookie("isConnected", true, 1);
+          setLocalStorage("providerType", "safePal", 1);
+          setLocalStorage("isConnected", true, 1);
         });
       }
       if (providerType === "trustWallet") {
         await activate(injected).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          setCookie("providerType", "trustWallet", 1);
-          setCookie("isConnected", true, 1);
+          setLocalStorage("providerType", "trustWallet", 1);
+          setLocalStorage("isConnected", true, 1);
         });
       } else if (providerType === "walletConnect") {
         await activate(walletConnect).then(() => {
           switchActive(true);
           setShouldDisable(false);
-          setCookie("providerType", "walletConnect", 1);
-          setCookie("isConnected", true, 1);
+          setLocalStorage("providerType", "walletConnect", 1);
+          setLocalStorage("isConnected", true, 1);
         });
       } else {
       }
@@ -243,11 +254,11 @@ export const MetaMaskProvider = ({ children }) => {
   const disconnect = async () => {
     try {
       await deactivate();
-      cookies.remove("isConnected");
-      cookies.remove("providerType");
-      cookies.remove(account);
-      cookies.remove(account + "-msg");
-      cookies.remove(account + "-profile");
+      localStorage.removeItem("isConnected");
+      localStorage.removeItem("providerType");
+      localStorage.removeItem(account);
+      localStorage.removeItem(account + "-msg");
+      localStorage.removeItem(account + "-profile");
       setIsSigned(false);
       switchActive(false);
       setSignature(null);
