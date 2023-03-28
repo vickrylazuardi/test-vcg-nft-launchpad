@@ -7,7 +7,6 @@ import {
 } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 const { motion } = require("framer-motion");
-import Cookies from "universal-cookie";
 import { toggleModalNewUser } from "../../redux/modalReducer";
 import useMetaMask from "../../wallet/hook";
 import { FormInputImage } from "./formComponent";
@@ -40,7 +39,6 @@ const modalNewUser = {
 
 export default function DialogNewUser(props) {
   const { account } = useMetaMask();
-  const cookies = new Cookies();
   const dispatch = useDispatch();
 
   const [dataProfile, setDataProfile] = useState(null);
@@ -136,7 +134,7 @@ export default function DialogNewUser(props) {
       axios.post(API.ransverse + API.vcmarket.update, body).then((res) => {
         if (res.data.status) {
           launch_toast(false, "Update Profile successfull!");
-          setCookie(account + "-profile", dataProfile, 1);
+          setLocalStorage(account + "-profile", JSON.stringify(dataProfile), 1);
           dispatch(toggleModalNewUser(modalNewUser));
         }
       });
@@ -181,11 +179,12 @@ export default function DialogNewUser(props) {
     }, 3000);
   }
 
-  const setCookie = async (key, value, expires) => {
+  const setLocalStorage = async (key, value, expires) => {
     try {
-      const d = new Date();
-      d.setDate(d.getDate() + expires);
-      cookies.set(key, value, { path: "/", expires: d });
+      // const d = new Date();
+      // d.setDate(d.getDate() + expires);
+      // cookies.set(key, value, { path: "/", expires: d });
+      localStorage.setItem(key, value);
     } catch (error) {
       console.log(error);
     }
@@ -193,10 +192,10 @@ export default function DialogNewUser(props) {
 
   useEffect(() => {
     if (account) {
-      const cookieProfile = cookies.get(account + "-profile");
-      if (cookieProfile) {
+      const profileAccount = localStorage.getItem(account + "-profile");
+      if (profileAccount) {
         setDataProfile({
-          ...cookieProfile,
+          ...JSON.parse(profileAccount),
           socialMedia: {
             website: "",
             instagram: "",

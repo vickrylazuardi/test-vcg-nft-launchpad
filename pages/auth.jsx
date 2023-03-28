@@ -1,8 +1,9 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { API } from "../utils/globalConstant";
 import nookies from "nookies";
 import cookeieParser from "cookieparser";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps({
   query: { token, checkToken, logout, href },
@@ -27,7 +28,10 @@ export async function getServerSideProps({
   }
 
   if (checkToken) {
-    console.log("CHEK", checkToken);
+    console.log("CHEK", checkToken, tokenAuth);
+    let profileData = null;
+    let isLogedin = false;
+
     const res = await axios
       .get(API.marketplaceV2 + "api/profile", {
         headers: {
@@ -39,24 +43,28 @@ export async function getServerSideProps({
       .then((res) => {
         // console.log("??then", res.data);
         if (res.data.status) {
-          nookies.set(ctx, "isLogedin", true, {
-            path: "/",
-          });
-          nookies.set(ctx, "profile-data", JSON.stringify(res.data.data), {
-            path: "/",
-          });
+          // nookies.set(ctx, "isLogedin", true, {
+          //   path: "/",
+          // });
+          // nookies.set(ctx, "profile-data", JSON.stringify(res.data.data), {
+          //   path: "/",
+          // });
+          profileData = res.data.data;
+          isLogedin = true;
           return true;
         }
       })
       .catch((error) => {
         if (error.response.status == 401) {
           // console.log("??cat", error.response.data);
-          nookies.set(ctx, "isLogedin", false, {
-            path: "/",
-          });
-          nookies.set(ctx, "profile-data", null, {
-            path: "/",
-          });
+          // nookies.set(ctx, "isLogedin", false, {
+          //   path: "/",
+          // });
+          // nookies.set(ctx, "profile-data", null, {
+          //   path: "/",
+          // });
+          profileData = null;
+          isLogedin = false;
 
           return true;
         }
@@ -64,14 +72,18 @@ export async function getServerSideProps({
 
     if (res) {
       return {
-        redirect: {
-          destination: href,
-        },
+        props: { profileData, isLogedin, href },
+        // redirect: {
+        //   destination: href,
+        // },
       };
     }
   }
 
   if (logout) {
+    let profileData = null;
+    let isLogedin = false;
+
     const res = await axios
       .get(API.marketplaceV2 + "api/profiles/logout", {
         headers: {
@@ -82,27 +94,32 @@ export async function getServerSideProps({
       })
       .then((res) => {
         if (res.data.status) {
-          nookies.destroy(ctx, "isLogedin", {
-            path: "/",
-          });
-          nookies.destroy(ctx, "profile-data", {
-            path: "/",
-          });
+          // nookies.destroy(ctx, "isLogedin", {
+          //   path: "/",
+          // });
+          // nookies.destroy(ctx, "profile-data", {
+          //   path: "/",
+          // });
           nookies.destroy(ctx, "tokenVcg", {
             path: "/",
           });
           nookies.destroy(ctx, "VcgAuth", {
             path: "/",
+            domain: ".vcg.asia",
           });
+          profileData = null;
+          isLogedin = false;
+
           return true;
         }
       });
 
     if (res) {
       return {
-        redirect: {
-          destination: "/",
-        },
+        // redirect: {
+        //   destination: "/",
+        // },
+        props: { profileData, isLogedin },
       };
     }
   }
@@ -115,6 +132,25 @@ export async function getServerSideProps({
 }
 
 export default function Auth(props) {
+  const router = useRouter();
+  // console.log("PROPS", props);
+
+  useEffect(() => {
+    if (props.profileData) {
+      localStorage.setItem("profile-data", JSON.stringify(props.profileData));
+    } else {
+      localStorage.setItem("profile-data", null);
+    }
+
+    if (props.isLogedin) {
+      localStorage.setItem("isLogedin", true);
+      router.push(props.href);
+    } else {
+      localStorage.setItem("isLogedin", false);
+      router.push('/');
+    }
+  }, [props]);
+  
   return (
     <div
       className="flex items-center justify-center"

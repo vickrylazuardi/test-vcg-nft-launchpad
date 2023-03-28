@@ -43,17 +43,11 @@ export default function Navbar(props) {
 
   const handleLogout = () => {
     setIsLogin("");
-    if (cookies.get("VcgAuth")) {
-      console.log("???satulog", typeof cookies.get("VcgAuth"));
-      setCookie("tokenVcg", cookies.get("VcgAuth"), 1);
-      router.push(`/auth?logout=${cookies.get("VcgAuth")}`);
-    } else if (cookies.get("tokenVcg")) {
-      console.log("???dualog", typeof cookies.get("tokenVcg"));
-      router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
-    }
+    router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
   };
 
   const getCreator = (params) => {
+    console.log("SINIII");
     try {
       axios
         .post(API.marketplace + API.artist.list, {
@@ -61,18 +55,24 @@ export default function Navbar(props) {
         })
         .then((res) => {
           if (res.status === 204) dispatch(toggleModalNewUser(modalNewUser));
-          else setCookie(params + "-profile", res.data.data.items[0], 1);
+          else
+            setLocalStorage(
+              params + "-profile",
+              JSON.stringify(res.data.data.items[0]),
+              1
+            );
         });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setCookie = async (key, value, expires) => {
+  const setLocalStorage = async (key, value, expires) => {
     try {
-      const d = new Date();
-      d.setDate(d.getDate() + expires);
-      cookies.set(key, value, { path: "/", expires: d });
+      // const d = new Date();
+      // d.setDate(d.getDate() + expires);
+      // cookies.set(key, value, { path: "/", expires: d });
+      localStorage.setItem(key, value);
     } catch (error) {
       console.log(error);
     }
@@ -81,19 +81,19 @@ export default function Navbar(props) {
   useEffect(() => {
     if (account) {
       getCreator(account);
-      const cookieProfile = cookies.get(account + "-profile");
-      setDetailProfile(cookieProfile);
+      const profileAccount = localStorage.getItem(account + "-profile");
+      setDetailProfile(JSON.parse(profileAccount));
       setIsLogin("accountWeb3");
     }
   }, [account]);
 
   useEffect(() => {
     setTimeout(() => {
-      const isLogedin = cookies.get("isLogedin");
-      const data = cookies.get("profile-data");
-      console.log("?ISLOF", isLogedin, data);
+      const isLogedin = localStorage.getItem("isLogedin");
+      const data = localStorage.getItem("profile-data");
+      // console.log("?ISLOF", isLogedin, data);
       if (isLogedin == "true") {
-        setDetailProfileVcg(data);
+        setDetailProfileVcg(JSON.parse(data));
         setIsLogin("accountWeb2");
       }
     }, 1000);
@@ -122,7 +122,7 @@ export default function Navbar(props) {
                 <RightNavbar
                   isLogin={isLogin}
                   // detailProfile={detailProfile}
-                  account={account}
+                  account={detailProfileVcg?.member_wallet}
                   disconnect={handleLogout}
                   // detailProfileVcg={detailProfileVcg}
                   profileName={detailProfileVcg?.member_name}

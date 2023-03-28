@@ -13,13 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModalConfirmation } from "../../redux/modalReducer";
 import useMetaMask from "../../wallet/hook";
 import { FiInfo } from "react-icons/fi";
-import Cookies from "universal-cookie";
 
 export default function NewProject(props) {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const { account, switchActive } = useMetaMask();
-  const cookies = new Cookies();
 
   const router = useRouter();
 
@@ -334,17 +332,19 @@ export default function NewProject(props) {
     if (!account) {
       router.push("/");
     } else {
-      const cookieProfile = cookies.get(account + "-profile");
-      if (cookieProfile) {
-        getData("contactName", cookieProfile.name);
+      const profileAccount = JSON.parse(
+        localStorage.getItem(account + "-profile")
+      );
+      if (profileAccount) {
+        getData("contactName", profileAccount.name);
         getData("owner", account);
 
-        const at = cookieProfile.email.indexOf("@");
-        const dot = cookieProfile.email.lastIndexOf(".");
-        if (at < 1 || dot < at + 2 || dot + 2 >= cookieProfile.email.length) {
-          getData("contactEmail", cookieProfile.email, false);
+        const at = profileAccount.email.indexOf("@");
+        const dot = profileAccount.email.lastIndexOf(".");
+        if (at < 1 || dot < at + 2 || dot + 2 >= profileAccount.email.length) {
+          getData("contactEmail", profileAccount.email, false);
         } else {
-          getData("contactEmail", cookieProfile.email, true);
+          getData("contactEmail", profileAccount.email, true);
         }
       }
     }

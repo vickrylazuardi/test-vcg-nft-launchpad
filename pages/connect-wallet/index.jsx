@@ -13,6 +13,11 @@ export default function Index() {
   const listWallet = [
     {
       title: "Trust Wallet",
+      url: "/images/icon-wallet/vcg-wallet.png",
+      provider: "vcgWallet",
+    },
+    {
+      title: "Trust Wallet",
       url: "/images/icon-wallet/wallet-trust.png",
       provider: "trustWallet",
     },
@@ -39,6 +44,11 @@ export default function Index() {
       // }
       if (window.ethereum) connect("metaMask", "0X4");
       else alert("You don't have or Nonactivated Metamask Wallet Extension");
+    } else if (providerType === "vcgWallet") {
+      //TODO Action Wallet VCGamers
+      //
+      //
+      //
     } else if (providerType === "trustWallet") {
       if (isBrowser) {
         toast.error("not detect dapp browser", {
