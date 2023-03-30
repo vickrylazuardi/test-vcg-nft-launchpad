@@ -4,18 +4,16 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isMobile, isBrowser } from "react-device-detect";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Index() {
+  const [detailProfileVcg, setDetailProfileVcg] = useState("");
+  const [domainOrigin, setDomainOrigin] = useState("");
+
   const { connect, signature } = useMetaMask();
   const router = useRouter();
 
   const listWallet = [
-    {
-      title: "Trust Wallet",
-      url: "/images/icon-wallet/vcg-wallet.png",
-      provider: "vcgWallet",
-    },
     {
       title: "Trust Wallet",
       url: "/images/icon-wallet/wallet-trust.png",
@@ -44,11 +42,6 @@ export default function Index() {
       // }
       if (window.ethereum) connect("metaMask", "0X4");
       else alert("You don't have or Nonactivated Metamask Wallet Extension");
-    } else if (providerType === "vcgWallet") {
-      //TODO Action Wallet VCGamers
-      //
-      //
-      //
     } else if (providerType === "trustWallet") {
       if (isBrowser) {
         toast.error("not detect dapp browser", {
@@ -80,6 +73,20 @@ export default function Index() {
     if (signature) router.back();
   }, [signature]);
 
+  useEffect(() => {
+    const domainName = window.location.origin;
+    if (domainName) setDomainOrigin(domainName);
+
+    setTimeout(() => {
+      const isLogedin = localStorage.getItem("isLogedin");
+      const data = localStorage.getItem("profile-data");
+      // console.log("?ISLOF", isLogedin, data);
+      if (isLogedin == "true") {
+        setDetailProfileVcg(JSON.parse(data));
+      }
+    }, 1000);
+  }, []);
+
   return (
     <div id="connect-wallet-page" className="">
       <div className="container py-3 cwp-mobile">
@@ -87,6 +94,23 @@ export default function Index() {
           Connect First, for get it Fast
         </p>
         <div className="grid grid-cols-2 gap-4 mt-5">
+          {detailProfileVcg && !detailProfileVcg?.member_wallet ? (
+            <div className="connect-wallet-item flex items-center justify-center rounded-lg">
+              <div
+                className="connect-wallet-item-bundle"
+                onClick={() =>
+                  (window.location.href = `https://auth.vcg.asia/generate-wallets?ref=${domainOrigin}/auth`)
+                }
+              >
+                <div className="w-full flex justify-center">
+                  <img src={"/images/icon-wallet/vcg-wallet.png"} alt="" />
+                </div>
+                <p className="font-semibold mt-1">VCGamers Wallet</p>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
           {listWallet.map((item, idx) => (
             <div
               key={idx}
@@ -147,6 +171,23 @@ export default function Index() {
               Connect Wallet
             </p>
             <div className="flex justify-center gap-20 mt-5">
+              {detailProfileVcg && !detailProfileVcg?.member_wallet ? (
+                <div className="connect-wallet-item flex items-center justify-center rounded-lg">
+                  <div
+                    className="connect-wallet-item-bundle"
+                    onClick={() =>
+                      (window.location.href = `https://auth.vcg.asia/generate-wallets?ref=${domainOrigin}/auth`)
+                    }
+                  >
+                    <div className="w-full flex justify-center">
+                      <img src={"/images/icon-wallet/vcg-wallet.png"} alt="" />
+                    </div>
+                    <p className="font-semibold mt-1">VCGamers Wallet</p>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
               {listWallet.map((item, idx) => (
                 <div
                   key={idx}

@@ -100,7 +100,11 @@ export default function RightNavbar(props) {
                             >
                               <div
                                 className="mask mask-hexagon profile-wrap"
-                                style={{ background: "#3f485f" }}
+                                style={{
+                                  background: "#3f485f",
+                                  width: "40px",
+                                  height: "40px",
+                                }}
                               >
                                 <img
                                   width={10}
@@ -109,7 +113,7 @@ export default function RightNavbar(props) {
                                       ? props.profileImg
                                       : "/images/default-avatar.png"
                                   }
-                                  className="mask mask-hexagon object-contain h-full w-full"
+                                  className="mask mask-hexagon object-cover h-full w-full"
                                   onError={({ currentTarget }) => {
                                     currentTarget.onerror = null; // prevents looping
                                     currentTarget.src =
@@ -171,7 +175,11 @@ export default function RightNavbar(props) {
               >
                 <div
                   className="mask mask-hexagon profile-wrap"
-                  style={{ background: "#3f485f" }}
+                  style={{
+                    background: "#3f485f",
+                    width: "40px",
+                    height: "40px",
+                  }}
                 >
                   <img
                     src={
@@ -179,7 +187,7 @@ export default function RightNavbar(props) {
                         ? props.profileImg
                         : "/images/default-avatar.png"
                     }
-                    className="mask mask-hexagon object-contain h-full w-full"
+                    className="mask mask-hexagon object-cover h-full w-full"
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null; // prevents looping
                       currentTarget.src = "/images/default-avatar.png";
