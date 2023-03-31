@@ -73,9 +73,8 @@ export default function DashboardHistoryTransactionItem(props) {
             className="history-tr-item py-2"
             onClick={() => {
               props.setData(item);
-              dispatch(
-                toggleModalTransaction(dataModal.modalDetailTransaction)
-              );
+              console.log("??", item);
+              dispatch(toggleModalTransaction({ isOpen: true }));
             }}
           >
             <div className="hti-count">
@@ -121,11 +120,52 @@ export default function DashboardHistoryTransactionItem(props) {
                 </p>
               </div>
             </div>
+            <div className="hti-payment">
+              {item.paymentType == "fiat" ? (
+                <div className="flex">
+                  <div>
+                    <img
+                      width={30}
+                      style={{ aspectRatio: 1 / 1, objectFit: "contain" }}
+                      className="mr-2"
+                      src={item.paymentDetail?.bank_image}
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-color-grey">
+                      {item.paymentDetail?.bank_name}
+                    </p>
+                    <p className="text-xs font-bold text-white">
+                      Rp. {item.paymentDetail?.total}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex">
+                  <div>
+                    <img
+                      width={20}
+                      style={{ aspectRatio: 1 / 1, objectFit: "contain" }}
+                      className="mr-2 m-auto"
+                      src="/images/coin-vcg.png"
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-color-grey">VCG</p>
+                    <p className="text-xs font-bold text-white">{item.price}</p>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="hti-btn">
-              {item?.paymentStatus == 'paid' ? (
+              {item?.paymentStatus == "paid" ? (
                 <button className="buy px-3 py-1 rounded-md mr-2">Paid</button>
-              ) : item?.paymentStatus == 'unpaid' ? (
-                <button className="refund px-3 py-1 rounded-md mr-2">Unpaid</button>
+              ) : item?.paymentStatus == "unpaid" ? (
+                <button className="refund px-3 py-1 rounded-md mr-2">
+                  Unpaid
+                </button>
               ) : (
                 ""
               )}

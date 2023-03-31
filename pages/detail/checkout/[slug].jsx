@@ -459,7 +459,7 @@ export default function Checkout(props) {
                 projectDetail: project._id,
                 paymentType:'fiat',
                 paymentStatus:'unpaid',
-                paymentDetail: props.transaction.data
+                paymentDetail: props.transaction.data[0]
               });
             } catch (error) {
               console.log(error);

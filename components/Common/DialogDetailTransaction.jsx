@@ -84,9 +84,17 @@ export default function DialogDetailTransaction(props) {
             </div>
             <div className="dih-detailed-transaction py-1 flex">
               <p className="flex-1 text-left">Price</p>
-              <p className="flex-1 text-right font-bold text-yellow-300">
-                {props.data.price} VCG
-              </p>
+              {
+                (props.data.paymentType = "fiat" ? (
+                  <p className="flex-1 text-right font-bold text-yellow-300">
+                    Rp. {props.data.paymentDetail?.total}
+                  </p>
+                ) : (
+                  <p className="flex-1 text-right font-bold text-yellow-300">
+                    {props.data.price} VCG
+                  </p>
+                ))
+              }
             </div>
             <div className="dih-detailed-transaction py-1 flex">
               <p className="flex-1 text-left">Date</p>

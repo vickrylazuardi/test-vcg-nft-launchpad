@@ -1553,7 +1553,7 @@ footer {
         }
 
         .hti-box {
-            width: 75%;
+            width: 45%;
             display: flex;
             align-items: center;
             justify-content: left;
@@ -1579,6 +1579,13 @@ footer {
                     color: #40D04F;
                 }
             }
+        }
+
+        .hti-payment{
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: start;
         }
 
         .hti-btn {
