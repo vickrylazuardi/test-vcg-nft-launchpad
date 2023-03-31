@@ -62,6 +62,21 @@ export default function Index() {
     }
   };
 
+  const handleHistoryFilter = (page,filter) => {
+    try {
+      historyFilter.page = 0;
+      if(filter=='all'){
+
+      }else{
+        historyFilter.paymentStatus = filter;
+      }
+      setHistoryFilter({ ...historyFilter });
+      getHistoryList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const paginate = async (res, getter, setter) => {
     try {
       let page = {};
@@ -106,6 +121,28 @@ export default function Index() {
     }
   }, [account]);
 
+  useEffect(() => {
+    const isLogedin = localStorage.getItem("isLogedin");
+    const data = localStorage.getItem("profile-data");
+    console.log("?ISLOF", isLogedin, data);
+    let profile = null;
+    if (isLogedin == "true") {
+      console.log("profile",JSON.parse(data))
+      profile = JSON.parse(data);
+
+      setTimeout(() => {
+        historyFilter.owner = profile.member_wallet;
+        setHistoryFilter({ ...historyFilter });
+        getHistoryList();
+      }, 1000);
+    }
+  
+
+  }, []);
+  
+
+  
+
   return (
     <div id="profile-launchpad">
       <div className="container mx-auto bundle-pl">
@@ -123,6 +160,8 @@ export default function Index() {
           <DashboardSideMenu />
           <DashboardHistoryTransaction
             history={history}
+            historyFilter = {historyFilter}
+            handleHistoryFilter ={handleHistoryFilter}
             page={historyPage}
             pageAction={changePage}
           />

@@ -15,6 +15,8 @@ import ProfileHeaderMobile from "../../components/Dashboard/ProfileHeaderMobile"
 import { vcgEnableTokenTestnet } from "../../utils/contractConfig";
 
 export default function Index() {
+	const [profile, setProfile] = useState(null);
+	const [walletAccount, setWalletAccount] = useState(null);
 	const marginMobile = {
 		marginTop: "-90px",
 	};
@@ -152,8 +154,10 @@ export default function Index() {
 		}
 	};
 
+
 	useEffect(() => {
 		if (account) {
+			setWalletAccount(account);
 			if (account == "0x71a183F10d6e6a56CAa2B589651B4958b5Af5aF6") {
 				delete(projectFilter.owner);
 				setProjectFilter({...projectFilter});
@@ -165,6 +169,34 @@ export default function Index() {
 			}
 		}
 	}, [account]);
+
+	useEffect(() => {
+		if (walletAccount) {
+			if (walletAccount == "0x71a183F10d6e6a56CAa2B589651B4958b5Af5aF6") {
+				delete(projectFilter.owner);
+				setProjectFilter({...projectFilter});
+				getProjectList();
+			} else {
+				projectFilter.owner = walletAccount;
+				setProjectFilter({...projectFilter});
+				getProjectList();
+			}
+		}
+	}, [walletAccount]);
+
+	
+	useEffect(() => {
+		const isLogedin = localStorage.getItem("isLogedin");
+		const data = localStorage.getItem("profile-data");
+		if (isLogedin == "true") {
+		  console.log("profile",JSON.parse(data))
+		  var prof = JSON.parse(data);
+		  setProfile(prof);
+		  setTimeout(() => {
+				setWalletAccount(prof.member_wallet);
+			}, 1000);
+		}
+	  }, []);
 	
 	return (
 		<div 
@@ -188,7 +220,7 @@ export default function Index() {
 					<div className="container-wrapper grid grid-cols-5 gap-4">
 						<DashboardSideMenu/>
 						<DashboardProjects
-							account={account}
+							account={walletAccount}
 							project={project}
 							action={isProjectApprove}
 							approve={approve}

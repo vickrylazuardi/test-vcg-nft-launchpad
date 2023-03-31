@@ -80,7 +80,7 @@ export default function Index() {
     setTimeout(() => {
       const isLogedin = localStorage.getItem("isLogedin");
       const data = localStorage.getItem("profile-data");
-      // console.log("?ISLOF", isLogedin, data);
+      console.log("?ISLOF", isLogedin, data);
       if (isLogedin == "true") {
         setDetailProfileVcg(JSON.parse(data));
       }

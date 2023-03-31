@@ -122,6 +122,14 @@ export default function DashboardHistoryTransactionItem(props) {
               </div>
             </div>
             <div className="hti-btn">
+              {item?.paymentStatus == 'paid' ? (
+                <button className="buy px-3 py-1 rounded-md mr-2">Paid</button>
+              ) : item?.paymentStatus == 'unpaid' ? (
+                <button className="refund px-3 py-1 rounded-md mr-2">Unpaid</button>
+              ) : (
+                ""
+              )}
+
               {item.action == 0 ? (
                 <button className="buy px-3 py-1 rounded-md">Buy</button>
               ) : item.action == 1 ? (

@@ -10,6 +10,7 @@ export default function DashboardHistoryTransaction(props) {
 	//functional
 	const modal = useSelector((state) => state.modal);
 	const [dataModal, setDataModal] = useState({});
+	const [selectedButton, setSelectedButton] = useState(0);
 	return (
 		<div id="dashboard-projects" className="mt-5 rounded-lg col-span-4">
 			<div className="dashboard-projects-header grid grid-cols-2 py-3">
@@ -28,6 +29,23 @@ export default function DashboardHistoryTransaction(props) {
 						/>
 					</div>
 				</div> */}
+			</div>
+			<div className="mx-2 mt-2">
+				<button className="px-3 rounded-md mx-1" style={ !props?.historyFilter?.paymentStatus || selectedButton==0? {height:'34px',border:'none',background:'#e28058'}:{height:'34px',border:'1px solid #fff'}}
+				onClick={()=>{props?.handleHistoryFilter(0,'all');setSelectedButton(0);}}
+				>All</button> 
+
+				<button  className="px-3 rounded-md mx-1" style={selectedButton==1? {height:'34px',border:'none',background:'#e28058'}:{height:'34px',border:'1px solid #fff'}}
+				onClick={()=>{
+					props?.handleHistoryFilter(0,'paid');
+					setSelectedButton(1);
+					}
+				}
+				>Paid</button>
+				
+				<button  className="px-3 rounded-md mx-1" style={selectedButton==2?{height:'34px',border:'none',background:'#e28058'}: {height:'34px',border:'1px solid #fff'}}
+				onClick={()=>{props?.handleHistoryFilter(0,'unpaid');setSelectedButton(2);}}
+				>Unpaid</button>
 			</div>
 			<div className="dashboard-projects-body mt-2">
 				<DashboardHistoryTransactionItem

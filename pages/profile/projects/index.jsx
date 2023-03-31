@@ -10,6 +10,8 @@ import useMetaMask from "../../../wallet/hook";
 export default function Index() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const modal = useSelector((state) => state.modal);
+	const [profile, setProfile] = useState(null);
+	const [walletAccount, setWalletAccount] = useState(null);
 
 	const [projectItem, setProjectItem] = useState([]);
 	const [projectPage, setProjectPage] = useState({});
@@ -81,11 +83,34 @@ export default function Index() {
 
 	useEffect(() => {
 		if (account) {
+			setWalletAccount(account);
 			projectFilter.owner = account;
 			setProjectFilter({...projectFilter});
 			getProjectList();
 		}
 	}, [account]);
+
+	useEffect(() => {
+		if (walletAccount) {
+			boxesFilter.owner = walletAccount;
+			setBoxesFilter({...boxesFilter});
+			getBoxesList();
+		}
+	}, [walletAccount]);
+
+	
+	useEffect(() => {
+		const isLogedin = localStorage.getItem("isLogedin");
+		const data = localStorage.getItem("profile-data");
+		if (isLogedin == "true") {
+		  console.log("profile",JSON.parse(data))
+		  var prof = JSON.parse(data);
+		  setProfile(prof);
+		  setTimeout(() => {
+				setWalletAccount(prof.member_wallet);
+			}, 1000);
+		}
+	  }, []);
 
 	return (
 		<div id="project-section-launchpad">

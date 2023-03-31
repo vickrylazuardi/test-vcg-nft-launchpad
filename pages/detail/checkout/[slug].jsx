@@ -404,12 +404,70 @@ export default function Checkout(props) {
 
   useEffect(() => {
     if (props.transaction) {
+      
       console.log("TRX", props.transaction);
       if (props.transaction.status) {
         localStorage.setItem(
           "detailTRX",
           JSON.stringify(props.transaction.data)
         );
+
+        const isLogedin = localStorage.getItem("isLogedin");
+        const data = localStorage.getItem("profile-data");
+        console.log("?ISLOF", isLogedin, data);
+        let profile = null;
+        if (isLogedin == "true") {
+          // console.log("profile",JSON.parse(data))
+          profile = JSON.parse(data);
+        }
+
+        // hit api transaction add v2
+        setTimeout(() => {
+          if(props.transaction.data){
+            console.log('disini');
+            var box = 'wildan test';
+            try {
+              // set project
+              axios
+              .post(API.launchpad.local + API.launchpad.project.buy, {
+                id: project._id,
+                box,
+                amount: Number(amount),
+                price: project.boxes[box].price * Number(amount),
+              });
+              
+              //set item buy
+              axios.post(API.launchpad.local + API.launchpad.item.buy, {
+                owner: profile?.member_wallet,
+                itemName: box,
+                amount: Number(amount),
+                image: project.boxes[box].image,
+                projectName: project.name,
+                projectDetail: project._id,
+              });
+
+              //set history buy
+              axios.post(API.launchpad.local + API.launchpad.history.addv2, {
+                name: box,
+                image: project.boxes[box].image,
+                amount: Number(amount),
+                price: project.boxes[box].price * Number(amount),
+                action: 0,
+                owner: profile?.member_wallet,
+                txHash:'-',
+                projectName: project.name,
+                projectDetail: project._id,
+                paymentType:'fiat',
+                paymentStatus:'unpaid',
+                paymentDetail: props.transaction.data
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        }, 1000);
+       
+
         router.push(
           `/detail/transaction/${router.query.slug}?paymentType=fiat`
         );

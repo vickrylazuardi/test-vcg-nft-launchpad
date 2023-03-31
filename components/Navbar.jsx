@@ -17,7 +17,7 @@ import ToastComponent from "./Common/toastComponent";
 import { useRouter } from "next/router";
 
 export default function Navbar(props) {
-  const { account, disconnect, switchActive } = useMetaMask();
+  const { account, disconnect, isActive, switchActive } = useMetaMask();
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -121,6 +121,7 @@ export default function Navbar(props) {
               {isLogin == "accountWeb2" ? (
                 <RightNavbar
                   isLogin={isLogin}
+                  isActive ={isActive}
                   // detailProfile={detailProfile}
                   account={detailProfileVcg?.member_wallet}
                   disconnect={handleLogout}

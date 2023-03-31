@@ -124,6 +124,7 @@ export default function _slug() {
           params: { id },
         })
         .then((res) => {
+          // console.log('data detail',res);
           if (res.status === 204) return;
           setProject(res.data.data);
           getItems(res.data.data.address);
@@ -632,6 +633,7 @@ export default function _slug() {
     if (data.slug) {
       getDetailProject(data.slug);
       // getTournaments();
+      
     }
   }, [data]);
 

@@ -18,6 +18,8 @@ import DialogConfirmation from "../../../components/Common/DialogConfirmation";
 import DialogClaimable from "../../../components/Common/DialogClaimable";
 
 export default function Index() {
+	const [profile, setProfile] = useState(null);
+	const [walletAccount, setWalletAccount] = useState(null);
 	const modal = useSelector((state) => state.modal);
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -110,6 +112,7 @@ export default function Index() {
 	const [claimData, setClaimData] = useState({});
   const [itemURI, setItemURI] = useState({});
   const { account, signer, connectContract } = useMetaMask();
+
 
 	const getBoxesList = () => {
 		try {
@@ -233,7 +236,7 @@ export default function Index() {
               setItemURI({...itemURI});
               axios.post(API.launchpad.local + API.launchpad.ownedNft.claim, {
                 name: data.name,
-                owner: account,
+                owner: walletAccount,
                 tokenId: data.tokenId, 
                 nftAddress: data.nftAddress,
                 nftDetail: data._id,
@@ -246,7 +249,7 @@ export default function Index() {
         setClaimReward([...claimReward]);
         if (res.status == 1) {
           axios.post(API.launchpad.local + API.launchpad.item.claim, {
-            owner: account,
+            owner: walletAccount,
             itemName: box,
             amount: amount,
             projectName: project.name,
@@ -258,7 +261,7 @@ export default function Index() {
             amount: Number(amount),
             price: 0, 
             action: 1, 
-            owner: account,
+            owner: walletAccount,
             txHash: res.transactionHash,
             projectName: project.name,
             projectDetail: project._id
@@ -320,11 +323,34 @@ export default function Index() {
 
 	useEffect(() => {
 		if (account) {
-			boxesFilter.owner = account;
+			setWalletAccount(account);
+			boxesFilter.owner = walletAccount;
 			setBoxesFilter({...boxesFilter});
 			getBoxesList();
 		}
 	}, [account]);
+
+	useEffect(() => {
+		if (walletAccount) {;
+			boxesFilter.owner = walletAccount;
+			setBoxesFilter({...boxesFilter});
+			getBoxesList();
+		}
+	}, [walletAccount]);
+
+	
+	useEffect(() => {
+		const isLogedin = localStorage.getItem("isLogedin");
+		const data = localStorage.getItem("profile-data");
+		if (isLogedin == "true") {
+		  console.log("profile",JSON.parse(data))
+		  var prof = JSON.parse(data);
+		  setProfile(prof);
+		  setTimeout(() => {
+				setWalletAccount(prof.member_wallet);
+			}, 1000);
+		}
+	  }, []);
 
 	return (
 		<div id="profile-launchpad">

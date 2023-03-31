@@ -174,7 +174,8 @@ export const API = {
     history: {
       detail: "/history/info",
       filter: "/history/filter",
-      add: "/history/add"
+      add: "/history/add",
+      addv2: "/history/add-v2"
     },
     faq: {
       list: "/faq/list",

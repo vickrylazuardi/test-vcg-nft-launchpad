@@ -41,7 +41,7 @@ export async function getServerSideProps({
         },
       })
       .then((res) => {
-        // console.log("??then", res.data);
+        console.log("??then", res.data);
         if (res.data.status) {
           // nookies.set(ctx, "isLogedin", true, {
           //   path: "/",

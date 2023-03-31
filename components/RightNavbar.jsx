@@ -55,7 +55,7 @@ export default function RightNavbar(props) {
         </div> */}
         {props.isLogin ? (
           <>
-            {!props.account && (
+            {!props.account &&  (
               <Link href="/connect-wallet">
                 <a>
                   <button
