@@ -204,9 +204,9 @@ export default function CheckoutWeb(props) {
                 className="btn btn-light-green text-sm font-semibold mt-5 w-full"
                 style={{ padding: "10px" }}
                 onClick={() => {
-                  props.handleBuyFiat();
-                  // props.modalconfirm.isOpen = true;
-                  // props.dispatch(props.toggleModalConfirm(props.modalconfirm));
+                  // props.handleBuyFiat();
+                  props.modalconfirm.isOpen = true;
+                  props.dispatch(props.toggleModalConfirm(props.modalconfirm));
                 }}
                 // disabled
               >

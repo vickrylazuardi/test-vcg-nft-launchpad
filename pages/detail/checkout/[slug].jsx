@@ -138,10 +138,21 @@ export default function Checkout(props) {
 
   function handleConfirm(val) {
     modalconfirmPrivacyPolicy.isOpen = false;
-    modalSendOTP.isOpen = true;
+    modalconfirm.loading = true;
+    modalconfirm.isOpen = true;
 
     dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
-    dispatch(toggleModalSendOTP(modalSendOTP));
+    dispatch(toggleModalConfirm(modalconfirm));
+
+    //HANDLE HIT BUY FIAT
+    handleBuyFiat();
+
+    // UNTUK MUNCULIN POPUP OTP
+    // modalconfirmPrivacyPolicy.isOpen = false;
+    // modalSendOTP.isOpen = true;
+
+    // dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
+    // dispatch(toggleModalSendOTP(modalSendOTP));
   }
 
   function handleVerification(val) {
@@ -404,7 +415,6 @@ export default function Checkout(props) {
 
   useEffect(() => {
     if (props.transaction) {
-      
       console.log("TRX", props.transaction);
       if (props.transaction.status) {
         localStorage.setItem(
@@ -423,19 +433,18 @@ export default function Checkout(props) {
 
         // hit api transaction add v2
         setTimeout(() => {
-          if(props.transaction.data){
-            console.log('disini');
-            var box = 'wildan test';
+          if (props.transaction.data) {
+            console.log("disini");
+            var box = "wildan test";
             try {
               // set project
-              axios
-              .post(API.launchpad.local + API.launchpad.project.buy, {
+              axios.post(API.launchpad.local + API.launchpad.project.buy, {
                 id: project._id,
                 box,
                 amount: Number(amount),
                 price: project.boxes[box].price * Number(amount),
               });
-              
+
               //set item buy
               axios.post(API.launchpad.local + API.launchpad.item.buy, {
                 owner: profile?.member_wallet,
@@ -454,20 +463,22 @@ export default function Checkout(props) {
                 price: project.boxes[box].price * Number(amount),
                 action: 0,
                 owner: profile?.member_wallet,
-                txHash:'-',
+                txHash: "-",
                 projectName: project.name,
                 projectDetail: project._id,
-                paymentType:'fiat',
-                paymentStatus:'unpaid',
-                paymentDetail: props.transaction.data[0]
+                paymentType: "fiat",
+                paymentStatus: "unpaid",
+                paymentDetail: props.transaction.data[0],
               });
             } catch (error) {
               console.log(error);
             }
           }
         }, 1000);
-       
 
+        modalconfirm.loading = false;
+        modalconfirm.isOpen = false;
+        dispatch(toggleModalConfirm(modalconfirm));
         router.push(
           `/detail/transaction/${router.query.slug}?paymentType=fiat`
         );

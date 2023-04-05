@@ -7,6 +7,7 @@ import NavbarMobileWithBack from "../../../components/NavbarMobileWithBack";
 import { API } from "../../../utils/globalConstant";
 import { HiExternalLink } from "react-icons/hi";
 import Link from "next/link";
+import moment from "moment";
 
 export default function Transaction(props) {
   const router = useRouter();
@@ -15,6 +16,13 @@ export default function Transaction(props) {
   const [paymentType, setPaymentType] = useState("");
   const [historyData, setHistoryData] = useState("");
   const [dataTRX, setDataTRX] = useState(null);
+
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [eventRun, setEventRun] = useState(0);
 
   function showAccordion(idx) {
     let element = document.getElementsByClassName("accordion-wrap");
@@ -49,6 +57,50 @@ export default function Transaction(props) {
     }
   };
 
+  const countDown = (ilo_start, ilo_end) => {
+    console.log("COUNT", ilo_start, ilo_end);
+    // Set the date we're counting down to
+    let countDownDate = new Date(ilo_start).getTime();
+    // Update the count down every 1 second d
+    let x = setInterval(function () {
+      // Get today's date and time
+      let now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      let distance = countDownDate - now;
+      // TODO:if you have next coundownt, unremark this
+      if (distance < 0) {
+        countDownDate = new Date(ilo_end).getTime();
+        //  countDownDate = new Date('May 11, 2022 12:30:00 UTC').getTime();
+        distance = countDownDate - now;
+        setEventRun(1);
+        if (distance < 0) {
+          setEventRun(2);
+        }
+      }
+
+      // Time calculations for days, hours, minutes and seconds
+      let d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setDays(d);
+      setHours(h);
+      setMinutes(m);
+      setSeconds(s);
+
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        setDays(0);
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
+      }
+    }, 1000);
+  };
+
   useEffect(() => {
     if (router.query) {
       if (router.query.paymentType == "crypto") {
@@ -58,6 +110,12 @@ export default function Transaction(props) {
         const data = localStorage.getItem("detailTRX");
         console.log(">>???", localStorage.getItem("detailTRX"));
         setDataTRX(JSON.parse(data)[0]);
+        countDown(
+          moment().utc().format("MMM DD, YYYY HH:mm:ss UTC"),
+          moment(JSON.parse(data)[0].expire_time)
+            .utc()
+            .format("MMM DD, YYYY HH:mm:ss UTC")
+        ); // untuk remote config
       }
       setPaymentType(router.query.paymentType);
     }
@@ -102,19 +160,19 @@ export default function Transaction(props) {
                         </a>
                         <div className="trx-countdown">
                           <div>
-                            <p>00</p>
+                            <p>{days}</p>
                             <p>Day</p>
                           </div>
                           <div>
-                            <p>00</p>
+                            <p>{hours}</p>
                             <p>Hour</p>
                           </div>
                           <div>
-                            <p>00</p>
+                            <p>{minutes}</p>
                             <p>Minute</p>
                           </div>
                           <div>
-                            <p>00</p>
+                            <p>{seconds}</p>
                             <p>second</p>
                           </div>
                         </div>
@@ -147,7 +205,11 @@ export default function Transaction(props) {
                           <p className="text-sm font-semibold">
                             {dataTRX?.bank_name}{" "}
                             <img
-                              style={{ width: "35px", aspectRatio: "2/1", objectFit:'contain' }}
+                              style={{
+                                width: "35px",
+                                aspectRatio: "2/1",
+                                objectFit: "contain",
+                              }}
                               className="inline ml-2"
                               src={dataTRX?.bank_image}
                               alt=""

@@ -80,7 +80,9 @@ export default function Navbar(props) {
 
   useEffect(() => {
     if (account) {
-      getCreator(account);
+      //TODO harus di cek ke API ini error mulu klo di get
+      // getCreator(account);
+
       const profileAccount = localStorage.getItem(account + "-profile");
       setDetailProfile(JSON.parse(profileAccount));
       setIsLogin("accountWeb3");
@@ -121,7 +123,7 @@ export default function Navbar(props) {
               {isLogin == "accountWeb2" ? (
                 <RightNavbar
                   isLogin={isLogin}
-                  isActive ={isActive}
+                  isActive={isActive}
                   // detailProfile={detailProfile}
                   account={detailProfileVcg?.member_wallet}
                   disconnect={handleLogout}
