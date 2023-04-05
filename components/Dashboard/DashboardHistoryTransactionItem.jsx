@@ -72,9 +72,10 @@ export default function DashboardHistoryTransactionItem(props) {
             key={index}
             className="history-tr-item py-2"
             onClick={() => {
-              props.setData(item);
-              console.log("??", item);
-              dispatch(toggleModalTransaction({ isOpen: true }));
+              // props.setData(item);
+              // console.log("??", item);
+              // dispatch(toggleModalTransaction({ isOpen: true }));
+              props.redirect(item._id);
             }}
           >
             <div className="hti-count">
@@ -160,22 +161,48 @@ export default function DashboardHistoryTransactionItem(props) {
               )}
             </div>
             <div className="hti-btn">
-              {item?.paymentStatus == "paid" ? (
-                <button className="buy px-3 py-1 rounded-md mr-2">Paid</button>
-              ) : item?.paymentStatus == "unpaid" ? (
-                <button className="refund px-3 py-1 rounded-md mr-2">
-                  Unpaid
+              {item.action == 0 ? (
+                <>
+                  {/* <button className="buy px-3 py-1 rounded-md">Buy</button> */}
+                  {item?.paymentStatus == "paid" ? (
+                    <button
+                      className="text-xs rounded-md mr-2"
+                      style={{ background: "#86F1DE", color: "#034E40" }}
+                    >
+                      Purchesed
+                    </button>
+                  ) : item?.paymentStatus == "unpaid" ? (
+                    <button
+                      className="text-xs rounded-md mr-2"
+                      style={{ background: "#B5C6FF", color: "#041956" }}
+                    >
+                      {item?.paymentType == "fiat"
+                        ? "Waiting Payment"
+                        : "Unpaid"}
+                    </button>
+                  ) : (
+                    <button
+                      className="text-xs rounded-md mr-2"
+                      style={{ background: "#86F1DE", color: "#034E40" }}
+                    >
+                      Purchesed
+                    </button>
+                  )}
+                </>
+              ) : item.action == 1 ? (
+                <button
+                  className="text-xs rounded-md"
+                  style={{ background: "#BFE9F6", color: "#024357" }}
+                >
+                  Claim
                 </button>
               ) : (
-                ""
-              )}
-
-              {item.action == 0 ? (
-                <button className="buy px-3 py-1 rounded-md">Buy</button>
-              ) : item.action == 1 ? (
-                <button className="claim px-3 py-1 rounded-md">Claim</button>
-              ) : (
-                <button className="refund px-3 py-1 rounded-md">Refund</button>
+                <button
+                  className="text-xs rounded-md"
+                  style={{ background: "#F07D59", color: "#4F0B0F" }}
+                >
+                  Refund
+                </button>
               )}
             </div>
           </div>

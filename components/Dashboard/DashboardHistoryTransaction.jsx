@@ -81,6 +81,7 @@ export default function DashboardHistoryTransaction(props) {
           setData={setDataModal}
           history={props.history}
           page={props.page}
+          redirect={props.redirect}
         />
       </div>
       {props?.page?.currentPage ? (

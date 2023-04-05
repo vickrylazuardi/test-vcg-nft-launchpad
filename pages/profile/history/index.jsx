@@ -62,12 +62,11 @@ export default function Index() {
     }
   };
 
-  const handleHistoryFilter = (page,filter) => {
+  const handleHistoryFilter = (page, filter) => {
     try {
       historyFilter.page = 0;
-      if(filter=='all'){
-
-      }else{
+      if (filter == "all") {
+      } else {
         historyFilter.paymentStatus = filter;
       }
       setHistoryFilter({ ...historyFilter });
@@ -127,7 +126,7 @@ export default function Index() {
     console.log("?ISLOF", isLogedin, data);
     let profile = null;
     if (isLogedin == "true") {
-      console.log("profile",JSON.parse(data))
+      console.log("profile", JSON.parse(data));
       profile = JSON.parse(data);
 
       setTimeout(() => {
@@ -136,12 +135,7 @@ export default function Index() {
         getHistoryList();
       }, 1000);
     }
-  
-
   }, []);
-  
-
-  
 
   return (
     <div id="profile-launchpad">
@@ -160,10 +154,11 @@ export default function Index() {
           <DashboardSideMenu />
           <DashboardHistoryTransaction
             history={history}
-            historyFilter = {historyFilter}
-            handleHistoryFilter ={handleHistoryFilter}
+            historyFilter={historyFilter}
+            handleHistoryFilter={handleHistoryFilter}
             page={historyPage}
             pageAction={changePage}
+            redirect={redirect}
           />
         </div>
       </div>
@@ -191,23 +186,114 @@ export default function Index() {
                     currentTarget.src = "/images/Broken-Image.png";
                   }}
                 />
-                <div className="obi-list-detailed">
+                <div className="obi-list-detailed" style={{ width: "55%" }}>
                   <p className="font-bold">{item.name}</p>
+                  <p className="font-bold text-green-500">
+                    {item.amount > 1 ? `${item.amount} Boxes` : "1 Box"}
+                  </p>
                   <p className="font-semibold text-gray-400">
                     {item.projectName}
                   </p>
+                  <p className="font-semibold text-gray-400">
+                    {new Date(item.date).toLocaleString()}
+                  </p>
+                  {item.paymentType == "fiat" ? (
+                    <div className="flex mt-1">
+                      <div>
+                        <img
+                          style={{
+                            width: 20,
+                            height: 20,
+                            objectFit: "contain",
+                          }}
+                          className="mr-2"
+                          src={item.paymentDetail?.bank_image}
+                          alt=""
+                        />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-color-grey">
+                          {item.paymentDetail?.bank_name}
+                        </p>
+                        <p className="text-xs font-bold text-white">
+                          Rp. {item.paymentDetail?.total}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex mt-1">
+                      <div>
+                        <img
+                          style={{
+                            width: 20,
+                            height: 20,
+                            objectFit: "contain",
+                          }}
+                          className="mr-2 m-auto"
+                          src="/images/coin-vcg.png"
+                          alt=""
+                        />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-color-grey">
+                          VCG
+                        </p>
+                        <p className="text-xs font-bold text-white">
+                          {item.price}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="obi-list-detailed flex justify-end">
+                <div
+                  className="obi-list-detailed flex justify-end"
+                  style={{ width: "35%" }}
+                >
                   {item.action == 0 ? (
-                    <button className="buy px-2 py-0.5 rounded-md" disabled>
-                      Buy
-                    </button>
+                    <>
+                      {/* <button className="buy px-3 py-1 rounded-md">Buy</button> */}
+                      {item?.paymentStatus == "paid" ? (
+                        <button
+                          className="text-xs px-2 py-0.5 rounded-md mr-2"
+                          style={{ background: "#86F1DE", color: "#034E40" }}
+                          disabled
+                        >
+                          Purchesed
+                        </button>
+                      ) : item?.paymentStatus == "unpaid" ? (
+                        <button
+                          className="text-xs px-2 py-0.5 rounded-md mr-2"
+                          style={{ background: "#B5C6FF", color: "#041956" }}
+                          disabled
+                        >
+                          {item?.paymentType == "fiat"
+                            ? "Waiting Payment"
+                            : "Unpaid"}
+                        </button>
+                      ) : (
+                        <button
+                          className="text-xs px-2 py-0.5 rounded-md mr-2"
+                          style={{ background: "#86F1DE", color: "#034E40" }}
+                          disabled
+                        >
+                          Purchesed
+                        </button>
+                      )}
+                    </>
                   ) : item.action == 1 ? (
-                    <button className="claim px-2 py-0.5 rounded-md" disabled>
+                    <button
+                      className="text-xs px-2 py-0.5 rounded-md"
+                      style={{ background: "#BFE9F6", color: "#024357" }}
+                      disabled
+                    >
                       Claim
                     </button>
                   ) : (
-                    <button className="refund px-2 py-0.5 rounded-md" disabled>
+                    <button
+                      className="text-xs px-2 py-0.5 rounded-md"
+                      style={{ background: "#F07D59", color: "#4F0B0F" }}
+                      disabled
+                    >
                       Refund
                     </button>
                   )}

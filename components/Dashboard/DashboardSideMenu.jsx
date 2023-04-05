@@ -22,7 +22,7 @@ export default function DashboardSideMenu() {
 						<li className={router.pathname === "/profile/nft" ? "font-semibold mb-1 active":"font-semibold mb-1"}>Owned NFT</li>
 					</Link>
 					<Link href="/profile/history">
-						<li className={router.pathname === "/profile/history" ? "font-semibold mb-1 active":"font-semibold mb-1"}>Transaction History</li>
+						<li className={router.pathname === "/profile/history" || router.pathname === "/profile/history/detail" ? "font-semibold mb-1 active":"font-semibold mb-1"}>Transaction History</li>
 					</Link>
 				</ul>
 			</div>
