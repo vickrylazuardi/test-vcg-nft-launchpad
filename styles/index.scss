@@ -3138,8 +3138,8 @@ footer {
 .card-bg-dark{
     .content-container {
         background: #1d2333;
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
+        // border-bottom-right-radius: 10px;
+        // border-bottom-left-radius: 10px;
         overflow: hidden;
 
         .action-container {
@@ -3208,4 +3208,85 @@ footer {
         transform: translateX(19px);
     }
       
+}
+
+.card-project{
+    .label-status{
+        display: flex;
+        position: absolute;
+        right: 0;
+        font-size: 12px;
+        font-weight: 700;
+
+        .label-status-info,
+        .label-status-count{
+            padding: 5px 10px;
+            min-width: 80px;
+            text-align: center;
+        }
+    }
+
+    .label-status.soon{
+        .label-status-info{
+            background: #86F1DE;
+            color: #034E40;
+            border-radius: 5px 0 0 5px;
+        }
+        .label-status-count{
+            background: #2A334B;
+            color: #86F1DE;
+            border-radius: 0px 10px 5px 0;
+        }
+    }
+    .label-status.ongoing{
+        .label-status-info{
+            background: #B5C6FF;
+            color: #041956;
+            border-radius: 5px 0 0 5px;
+        }
+        .label-status-count{
+            background: #2A334B;
+            color: #B5C6FF;
+            border-radius: 0px 10px 5px 0;
+        }
+    }
+    .label-status.ended{
+        .label-status-info{
+            background: #F3C4EF;
+            color: #041956;
+            border-radius: 5px 10px 0 5px;
+        }
+        .label-status-count{
+            display: none;
+        }
+    }
+
+    .price-bar {
+        width: 100%;
+        height: 6px;
+        background: #2a334b;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+
+        .price-inner-bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background: #40d04f;
+            width: 30%;
+
+            &.full {
+                background: red;
+                width: 100%;
+            }
+        }
+    }
+
+    .footer-card{
+        padding: 16px;
+        background: #2A334B;
+        border-radius: 0 0 10px 10px;
+    }
 }

@@ -243,6 +243,10 @@ export default function Home() {
                       desc={item.desc}
                       slug={item._id}
                       socmed={item.socialMedia}
+                      startedAt={item.startedAt}
+                      finishedAt={item.finishedAt}
+                      totalFundRaised={item.totalFundRaised}
+                      kyc={item.kyc}
                     />
                   </div>
                 ))}
@@ -279,6 +283,10 @@ export default function Home() {
                       desc={item.desc}
                       slug={item._id}
                       socmed={item.socialMedia}
+                      startedAt={item.startedAt}
+                      finishedAt={item.finishedAt}
+                      totalFundRaised={item.totalFundRaised}
+                      kyc={item.kyc}
                     />
                   </div>
                 ))}
