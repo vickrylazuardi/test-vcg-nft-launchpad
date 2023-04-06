@@ -30,7 +30,33 @@ export const MetaMaskProvider = ({ children }) => {
     async function fetchData() {
       if (account && localStorage.getItem(account) === null && !isLoading) {
         setIsLoading(true);
-        await signMessage(account);
+        if (
+          JSON.parse(localStorage.getItem("isLogedin")) &&
+          JSON.parse(localStorage.getItem("profile-data"))
+        ) {
+          const profile = JSON.parse(localStorage.getItem("profile-data"));
+          if (profile?.member_wallet && profile?.member_wallet != account) {
+            setIsLoading(false);
+            disconnect();
+            localStorage.removeItem(profile?.member_wallet);
+            localStorage.removeItem(profile?.member_wallet + "-msg");
+            localStorage.removeItem(profile?.member_wallet + "-profile");
+            launch_toast(
+              true,
+              "Wallet profile not match with wallet browser, please change your wallet browser"
+            );
+          } else {
+            await signMessage(account);
+          }
+        } else {
+          await signMessage(account);
+        }
+      } else {
+        if (account != null || account !== undefined) {
+          if (router.route == "/connect-wallet") {
+            router.back();
+          }
+        }
       }
     }
     fetchData();
@@ -107,6 +133,16 @@ export const MetaMaskProvider = ({ children }) => {
               setIsSigned(true);
               // document.getElementById("loading-vcg").classList.remove("show");
             });
+
+          // CHECK WALLET AUTH IF NONE SET LOGOUT
+          setTimeout(() => {
+            const profile = JSON.parse(localStorage.getItem("profile-data"));
+            if (!profile?.member_wallet) {
+              localStorage.removeItem("profile-data");
+              localStorage.removeItem("isLogedin");
+              router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+            }
+          }, 1000);
         } else {
           disconnect();
           setIsLoading(false);
@@ -274,6 +310,28 @@ export const MetaMaskProvider = ({ children }) => {
       new ethers.providers.JsonRpcProvider(RPC.http)
     );
   };
+
+  function launch_toast(isError, msg) {
+    let x = document.getElementById("toast");
+    let text = document.getElementById("toast-text");
+
+    x.style.top = "30px";
+
+    if (isError) {
+      x.className = "show failed";
+    } else {
+      x.className = "show success";
+    }
+
+    text.innerHTML = msg;
+
+    setTimeout(function () {
+      x.className = x.className.replace("show", "");
+      // setTimeout(() => {
+      //   text.innerHTML = "";
+      // }, 1000);
+    }, 3000);
+  }
 
   const values = useMemo(
     () => ({

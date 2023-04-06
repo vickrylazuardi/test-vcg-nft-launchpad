@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function RightNavbar(props) {
+  const router = useRouter();
+
   const [domainOrigin, setDomainOrigin] = useState("");
 
   const handleEnter = (el) => {
@@ -55,17 +58,28 @@ export default function RightNavbar(props) {
         </div> */}
         {props.isLogin ? (
           <>
-            {!props.account &&  (
-              <Link href="/connect-wallet">
-                <a>
-                  <button
-                    className="btn btn-connect-wallet-dark text-sm font-semibold mr-3"
-                    style={{ padding: "10px 16px" }}
-                  >
-                    Connect Wallet
-                  </button>
-                </a>
-              </Link>
+            {props.profileInfo?.member_wallet_type == "generate" ? (
+              <></>
+            ) : !props.account || !props.isActive ? (
+              <button
+                className="btn btn-connect-wallet-dark text-sm font-semibold mr-1"
+                style={{ padding: "10px 16px" }}
+                onClick={() => {
+                  if (
+                    !props.isActive &&
+                    props.account &&
+                    props.profileInfo?.member_wallet_type != "generate"
+                  ) {
+                    props.handleConnectWallet(props.account);
+                  } else {
+                    router.push("/connect-wallet");
+                  }
+                }}
+              >
+                Connect Wallet
+              </button>
+            ) : (
+              ""
             )}
             <div
               className="relative profile flex items-center cursor-pointer ml-4"
@@ -138,13 +152,26 @@ export default function RightNavbar(props) {
                                 {props.account.slice(0, 7) +
                                   "..." +
                                   props.account.slice(-7)}
-                                <span
-                                  className="font-medium text-xs text-red-600 ml-2 cursor-pointer"
-                                  style={{ textDecoration: "underline" }}
-                                  onClick={() => props.disconnect()}
-                                >
-                                  Disconnect
-                                </span>
+                                {props.profileInfo?.member_wallet_type !=
+                                  "generate" && (
+                                  <span
+                                    style={{ textDecoration: "underline" }}
+                                    className={`font-medium text-xs ${
+                                      props.isActive
+                                        ? "text-red-600"
+                                        : "text-green-500"
+                                    } ml-2 cursor-pointer`}
+                                    onClick={() => {
+                                      if (props.isActive) {
+                                        props.handleDisconnect();
+                                      } else {
+                                        props.handleConnectWallet();
+                                      }
+                                    }}
+                                  >
+                                    {props.isActive ? "Disconnect" : "Connect"}
+                                  </span>
+                                )}
                               </p>
                             )}
                           </div>
@@ -161,9 +188,17 @@ export default function RightNavbar(props) {
                       </Link>
                       <h6
                         className="text-sm font-semibold cursor-pointer text-red-600"
-                        onClick={() => props.disconnect()}
+                        onClick={() => {
+                          if (props.isLogin == "accountWeb2") {
+                            props.handleLogout();
+                          } else {
+                            props.handleDisconnect();
+                          }
+                        }}
                       >
-                        Disconnect
+                        {props.isLogin == "accountWeb2"
+                          ? "Logout"
+                          : "Disconnect"}
                       </h6>
                     </div>
                   </div>

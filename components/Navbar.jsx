@@ -17,7 +17,8 @@ import ToastComponent from "./Common/toastComponent";
 import { useRouter } from "next/router";
 
 export default function Navbar(props) {
-  const { account, disconnect, isActive, switchActive } = useMetaMask();
+  const { isSigned, account, disconnect, isActive, switchActive, connect } =
+    useMetaMask();
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -44,7 +45,14 @@ export default function Navbar(props) {
   const handleLogout = () => {
     setIsLogin("");
     router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+    switchActive(false);
+    disconnect();
   };
+
+  function handleConnectWallet(wallet) {
+    console.log("??", account);
+    connect("metaMask", "0X4");
+  }
 
   const getCreator = (params) => {
     console.log("SINIII");
@@ -79,17 +87,6 @@ export default function Navbar(props) {
   };
 
   useEffect(() => {
-    if (account) {
-      //TODO harus di cek ke API ini error mulu klo di get
-      // getCreator(account);
-
-      const profileAccount = localStorage.getItem(account + "-profile");
-      setDetailProfile(JSON.parse(profileAccount));
-      setIsLogin("accountWeb3");
-    }
-  }, [account]);
-
-  useEffect(() => {
     setTimeout(() => {
       const isLogedin = localStorage.getItem("isLogedin");
       const data = localStorage.getItem("profile-data");
@@ -97,9 +94,38 @@ export default function Navbar(props) {
       if (isLogedin == "true") {
         setDetailProfileVcg(JSON.parse(data));
         setIsLogin("accountWeb2");
+      } else {
+        if (account) {
+          const profileAccount = localStorage.getItem(account + "-profile");
+          setDetailProfile(JSON.parse(profileAccount));
+          setIsLogin("accountWeb3");
+        }
       }
     }, 1000);
-  }, []);
+  }, [isSigned, account]);
+
+  // useEffect(() => {
+  //   if (account) {
+  //     //TODO harus di cek ke API ini error mulu klo di get
+  //     // getCreator(account);
+
+  //     const profileAccount = localStorage.getItem(account + "-profile");
+  //     setDetailProfile(JSON.parse(profileAccount));
+  //     setIsLogin("accountWeb3");
+  //   }
+  // }, [account]);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const isLogedin = localStorage.getItem("isLogedin");
+  //     const data = localStorage.getItem("profile-data");
+  //     // console.log("?ISLOF", isLogedin, data);
+  //     if (isLogedin == "true") {
+  //       setDetailProfileVcg(JSON.parse(data));
+  //       setIsLogin("accountWeb2");
+  //     }
+  //   }, 1000);
+  // }, []);
 
   useEffect(() => {
     if (modal.modalNewUser.isOpen) {
@@ -124,20 +150,21 @@ export default function Navbar(props) {
                 <RightNavbar
                   isLogin={isLogin}
                   isActive={isActive}
-                  // detailProfile={detailProfile}
+                  profileInfo={detailProfileVcg}
                   account={detailProfileVcg?.member_wallet}
-                  disconnect={handleLogout}
-                  // detailProfileVcg={detailProfileVcg}
+                  handleLogout={handleLogout}
+                  handleDisconnect={handleDisconnect}
                   profileName={detailProfileVcg?.member_name}
                   profileImg={detailProfileVcg?.member_photo}
+                  handleConnectWallet={handleConnectWallet}
                 />
               ) : (
                 <RightNavbar
                   isLogin={isLogin}
-                  // detailProfile={detailProfile}
+                  profileInfo={detailProfile}
                   account={account}
-                  disconnect={handleDisconnect}
-                  // detailProfileVcg={detailProfileVcg}
+                  handleDisconnect={handleDisconnect}
+                  isActive={isActive}
                   profileName={detailProfile?.name}
                   profileImg={"-"}
                 />
