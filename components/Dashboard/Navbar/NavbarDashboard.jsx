@@ -16,7 +16,8 @@ import Cookies from "universal-cookie";
 export default function NavbarDashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { account, disconnect, switchActive } = useMetaMask();
+  const { isSigned, account, disconnect, isActive, switchActive, connect } =
+    useMetaMask();
   const navData = useSelector((state) => state.navbarMob.dataNavbar);
 
   const cookies = new Cookies();
@@ -79,22 +80,19 @@ export default function NavbarDashboard() {
     switchActive(false);
     disconnect();
     setIsLogin("");
-    router.push("/");
   };
 
   const handleLogout = () => {
     setIsLogin("");
     router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
+    switchActive(false);
+    disconnect();
   };
 
-  useEffect(() => {
-    if (account) {
-      // getCreator(account);
-      const profileAccount = localStorage.getItem(account + "-profile");
-      setDetailProfile(JSON.parse(profileAccount));
-      setIsLogin("accountWeb3");
-    }
-  }, [account]);
+  function handleConnectWallet(wallet) {
+    console.log("??", account);
+    connect("metaMask", "0X4");
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -104,9 +102,15 @@ export default function NavbarDashboard() {
       if (isLogedin == "true") {
         setDetailProfileVcg(JSON.parse(data));
         setIsLogin("accountWeb2");
+      } else {
+        if (account) {
+          const profileAccount = localStorage.getItem(account + "-profile");
+          setDetailProfile(JSON.parse(profileAccount));
+          setIsLogin("accountWeb3");
+        }
       }
     }, 1000);
-  }, []);
+  }, [isSigned, account]);
 
   return (
     <div id="navbar-container" className="sticky top-0 right-0 left-0 z-50">
@@ -120,20 +124,22 @@ export default function NavbarDashboard() {
               {isLogin == "accountWeb2" ? (
                 <RightNavbar
                   isLogin={isLogin}
-                  // detailProfile={detailProfile}
+                  isActive={isActive}
+                  profileInfo={detailProfileVcg}
                   account={detailProfileVcg?.member_wallet}
-                  disconnect={handleLogout}
-                  // detailProfileVcg={detailProfileVcg}
+                  handleLogout={handleLogout}
+                  handleDisconnect={handleDisconnect}
                   profileName={detailProfileVcg?.member_name}
                   profileImg={detailProfileVcg?.member_photo}
+                  handleConnectWallet={handleConnectWallet}
                 />
               ) : (
                 <RightNavbar
                   isLogin={isLogin}
-                  // detailProfile={detailProfile}
+                  profileInfo={detailProfile}
                   account={account}
-                  disconnect={handleDisconnect}
-                  // detailProfileVcg={detailProfileVcg}
+                  handleDisconnect={handleDisconnect}
+                  isActive={isActive}
                   profileName={detailProfile?.name}
                   profileImg={"-"}
                 />

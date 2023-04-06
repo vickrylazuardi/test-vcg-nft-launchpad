@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { FiRepeat, FiStopCircle } from "react-icons/fi";
+import { FaChevronRight } from "react-icons/fa";
+import { IoRocketOutline } from "react-icons/io5";
+import { BsBoxSeam } from "react-icons/bs";
 
 export default function RightNavbar(props) {
   const router = useRouter();
@@ -24,6 +28,16 @@ export default function RightNavbar(props) {
     }
     elm.classList.remove("active");
   };
+
+  function showAccordion() {
+    let element = document.getElementById("balance-accordion");
+
+    if (element.classList.contains("show")) {
+      element.classList.remove("show");
+    } else {
+      element.classList.add("show");
+    }
+  }
 
   useEffect(() => {
     const domainName = window.location.origin;
@@ -99,7 +113,7 @@ export default function RightNavbar(props) {
                 <div className="sub-menu">
                   <div
                     className="dropdown-profile"
-                    style={{ cursor: "default" }}
+                    style={{ cursor: "default", background: "#1D2333" }}
                   >
                     <div
                       className="p-4"
@@ -178,14 +192,121 @@ export default function RightNavbar(props) {
                         </div>
                       </div>
                     </div>
-                    <div className="p-4">
+                    <div
+                      className="p-4"
+                      style={{ borderBottom: "1px solid #3f485f" }}
+                    >
                       <Link href={"/profile"}>
                         <a>
                           <h6 className="text-sm font-semibold cursor-pointer mb-3 text-color-grey">
-                            My Profile
+                            <IoRocketOutline className="inline mr-1" />
+                            Project
                           </h6>
                         </a>
                       </Link>
+                      <Link href={"/profile/boxes"}>
+                        <a>
+                          <h6 className="text-sm font-semibold cursor-pointer mb-3 text-color-grey">
+                            <BsBoxSeam className="inline mr-1" />
+                            Owned Box
+                          </h6>
+                        </a>
+                      </Link>
+                      <Link href={"/profile/history"}>
+                        <a>
+                          <h6 className="text-sm font-semibold cursor-pointer mb-3 text-color-grey">
+                            <FiRepeat className="inline mr-1" />
+                            History Transaction
+                          </h6>
+                        </a>
+                      </Link>
+                      <div id="balance-accordion" className="accordion-wrap">
+                        <div
+                          className="accordion-trigger cursor-pointer"
+                          onClick={() => showAccordion(0)}
+                        >
+                          <h6 className="text-sm font-semibold cursor-pointer text-color-grey">
+                            <FiStopCircle className="inline mr-1" />
+                            Balance
+                            <FaChevronRight
+                              className="text-xs inline ml-1 mt-1"
+                              style={{ float: "right" }}
+                            />
+                          </h6>
+                        </div>
+                        <div className="accordion-content">
+                          <div
+                            className="mt-3"
+                            style={{
+                              background: "#252C3E",
+                              padding: 10,
+                              borderRadius: 5,
+                            }}
+                          >
+                            <div className="flex">
+                              <div>
+                                <img
+                                  className="mt-1"
+                                  style={{ width: 16, aspectRatio: 1 / 1 }}
+                                  src="/images/coin-vcg.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div className="mx-2 mr-5">
+                                <p className="text-sm font-semibold text-color-grey">
+                                  VCG
+                                </p>
+                                <p className="text-sm font-semibold">
+                                  0.231241241
+                                </p>
+                              </div>
+                              <div className="flex gap-4">
+                                <img
+                                  src="/images/svg/wallet-received.svg"
+                                  alt=""
+                                />
+                                <img src="/images/svg/wallet-send.svg" alt="" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="mt-3"
+                            style={{
+                              background: "#252C3E",
+                              padding: 10,
+                              borderRadius: 5,
+                            }}
+                          >
+                            <div className="flex">
+                              <div>
+                                <img
+                                  className="mt-1"
+                                  style={{ width: 16, aspectRatio: 1 / 1 }}
+                                  src="/images/coin-vcg.png"
+                                  alt=""
+                                />
+                              </div>
+                              <div className="mx-2 mr-5">
+                                <p className="text-sm font-semibold text-color-grey">
+                                  VCG
+                                </p>
+                                <p className="text-sm font-semibold">
+                                  0.231241241
+                                </p>
+                              </div>
+                              <div className="flex gap-4">
+                                <img
+                                  src="/images/svg/wallet-received.svg"
+                                  alt=""
+                                />
+                                <img src="/images/svg/wallet-send.svg" alt="" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4">
                       <h6
                         className="text-sm font-semibold cursor-pointer text-red-600"
                         onClick={() => {
