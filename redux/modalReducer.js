@@ -22,6 +22,7 @@ const initialState = {
     loading: false,
     isOpen: false,
     isText: false,
+    urlImage:'',
     title: {
       en: "Photo Box",
     },
@@ -114,6 +115,7 @@ const modalSlice = createSlice({
           state.modalImages.isOpen = val.payload.isOpen;
           state.modalImages.isText = val.payload.isText;
           state.modalImages.title = val.payload.title;
+          state.modalImages.urlImage = val.payload.urlImage;
         }
       }
     },

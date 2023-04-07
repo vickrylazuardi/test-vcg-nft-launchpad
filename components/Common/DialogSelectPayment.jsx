@@ -109,9 +109,10 @@ export default function DialogSelectPayment(props) {
                               <div
                                 className="payment-items flex items-center cursor-pointer"
                                 key={index}
-                                onClick={() =>
-                                  props.handleSelectPayment(payment, "fiat")
-                                }
+                                onClick={() => {
+                                  console.log("SELECT", payment);
+                                  props.handleSelectPayment(payment, "fiat");
+                                }}
                               >
                                 <img
                                   className="img-payment"

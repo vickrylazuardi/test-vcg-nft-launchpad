@@ -129,11 +129,14 @@ export default function Checkout(props) {
   const [modalMessage, setModalMessage] = useState({});
 
   function handleContinue(val) {
-    modalconfirm.isOpen = false;
-    modalconfirmPrivacyPolicy.isOpen = true;
+    modalconfirm.loading = true;
+    // modalconfirmPrivacyPolicy.isOpen = true;
 
     dispatch(toggleModalConfirm(modalconfirm));
-    dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
+    // dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
+
+    //HANDLE HIT BUY FIAT
+    handleBuyFiat();
   }
 
   function handleConfirm(val) {
@@ -143,9 +146,6 @@ export default function Checkout(props) {
 
     dispatch(toggleModalConfirmPrivacyPolicy(modalconfirmPrivacyPolicy));
     dispatch(toggleModalConfirm(modalconfirm));
-
-    //HANDLE HIT BUY FIAT
-    handleBuyFiat();
 
     // UNTUK MUNCULIN POPUP OTP
     // modalconfirmPrivacyPolicy.isOpen = false;
@@ -218,12 +218,7 @@ export default function Checkout(props) {
       (Math.round(total * 100) / 100).toFixed(2)
     );
 
-    console.log("??", code, ">>", selectedPayment.payment_method_id);
-    // setTimeout(() => {
-    //   router.push(
-    //     `/detail/transaction/${code}?paymentType=${selectedPayment.payment_method_id}`
-    //   );
-    // }, 1500);
+    // console.log("HASH??", code, ">>", selectedPayment.payment_method_id);
     router.replace(
       `/detail/checkout/${router.query.slug}?name=${router.query.name}&price=${boxItem.price}&qty=${amount}&hash=${code}-${selectedPayment.payment_method_id}`
     );
@@ -483,7 +478,12 @@ export default function Checkout(props) {
           `/detail/transaction/${router.query.slug}?paymentType=fiat`
         );
       } else {
-        launch_toast(true, props.transaction.message);
+        modalconfirm.loading = false;
+        modalconfirm.isOpen = false;
+        dispatch(toggleModalConfirm(modalconfirm));
+        setTimeout(() => {
+          launch_toast(true, props.transaction.message);
+        }, 1000);
       }
     }
   }, [props.transaction]);
@@ -627,7 +627,7 @@ export async function getServerSideProps({
       }
     })
     .catch((error) => {
-      console.log("??cat>>", error);
+      // console.log("??cat>>", error);
       return null;
     });
 
@@ -654,7 +654,7 @@ export async function getServerSideProps({
         }
       )
       .then((res) => {
-        console.log("??then>>>", res.data);
+        // console.log("??then>>>", res.data);
         if (res.data.status) {
           return res.data;
         } else {

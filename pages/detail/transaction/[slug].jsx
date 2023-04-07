@@ -8,14 +8,30 @@ import { API } from "../../../utils/globalConstant";
 import { HiExternalLink } from "react-icons/hi";
 import Link from "next/link";
 import moment from "moment";
+import { toggleModalImages } from "../../../redux/modalReducer";
+import DialogDetailImage from "../../../components/Common/DialogDetailImage";
+import { useDispatch, useSelector } from "react-redux";
+
+const modalImages = {
+  loading: false,
+  isOpen: true,
+  isText: false,
+  urlImage: "",
+  title: {
+    en: "Photo Box",
+  },
+};
 
 export default function Transaction(props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const modal = useSelector((state) => state.modal);
 
   const [isLoading, setIsLoading] = useState(false);
   const [paymentType, setPaymentType] = useState("");
   const [historyData, setHistoryData] = useState("");
   const [dataTRX, setDataTRX] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -24,8 +40,20 @@ export default function Transaction(props) {
   const [running, setRunning] = useState(false);
   const [eventRun, setEventRun] = useState(0);
 
+  const copyToClipboard = (text) => {
+    try {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function showAccordion(idx) {
-    let element = document.getElementsByClassName("accordion-wrap");
+    let element = document.getElementsByClassName("payment-steps");
 
     Object.keys(element).forEach((item, i) => {
       if (i == idx) return;
@@ -148,16 +176,43 @@ export default function Transaction(props) {
                         <p className="font-bold mb-4">
                           Come on, complete the payment!
                         </p>
-                        <p className="font-semibold text-color-grey">
-                          {dataTRX?.va_number}
-                        </p>
-                        <a
-                          className="text-color-light-green text-sm font-bold"
-                          href="#"
-                        >
-                          <FaRegClone className="inline mr-2" />
-                          Copy
-                        </a>
+                        {dataTRX?.link_type == "qrcode" ? (
+                          <img
+                            width={130}
+                            className="m-auto"
+                            style={{ aspectRatio: 1 / 1, objectFit: "contain" }}
+                            src={dataTRX?.va_number}
+                            alt=""
+                            onClick={() => {
+                              modalImages.urlImage = dataTRX?.va_number;
+                              dispatch(toggleModalImages(modalImages));
+                            }}
+                          />
+                        ) : (
+                          <>
+                            <p className="font-semibold text-color-grey">
+                              {dataTRX?.va_number}
+                            </p>
+                            <span
+                              className={`${
+                                copied
+                                  ? "text-color-grey"
+                                  : "text-color-light-green"
+                              } text-sm font-bold cursor-pointer ml-1`}
+                              onClick={() => {
+                                if (!copied) {
+                                  copyToClipboard(
+                                    detailItem?.paymentDetail?.va_number
+                                  );
+                                }
+                              }}
+                            >
+                              <FaRegClone className="inline mr-2" />
+                              {copied ? "Copied" : "Copy"}
+                            </span>
+                          </>
+                        )}
+
                         <div className="trx-countdown">
                           <div>
                             <p>{days}</p>
@@ -307,7 +362,10 @@ export default function Transaction(props) {
                         <div className="mt-5">
                           {dataTRX?.payment_instruction?.map((item, idx) => {
                             return (
-                              <div key={idx} className="accordion-wrap py-2">
+                              <div
+                                key={idx}
+                                className="accordion-wrap payment-steps py-2"
+                              >
                                 <div
                                   className="accordion-trigger cursor-pointer"
                                   onClick={() => showAccordion(idx)}
@@ -380,6 +438,7 @@ export default function Transaction(props) {
               </div>
             </div>
           </div>
+          {modal.modalImages.isOpen && <DialogDetailImage />}
         </div>
       ) : (
         <div className="global-container">

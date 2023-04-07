@@ -58,7 +58,7 @@ export default function DashboardHistoryTransaction(props) {
             setSelectedButton(1);
           }}
         >
-          Paid
+          Purchesed
         </button>
 
         <button
@@ -73,7 +73,37 @@ export default function DashboardHistoryTransaction(props) {
             setSelectedButton(2);
           }}
         >
-          Unpaid
+          Waiting Payment
+        </button>
+
+        <button
+          className="px-3 rounded-md mx-1"
+          style={
+            selectedButton == 3
+              ? { height: "34px", border: "none", background: "#e28058" }
+              : { height: "34px", border: "1px solid #fff" }
+          }
+          // onClick={() => {
+          //   props?.handleHistoryFilter(0, "unpaid");
+          //   setSelectedButton(2);
+          // }}
+        >
+          Refund
+        </button>
+
+        <button
+          className="px-3 rounded-md mx-1"
+          style={
+            selectedButton == 4
+              ? { height: "34px", border: "none", background: "#e28058" }
+              : { height: "34px", border: "1px solid #fff" }
+          }
+          // onClick={() => {
+          //   props?.handleHistoryFilter(0, "unpaid");
+          //   setSelectedButton(2);
+          // }}
+        >
+          Claim
         </button>
       </div>
       <div className="dashboard-projects-body mt-2">
