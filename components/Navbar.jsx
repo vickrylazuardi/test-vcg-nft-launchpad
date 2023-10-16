@@ -17,7 +17,7 @@ import ToastComponent from "./Common/toastComponent";
 import { useRouter } from "next/router";
 
 export default function Navbar(props) {
-  const { isSigned, account, disconnect, isActive, switchActive, connect } =
+  const { isSigned, account, disconnect, isActive, connect } =
     useMetaMask();
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
@@ -37,7 +37,6 @@ export default function Navbar(props) {
   };
 
   const handleDisconnect = () => {
-    switchActive(false);
     disconnect();
     setIsLogin("");
   };
@@ -45,7 +44,6 @@ export default function Navbar(props) {
   const handleLogout = () => {
     setIsLogin("");
     router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
-    switchActive(false);
     disconnect();
   };
 

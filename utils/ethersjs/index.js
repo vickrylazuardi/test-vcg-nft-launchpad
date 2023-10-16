@@ -42,6 +42,7 @@ export const writeContract = async (contractAddress, contractABI) => {
 
 export const sign = async (message) => {
   try {
+    console.log(window.ethereum);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const signing = await signer.signMessage(message);

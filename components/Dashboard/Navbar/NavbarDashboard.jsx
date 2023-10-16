@@ -16,7 +16,7 @@ import Cookies from "universal-cookie";
 export default function NavbarDashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isSigned, account, disconnect, isActive, switchActive, connect } =
+  const { isSigned, account, disconnect, isActive, connect } =
     useMetaMask();
   const navData = useSelector((state) => state.navbarMob.dataNavbar);
 
@@ -77,7 +77,6 @@ export default function NavbarDashboard() {
   };
 
   const handleDisconnect = () => {
-    switchActive(false);
     disconnect();
     setIsLogin("");
   };
@@ -85,7 +84,6 @@ export default function NavbarDashboard() {
   const handleLogout = () => {
     setIsLogin("");
     router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
-    switchActive(false);
     disconnect();
   };
 

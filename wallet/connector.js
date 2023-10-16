@@ -1,8 +1,15 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 
 export const injected = new InjectedConnector({
   supportedChainIds: [56, 1, 97],
+});
+
+export const coinbaseConnector = new WalletLinkConnector({
+  url: "https://bsc.publicnode.com",
+  appName: "VCGamers",
+  supportedChainIds: [56],
 });
 
 export const REACT_APP_API_URL = "https://api.vcgamers.io/";

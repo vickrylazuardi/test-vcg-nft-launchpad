@@ -1,24 +1,41 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { injected, walletConnect } from "./connector";
+import { injected, walletConnect, BSC_RPC } from "./connector";
 import { useWeb3React } from "@web3-react/core";
 import { getSigner, sign } from "../utils/ethersjs";
-import { ethers, utils } from "ethers";
+import { isBrowser } from "react-device-detect";
+import { ethers, utils, providers } from "ethers";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import { API, RPC } from "../utils/globalConstant";
 import { useRouter } from "next/router";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  useSwitchNetwork,
+  useWalletClient,
+} from "wagmi";
 
 export const MetaMaskContext = React.createContext(null);
 
 export const MetaMaskProvider = ({ children }) => {
-  const { activate, account, library, active, deactivate, chainId, provider } =
+  const { activate, account, library, active, deactivate, provider } =
     useWeb3React();
+  const { address, connector, isConnected } = useAccount();
+  const switchWagmi = useSwitchNetwork();
+  const { data: walletClient } = useWalletClient();
+  const { connectAsync: connectWagmi, connectors } = useConnect();
+  const { disconnectAsync } = useDisconnect();
+  const { chain } = useNetwork();
+  const chainId = chain?.id;
 
   const [isActive, setIsActive] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [shouldDisable, setShouldDisable] = useState(false); // Should disable connect button while connecting to MetaMask
   const [isLoading, setIsLoading] = useState(false);
+  const [ethersProvider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [signature, setSignature] = useState(null);
 
@@ -27,124 +44,57 @@ export const MetaMaskProvider = ({ children }) => {
 
   // Init Loading
   useEffect(() => {
-    async function fetchData() {
-      if (account && localStorage.getItem(account) === null && !isLoading) {
-        setIsLoading(true);
-        if (
-          JSON.parse(localStorage.getItem("isLogedin")) &&
-          JSON.parse(localStorage.getItem("profile-data"))
-        ) {
-          const profile = JSON.parse(localStorage.getItem("profile-data"));
-          if (profile?.member_wallet && profile?.member_wallet != account) {
-            setIsLoading(false);
-            disconnect();
-            localStorage.removeItem(profile?.member_wallet);
-            localStorage.removeItem(profile?.member_wallet + "-msg");
-            localStorage.removeItem(profile?.member_wallet + "-profile");
-            launch_toast(
-              true,
-              "Wallet profile not match with wallet browser, please change your wallet browser"
-            );
-          } else {
-            await signMessage(account);
-          }
-        } else {
-          await signMessage(account);
-        }
-      } else {
-        if (account != null || account !== undefined) {
-          if (router.route == "/connect-wallet") {
-            router.back();
-          }
-        }
-      }
-    }
-    fetchData();
-  }, [account]);
-
-  useEffect(() => {
-    if (localStorage.getItem("isConnected")) {
-      connect(localStorage.getItem("providerType"));
+    if (isConnected && address) {
+      const signatureJWT = cookies.get(address);
+      if (signatureJWT === undefined) disconnect();
     }
   }, []);
 
-  useEffect(() => {
-    // console.log(
-    //   "MASUK",
-    //   cookies.get("tokenVcg"),
-    //   window.location.pathname + window.location.search
-    // );
-    if (cookies.get("tokenVcg")) {
-      router.push(
-        `/auth?checkToken=${cookies.get("tokenVcg")}&href=${
-          window.location.pathname + window.location.search
-        }`
-      );
-    } else {
-      router.push(
-        `/auth?checkToken=check-token&href=${
-          window.location.pathname + window.location.search
-        }`
-      );
-    }
-  }, [cookies.get("tokenVcg")]);
-
-  useEffect(() => {
-    if (localStorage.getItem("isConnected") && isActive) {
-      connect(localStorage.getItem("providerType"));
-    }
-  }, [isActive]);
-
   // Check when App is Connected or Disconnected to MetaMask
-  const handleIsActive = useCallback(() => {
-    setIsActive(active);
-  }, [active]);
+  // const handleIsActive = useCallback(() => {
+  //   setIsActive(active);
+  // }, [active]);
 
   const handleWalletModal = async (state) => {
     // console.log("state ===>" + state);
     setWalletModal(state);
   };
 
+  const ethersSigner = () => {
+    if (walletClient) {
+      const { account, chain, transport } = walletClient;
+      const network = {
+        chainId: chain.id,
+        name: chain.name,
+        ensAddress: chain.contracts?.ensRegistry?.address,
+      };
+      const provider = new providers.Web3Provider(transport, network);
+      const signer = provider.getSigner(account.address);
+      setSigner(signer);
+    } else setSigner(null);
+  };
+
   const signMessage = async (walletId) => {
     try {
       setIsSigned(false);
       const time = new Date().toLocaleString();
-      const messageTemplate = `Welcome to VCGamers NFT Marketplace!\n\nClick to sign in and accept the VCGamers Terms of Service: https://v2.vcgamers.io/marketplace/terms-and-conditions \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours.\n\nNonce:\n${utils
+      const messageTemplate = `Welcome to VCGamers NFT Marketplace!\n\nClick to sign in and accept the VCGamers Terms of Service: https://www.vcgamers.com/news/help/terms-use-nft/ \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours.\n\nNonce:\n${utils
         .id(time)
         .slice(2)}`;
       // document.getElementById("loading-vcg").classList.add("show");
       sign(messageTemplate).then((res) => {
         if (res.error == undefined) {
-          axios
-            .post(API.marketplace + API.vcmarket.connect, { wallet: walletId })
-            .then((resp) => {
-              setSignature(res);
-              setLocalStorage(walletId, JSON.stringify(res), 1);
-              setLocalStorage(walletId + "-msg", messageTemplate, 1);
-              console.log("MASHIIIK", resp);
-              setLocalStorage(
-                walletId + "-profile",
-                JSON.stringify(resp.data.data),
-                1
-              );
-              // getCreator(walletId);
-              switchActive(true);
-              setIsLoading(false);
-              setIsSigned(true);
-              // document.getElementById("loading-vcg").classList.remove("show");
-            });
-
-          // CHECK WALLET AUTH IF NONE SET LOGOUT
-          setTimeout(() => {
-            const profile = JSON.parse(localStorage.getItem("profile-data"));
-            if (!profile?.member_wallet) {
-              localStorage.removeItem("profile-data");
-              localStorage.removeItem("isLogedin");
-              router.push(`/auth?logout=${cookies.get("tokenVcg")}`);
-            }
-          }, 1000);
+          setSignature(res);
+          setCookie(walletId, res, 1);
+          setCookie(walletId + "-msg", messageTemplate, 1);
+          setIsLoading(false);
+          setIsSigned(true);
+          setShouldDisable(false);
+          ethersSigner();
+          // document.getElementById("loading-vcg").classList.remove("show");
         } else {
           disconnect();
+          setShouldDisable(false);
           setIsLoading(false);
           // document.getElementById("loading-vcg").classList.remove("show");
         }
@@ -154,163 +104,58 @@ export const MetaMaskProvider = ({ children }) => {
     }
   };
 
-  const getCreator = (params) => {
+  const setCookie = async (key, value, expires) => {
     try {
-      axios
-        .post(API.marketplace + API.artist.list, {
-          walletAddress: params,
-        })
-        .then((res) => {
-          if (res.status === 204) document.getElementById("newUser").click();
-          else
-            setLocalStorage(
-              params + "-profile",
-              JSON.stringify(res.data.data.items[0]),
-              1
-            );
-        });
+      const d = new Date();
+      d.setDate(d.getDate() + expires);
+      cookies.set(key, value, { path: "/", expires: d });
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const setLocalStorage = async (key, value, expires) => {
-    try {
-      // const d = new Date();
-      // d.setDate(d.getDate() + expires);
-      // cookies.set(key, value, { path: "/", expires: d });
-      localStorage.setItem(key, value);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const switchActive = async (state) => {
-    setIsActive(state);
   };
 
   const switchNetwork = async (network) => {
     setIsLoading(true);
-    try {
-      const chainId = "0x" + network.toString(16);
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: chainId }],
-      });
-      setIsLoading(false);
-    } catch (error) {
-      if (error.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainId: "0x61",
-                chainName: "Testnet BSC",
-                nativeCurrency: {
-                  name: "Test BNB",
-                  symbol: "tBNB",
-                  decimals: 18,
+    if (switchWagmi.switchNetworkAsync === undefined) {
+      try {
+        const chainId = "0x" + 56;
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: chainId }],
+        });
+        setIsLoading(false);
+      } catch (error) {
+        if (error.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: "0x38",
+                  chainName: "BSC Mainet",
+                  nativeCurrency: {
+                    name: "BNB",
+                    symbol: "BNB",
+                    decimals: 18,
+                  },
+                  rpcUrls: ["https://bsc-dataseed.binance.org"] /* ... */,
+                  blockExplorerUrls: ["https://bscscan.com/"],
                 },
-                rpcUrls: [
-                  "https://data-seed-prebsc-1-s1.binance.org:8545/",
-                ] /* ... */,
-                blockExplorerUrls: ["https://testnet.bscscan.com/"],
-              },
-            ],
-          });
-          setIsLoading(false);
-        } catch (err) {
-          console.log(err);
-          setIsLoading(false);
+              ],
+            });
+            setIsLoading(false);
+          } catch (err) {
+            console.log(err);
+            setIsLoading(false);
+          }
         }
+        setIsLoading(false);
       }
-      setIsLoading(false);
+    } else {
+      await switchWagmi.switchNetworkAsync(56);
     }
   };
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   switchNetwork(chainId);
-  // }, [chainId])
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   switchNetwork(chainId);
-  // }, [])
-
-  useEffect(() => {
-    handleIsActive();
-  }, [handleIsActive]);
-
-  // Connect to MetaMask wallet
-  const connect = async (providerType, id) => {
-    setShouldDisable(true);
-    try {
-      if (providerType === "metaMask") {
-        await activate(injected).then(() => {
-          switchActive(true);
-          setShouldDisable(false);
-          setLocalStorage("providerType", "metaMask", 1);
-          setLocalStorage("isConnected", true, 1);
-        });
-      } else if (providerType === "safePal") {
-        await activate(injected).then(() => {
-          switchActive(true);
-          setShouldDisable(false);
-          setLocalStorage("providerType", "safePal", 1);
-          setLocalStorage("isConnected", true, 1);
-        });
-      }
-      if (providerType === "trustWallet") {
-        await activate(injected).then(() => {
-          switchActive(true);
-          setShouldDisable(false);
-          setLocalStorage("providerType", "trustWallet", 1);
-          setLocalStorage("isConnected", true, 1);
-        });
-      } else if (providerType === "walletConnect") {
-        await activate(walletConnect).then(() => {
-          switchActive(true);
-          setShouldDisable(false);
-          setLocalStorage("providerType", "walletConnect", 1);
-          setLocalStorage("isConnected", true, 1);
-        });
-      } else {
-      }
-      const signer = await getSigner();
-      setSigner(signer);
-      setWalletModal(false);
-    } catch (error) {
-      console.log("Error on connecting: ", error);
-    }
-  };
-
-  // Disconnect from Metamask wallet
-  const disconnect = async () => {
-    try {
-      await deactivate();
-      localStorage.removeItem("isConnected");
-      localStorage.removeItem("providerType");
-      localStorage.removeItem(account);
-      localStorage.removeItem(account + "-msg");
-      localStorage.removeItem(account + "-profile");
-      setIsSigned(false);
-      switchActive(false);
-      setSignature(null);
-    } catch (error) {
-      console.log("Error on disconnnect: ", error);
-    }
-  };
-
-  const connectContract = (contractAddress, ABI) => {
-    return new ethers.Contract(
-      contractAddress,
-      ABI,
-      new ethers.providers.JsonRpcProvider(RPC.http)
-    );
-  };
-
+  
   function launch_toast(isError, msg) {
     let x = document.getElementById("toast");
     let text = document.getElementById("toast-text");
@@ -327,42 +172,145 @@ export const MetaMaskProvider = ({ children }) => {
 
     setTimeout(function () {
       x.className = x.className.replace("show", "");
-      // setTimeout(() => {
-      //   text.innerHTML = "";
-      // }, 1000);
+      setTimeout(() => {
+        text.innerHTML = "";
+      }, 1000);
     }, 3000);
   }
 
+  // Connect to MetaMask wallet
+  const connect = async (providerType, id) => {
+    setShouldDisable(true);
+    setIsLoading(true);
+    try {
+      if (providerType === "metaMask") {
+        if (isBrowser) {
+          if (window?.ethereum?.isMetaMask && !window?.ethereum?.isSafePal) {
+            connectWagmi({ connector: connectors[1] }).then((res) => {
+              signMessage(res.account);
+            });
+          } else {
+            launch_toast(true, "Please install Metamask Wallet");
+            return;
+          }
+        } else {
+          connectWagmi({ connector: connectors[1] }).then((res) => {
+            signMessage(res.account);
+          });
+        }
+      } else if (providerType === "safePal") {
+        if (isBrowser) {
+          if (window?.ethereum?.isSafePal) {
+            connectWagmi({ connector: connectors[0] }).then((res) => {
+              signMessage(res.account);
+            });
+          } else {
+            launch_toast(true, "Please install SafePal Wallet");
+            return;
+          }
+        } else {
+          connectWagmi({ connector: connectors[0] }).then((res) => {
+            signMessage(res.account);
+          });
+        }
+      } else if (providerType === "trustWallet") {
+        if (isBrowser) {
+          if (window?.ethereum?.isTrustWallet) {
+            connectWagmi({ connector: connectors[0] }).then((res) => {
+              signMessage(res.account);
+            });
+          } else {
+            launch_toast(true, "Please install Trust Wallet");
+            return;
+          }
+        } else {
+          connectWagmi({ connector: connectors[0] }).then((res) => {
+            signMessage(res.account);
+          });
+        }
+      } else if (providerType === "coinbase") {
+        if (isBrowser) {
+          if (window?.ethereum?.isCoinbaseWallet) {
+            connectWagmi({ connector: connectors[2] }).then((res) => {
+              signMessage(res.account);
+            });
+          } else {
+            launch_toast(true, "Please install Coinbase Wallet");
+            return;
+          }
+        } else {
+          connectWagmi({ connector: connectors[2] }).then((res) => {
+            signMessage(res.account);
+          });
+        }
+      } else if (providerType === "walletConnect") {
+        await activate(walletConnect).then(() => {
+          setShouldDisable(false);
+          localStorage.setItem("providerType", "walletConnect");
+          localStorage.setItem("isConnected", true);
+          setCookie("providerType", "walletConnect", 1);
+          setCookie("isConnected", true, 1);
+        });
+      } else {
+      }
+      const provider = new ethers.providers.JsonRpcProvider(BSC_RPC);
+      setProvider(provider);
+      // setWalletModal(false);
+    } catch (error) {
+      console.log('Error on connecting: ', error);
+    }
+  };
+
+  // Disconnect from Metamask wallet
+  const disconnect = async () => {
+    try {
+      await disconnectAsync();
+      cookies.remove(address);
+      cookies.remove(address + "-msg");
+      cookies.remove(address + "-profile");
+      setIsSigned(false);
+      setSignature(null);
+      setSigner(null);
+    } catch (error) {
+      console.log("Error on disconnnect: ", error);
+    }
+  };
+
+  const connectContract = (contractAddress, ABI) => {
+    return new ethers.Contract(contractAddress, ABI);
+  };
+
   const values = useMemo(
     () => ({
-      isActive,
+      isActive: isConnected,
       isSigned,
-      account,
+      account: address,
       chainId,
       isLoading,
       walletModal,
       handleWalletModal,
       connect,
       disconnect,
-      switchActive,
       switchNetwork,
       library,
       shouldDisable,
       connectContract,
       signer,
       signature,
+      ethersProvider
     }),
     [
-      isActive,
+      isConnected,
       isSigned,
       isLoading,
       shouldDisable,
-      account,
+      address,
       chainId,
       walletModal,
       library,
       signer,
-      signature,
+      signature, 
+      ethersProvider
     ]
   );
 

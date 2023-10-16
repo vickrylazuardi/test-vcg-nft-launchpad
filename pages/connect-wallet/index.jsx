@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isMobile, isBrowser } from "react-device-detect";
 import React, { useEffect, useState } from "react";
+import ToastComponent from "../../components/Common/toastComponent";
 
 export default function Index() {
   const [detailProfileVcg, setDetailProfileVcg] = useState("");
@@ -29,10 +30,14 @@ export default function Index() {
       url: "/images/icon-wallet/wallet-safepal.png",
       provider: "safePal",
     },
+    {
+      title: "Coinbase",
+      url: "/images/icon-wallet/wallet-coinbase.png",
+      provider:"coinbase"
+    },
   ];
 
   const connectWallet = async (providerType) => {
-    // console.log(providerType);
     if (providerType === "metaMask") {
       // if (isMobile) {
       //   toast.error('Please install metaMask', {
@@ -40,34 +45,55 @@ export default function Index() {
       //   });
       //   return;
       // }
-      if (window.ethereum) connect("metaMask", "0X4");
-      else alert("You don't have or Nonactivated Metamask Wallet Extension");
+      connect("metaMask", "0X4");
     } else if (providerType === "trustWallet") {
-      if (isBrowser) {
-        toast.error("not detect dapp browser", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
+      // if (isBrowser) {
+      //   launch_toast(true, "not detect dapp browser");
+      //   return;
+      // }
       connect("trustWallet", "0X4");
     } else if (providerType === "safePal") {
-      if (isBrowser) {
-        toast.error("not detect dapp browser", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        return;
-      }
+      // if (isBrowser) {
+      //   launch_toast(true, "not detect dapp browser");
+      //   return;
+      // }
       connect("safePal", "0X4");
+    } else if (providerType === "coinbase") {
+      // if (isBrowser) {
+      //   launch_toast(true, "not detect dapp browser");
+      //   return;
+      // }
+      connect("coinbase", "0X4");
     } else {
       if (isMobile || !window.BinanceChain) {
-        toast.error("Please install Safepal wallet", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        launch_toast(true, "Please install Safepal wallet");
         return;
       }
       connect("walletConnect");
     }
   };
+
+  function launch_toast(isError, msg) {
+    let x = document.getElementById("toast");
+    let text = document.getElementById("toast-text");
+
+    x.style.top = "30px";
+
+    if (isError) {
+      x.className = "show failed";
+    } else {
+      x.className = "show success";
+    }
+
+    text.innerHTML = msg;
+
+    setTimeout(function () {
+      x.className = x.className.replace("show", "");
+      setTimeout(() => {
+        text.innerHTML = "";
+      }, 1000);
+    }, 3000);
+  }
 
   useEffect(() => {
     if (signature) router.back();
@@ -252,6 +278,7 @@ export default function Index() {
         </div>
       </div>
       <ToastContainer />
+      <ToastComponent />
     </div>
   );
 }
